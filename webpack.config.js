@@ -85,7 +85,7 @@ module.exports = {
     // use to point to folders for imports node style
     modulesDirectories: [
       './public'
-    ],
+    ]
     // set an alias for dependencies in node_modules or other dirs
     // alias: {
     // }
