@@ -1,13 +1,13 @@
 {
-  "name": "rudeco",
+  "name": "init",
   "appName": "Ultra",
   "version": "3.0.0",
-  "description": "rudeco.com Website",
+  "description": "Web Server",
   "repository": {
     "type": "git",
-    "url": "http://git.rudeco.com/rudeco/ultra"
+    "url": "http://git.init.com/init"
   },
-  "homepage": "https://rudeco.com",
+  "homepage": "https://init.com",
   "scripts": {
     "test": "",
     "start": "node server",

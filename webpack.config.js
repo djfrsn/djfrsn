@@ -10,7 +10,7 @@ module.exports = {
   devtool: 'eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, '4over/public/js/main.js')
+    path.join(__dirname, './public/js/main.js')
   ],
   output: {
     path: path.join(__dirname, '/dist'),
@@ -19,7 +19,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './4over/public/index.html',
+      template: './public/index.html',
       inject: 'body',
       filename: 'index.html'
     }),
@@ -57,9 +57,9 @@ module.exports = {
     // Copy files to dist
     new CopyWebpackPlugin([
         // Files 
-        { from: './4over/public/favicon.ico', to: './favicon.ico' },
-        { from: './4over/public/.htaccess' },
-        { from: './4over/public/robots.txt', to: './robots.txt' },
+        { from: './public/favicon.ico', to: './favicon.ico' },
+        { from: './public/.htaccess' },
+        { from: './public/robots.txt', to: './robots.txt' },
     ]),
   ],
   module: {
@@ -67,7 +67,7 @@ module.exports = {
     //   { test: /\.js$/, exclude: /node_modules/, loader: 'eslint-loader' }
     // ],
     loaders: [
-      { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader', query: { plugins: ['system-import-transformer'] } },
+      { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.(scss|css)$/i, loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!sass-loader") },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=10000!img?progressive=true' },
       { test:  /\.json?$/, loader: 'url?limit=10000!img?progressive=true' }
@@ -80,7 +80,7 @@ module.exports = {
     extensions: ['', '.js'],
     // use to point to folders for imports node style
     modulesDirectories: [
-      'rudeco/public'
+      './public'
     ],
     // set an alias for dependencies in node_modules or other dirs
     // alias: {

@@ -1,7 +1,7 @@
 {
 	"server": {
 		"port": 3000,
-		"public_dir": "rudeco/public"
+		"public_dir": "./public"
 	},
 	"dbs": {
 		"sampleUsers": {
