@@ -63,6 +63,7 @@ module.exports = {
     ]),
   ],
   postcss: [
+    require('lost'),
     require('lost')
   ],
   module: {

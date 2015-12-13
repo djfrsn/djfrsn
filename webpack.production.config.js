@@ -39,15 +39,15 @@ module.exports = {
   ],
   new CopyWebpackPlugin([
         // Files 
-        { from: './public/favicon.ico', to: './favicon.ico' },
-        { from: './public/.htaccess' },
-        { from: './public/robots.txt', to: './robots.txt' },
+        { from: './public/images/favicon.ico', to: './favicon.ico' },
+        { from: './public/config/.htaccess' },
+        { from: './public/config/robots.txt', to: './robots.txt' },
     ]),
   ],
   module: {
     loaders: [
       { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.(scss|css)$/i, loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!sass-loader") },
+      { test: /\.css$/, loader: "style-loader!css-loader!postcss-loader" },
       //{ test: /\.(scss|css)$/i, loader: 'style-loader!raw-loader!css-loader?sourceMap!sass-loader?includePaths[]=' + path.resolve(__dirname, './4over/public/sass/modules/4over/mixins') },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=10000!img?progressive=true' },
       { test:  /\.json?$/, loader: 'url?limit=10000!img?progressive=true' }
