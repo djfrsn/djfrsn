@@ -1,0 +1,12 @@
+{
+	"server": {
+		"port": 3000,
+		"public_dir": "rudeco/public"
+	},
+	"dbs": {
+		"sampleUsers": {
+			"type": "mock",
+			"url": "file:./sampleUsers.db"
+		}
+	}
+}
