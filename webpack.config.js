@@ -57,9 +57,9 @@ module.exports = {
     // Copy files to dist
     new CopyWebpackPlugin([
         // Files 
-        { from: './public/favicon.ico', to: './favicon.ico' },
-        { from: './public/.htaccess' },
-        { from: './public/robots.txt', to: './robots.txt' },
+        { from: './public/images/favicon.ico', to: './favicon.ico' },
+        { from: './public/config/.htaccess' },
+        { from: './public/config/robots.txt', to: './robots.txt' },
     ]),
   ],
   module: {

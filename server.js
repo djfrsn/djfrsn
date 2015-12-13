@@ -6,6 +6,7 @@ var webpack = require('webpack');
 var webpackMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 var config = require('./webpack.config.js');
+var favicon = require('serve-favicon');
 
 var isDeveloping = process.env.NODE_ENV !== 'production';
 var port = isDeveloping ? 3000 : process.env.PORT;
@@ -39,7 +40,7 @@ if (isDeveloping) {
   });
 }
 
-//app.use(express.favicon(__dirname + '/4over/public/favicon.ico'));
+app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 app.listen(port, 'localhost', function onStart(err) {
   if (err) {

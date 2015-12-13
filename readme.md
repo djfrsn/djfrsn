@@ -39,3 +39,5 @@ https://github.com/picanteverde/init
 http://www.christianalfoni.com/articles/2015_04_19_The-ultimate-webpack-setup
 
 http://www.jchapron.com/2015/08/14/getting-started-with-redux/
+
+https://github.com/erikras/react-redux-universal-hot-example
