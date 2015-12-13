@@ -46,5 +46,5 @@ app.listen(port, 'localhost', function onStart(err) {
   if (err) {
     console.log(err);
   }
-  console.info('==> 🌎 Listening on port %s.' + process.env.PORT );
+  console.info('==> 🌎 Listening on port ' + port );
 });
