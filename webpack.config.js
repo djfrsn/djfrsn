@@ -71,7 +71,7 @@ module.exports = {
     // ],
     loaders: [
       { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.(scss|css)$/i, loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!postcss-loader") },
+      { test: /\.css$/, loader: "style-loader!css-loader!postcss-loader" },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=10000!img?progressive=true' },
       { test:  /\.json?$/, loader: 'url?limit=10000!img?progressive=true' }
     ]
