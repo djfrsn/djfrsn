@@ -2,15 +2,18 @@
 var path = require('path');
 var express = require('express');
 var routes = require('./routes.js');
+var https = require('https');
+var http = require('http');
 var webpack = require('webpack');
 var webpackMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 var config = require('./webpack.config.js');
 var favicon = require('serve-favicon');
+var os = require('os');
 
 var isDeveloping = process.env.NODE_ENV !== 'production';
 var port = isDeveloping ? 3000 : process.env.PORT;
-var host = isDeveloping ? 'http://localhost' : process.env.APP_HOST;
+var host = isDeveloping ? 'http://localhost' : os.hostname();
 var app = express();
 
 if (isDeveloping) {
@@ -43,7 +46,7 @@ if (isDeveloping) {
 
 app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
-app.listen(port, 'localhost', function onStart(err) {
+http.createServer(app).listen(port, function onStart(err) {
   if (err) {
     console.log(err);
   }
