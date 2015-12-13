@@ -2,10 +2,12 @@
 ==============================================================
 
 
-Build with:
+Built with:
  
- * [node.js](http://nodejs.org/)
- * [express.js](http://expressjs.com/)
+ * [Node](http://nodejs.org/)
+ * [Express](http://expressjs.com/)
+ * [React](https://facebook.github.io/react/)
+ * [Redux](http://rackt.org/redux/index.html)
 
 ## How to Use It
 
@@ -35,3 +37,5 @@ on the base folder
 https://github.com/picanteverde/init
 
 http://www.christianalfoni.com/articles/2015_04_19_The-ultimate-webpack-setup
+
+http://www.jchapron.com/2015/08/14/getting-started-with-redux/
