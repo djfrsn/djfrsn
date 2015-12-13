@@ -1,11 +1,13 @@
-4over
+Vivy ~ JS Server
 ==============================================================
-
+"There are no secrets, only things less talked about."
 
 Built with:
  
  * [Node](http://nodejs.org/)
  * [Express](http://expressjs.com/)
+
+ For:
  * [React](https://facebook.github.io/react/)
  * [Redux](http://rackt.org/redux/index.html)
 
@@ -14,14 +16,6 @@ Built with:
 Clone this repository 
 
 	git clone http://git.4over.com/dennisj/4over-server.git .
-
-## Downloading dependencies
-
-'npm install webpack -g'
-
-#### Node clean install
-'npm cache clean -f'
-'npm install -g n'
 
 #### Install local node modules
 'npm install'

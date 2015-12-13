@@ -62,13 +62,17 @@ module.exports = {
         { from: './public/config/robots.txt', to: './robots.txt' },
     ]),
   ],
+  postcss: [
+    require('lost'),
+    require('lost')
+  ],
   module: {
     // preLoaders: [
     //   { test: /\.js$/, exclude: /node_modules/, loader: 'eslint-loader' }
     // ],
     loaders: [
       { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.(scss|css)$/i, loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!sass-loader") },
+      { test: /\.css$/, loader: "style-loader!css-loader!postcss-loader" },
       { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=10000!img?progressive=true' },
       { test:  /\.json?$/, loader: 'url?limit=10000!img?progressive=true' }
     ]
@@ -81,7 +85,7 @@ module.exports = {
     // use to point to folders for imports node style
     modulesDirectories: [
       './public'
-    ],
+    ]
     // set an alias for dependencies in node_modules or other dirs
     // alias: {
     // }
