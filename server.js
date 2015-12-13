@@ -10,6 +10,7 @@ var favicon = require('serve-favicon');
 
 var isDeveloping = process.env.NODE_ENV !== 'production';
 var port = isDeveloping ? 3000 : process.env.PORT;
+var host = isDeveloping ? 'http://localhost' : process.env.APP_HOST;
 var app = express();
 
 if (isDeveloping) {
@@ -46,5 +47,5 @@ app.listen(port, 'localhost', function onStart(err) {
   if (err) {
     console.log(err);
   }
-  console.info('==> 🌎 Listening on port ' + port );
+  console.info('==> 🌎  Listening at ' + host + '/' + port );
 });
