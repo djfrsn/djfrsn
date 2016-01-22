@@ -58,14 +58,12 @@ module.exports = {
     new CopyWebpackPlugin([
         // Files 
         { from: './public/images/favicon.ico', to: './favicon.ico' },
-        { from: './public/config/.htaccess' },
         { from: './public/config/robots.txt', to: './robots.txt' },
     ]),
   ],
-  postcss: [
-    require('lost'),
-    require('lost')
-  ],
+  // postcss: [
+  //   require('lost')
+  // ],
   module: {
     // preLoaders: [
     //   { test: /\.js$/, exclude: /node_modules/, loader: 'eslint-loader' }

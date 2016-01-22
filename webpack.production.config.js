@@ -4,6 +4,7 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = {
@@ -34,13 +35,11 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    })
-  ],
-  new CopyWebpackPlugin([
+    }),
+    new CopyWebpackPlugin([
         // Files 
         { from: './public/images/favicon.ico', to: './favicon.ico' },
-        { from: './public/config/.htaccess' to: './.htcaccess' },
-        { from: './public/config/robots.txt', to: './robots.txt' },
+        { from: './public/config/robots.txt', to: './robots.txt' }
     ]),
   ],
   module: {
@@ -52,6 +51,7 @@ module.exports = {
     ]
   },
   postcss: [
+    require('lost'),
     require('autoprefixer')
   ],
   resolve: {
