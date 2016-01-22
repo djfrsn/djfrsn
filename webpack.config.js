@@ -12,6 +12,7 @@ const postcssImport = require('postcss-import');
 module.exports = {
   devtool: 'eval-source-map',
   entry: [
+    'bootstrap-loader',
     'webpack-hot-middleware/client?reload=true',
     path.join(__dirname, './public/js/index.js')
   ],
@@ -114,7 +115,7 @@ module.exports = {
   },
   resolve: {
     root: [
-      'node_modules'
+      path.join(__dirname, 'node_modules')
     ],
     extensions: ['', '.jsx', '.js', '.json', '.scss'],
     // use to point to folders for imports node style
