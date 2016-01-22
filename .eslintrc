@@ -1,19 +1,24 @@
 {
-  "ecmaFeatures": {
-    "jsx": true,
-    "modules": true
-  },
+  "parser": "babel-eslint",
+  "extends": "eslint-config-airbnb",
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "mocha": true
   },
-  "parser": "babel-eslint",
+  "globals": {
+    "connect": true
+  },
   "rules": {
-    "quotes": [2, "single"],
-    "strict": [2, "never"],
+    "max-len": 0,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2
+    "react/react-in-jsx-scope": 2,
+    "block-scoped-var": 0,
+    "padded-blocks": 0,
+    "no-console": 0,
+    "id-length": 0,
+    "no-unused-expressions": 0,
   },
   "plugins": [
     "react"

@@ -6,11 +6,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const autoprefixer = require('autoprefixer');
+const postcssImport = require('postcss-import');
+
 module.exports = {
   devtool: 'eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, './public/js/shell.js')
+    path.join(__dirname, './public/js/index.js')
   ],
   output: {
     path: path.join(__dirname, '/dist'),
@@ -31,9 +34,9 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     // Optimize module load order in bundles
     new webpack.optimize.OccurenceOrderPlugin(),
-    // new webpack.ProvidePlugin({
-    //     _: "underscore"
-    // }),
+    new webpack.ProvidePlugin({
+      jQuery: 'jquery',
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     // create common modules shared between entry points
@@ -61,28 +64,62 @@ module.exports = {
         { from: './public/config/robots.txt', to: './robots.txt' },
     ]),
   ],
-  // postcss: [
-  //   require('lost')
-  // ],
+    postcss: (webpack) => {
+    return [
+      autoprefixer({
+        browsers: ['last 2 versions'],
+      }),
+      postcssImport({
+        addDependencyTo: webpack,
+      }),
+    ];
+  },
   module: {
-    // preLoaders: [
-    //   { test: /\.js$/, exclude: /node_modules/, loader: 'eslint-loader' }
-    // ],
-    loaders: [
-      { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.css$/, loader: "style-loader!css-loader!postcss-loader" },
-      { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=10000!img?progressive=true' },
-      { test:  /\.json?$/, loader: 'url?limit=10000!img?progressive=true' }
-    ]
+    loaders: [{
+      test: /bootstrap-sass\/assets\/javascripts\//,
+      loader: 'imports?jQuery=jquery',
+    }, {
+      test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-woff',
+    }, {
+      test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-woff2',
+    }, {
+      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/octet-stream',
+    }, {
+      test: /\.otf(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-otf',
+    }, {
+      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'file',
+    }, {
+      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=image/svg+xml',
+    }, {
+      test: /\.js$/,
+      loaders: ['babel-loader'],
+      exclude: /node_modules/,
+    }, {
+      test: /\.png$/,
+      loader: 'file?name=[name].[ext]',
+    }, {
+      test: /\.jpg$/,
+      loader: 'file?name=[name].[ext]',
+    },
+    {
+      test: /\.scss$/,
+      loader: 'style!css?localIdentName=[path][name]--[local]!postcss-loader!sass',
+    }],
   },
   resolve: {
     root: [
       'node_modules'
     ],
-    extensions: ['', '.js'],
+    extensions: ['', '.jsx', '.js', '.json', '.scss'],
     // use to point to folders for imports node style
     modulesDirectories: [
-      './public'
+      './public/js'
     ]
     // set an alias for dependencies in node_modules or other dirs
     // alias: {
