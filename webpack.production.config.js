@@ -5,6 +5,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -35,14 +36,12 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    })
-  ],
-  new CopyWebpackPlugin([
+    }),
+    new CopyWebpackPlugin([
         // Files 
         { from: './public/images/favicon.ico', to: './favicon.ico' },
-        { from: './public/config/.htaccess' to: './.htcaccess' },
         { from: './public/config/robots.txt', to: './robots.txt' },
-    ]),
+    ])
   ],
   module: {
     loaders: [
