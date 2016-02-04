@@ -45,7 +45,7 @@ if (isDeveloping) {
   });
 }
 
-app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
+//app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 http.createServer(app).listen(port, function onStart(err) {
   if (err) {
