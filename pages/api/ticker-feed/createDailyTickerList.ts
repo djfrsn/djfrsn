@@ -7,13 +7,8 @@ import moment from 'moment';
 
 const fmpApi = new FMPApi()
 
-// TODO: create TickerListInfo model lastRefreshed: DateTime
-
 export default async function createDailyTickerList(): Promise<TickerType[]> {
-  // get method should createTickerListInfo if it isn't created
   const tickerListInfo = await getTickerListInfo()
-  console.log('tickerListInfo', tickerListInfo)
-  // if latest refreshed date is today...return Ticker[]
   const tickerListRefreshed = moment(tickerListInfo.lastRefreshed).isSame(
     today.isoString,
     'day'
@@ -21,23 +16,22 @@ export default async function createDailyTickerList(): Promise<TickerType[]> {
   let dailyTickerList
 
   if (!tickerListRefreshed) {
-    // load ticker list file
+    // load ticker list from api
     const tickerList = await fmpApi.marketIndex.sp500()
-
-    console.log('tickerList', tickerList.length)
-    // create ticker if not created with lastActiveDate
-
-    // update ticker lastActiveDate if already created
-
+    // delete existing tickers
+    await prisma.ticker.deleteMany()
+    // create new tickers
+    await prisma.ticker.createMany({ data: tickerList })
     // update latest refreshed date on TickerListInfo
-
+    await prisma.tickerListInfo.update({
+      where: { id: tickerListInfo.id },
+      data: { lastRefreshed: today.isoString },
+    })
     // return list of all tickers
     dailyTickerList = await prisma.ticker.findMany()
   } else {
     dailyTickerList = await prisma.ticker.findMany()
   }
-
-  console.log('dailyTickerList', dailyTickerList.length)
 
   return dailyTickerList
 }

@@ -1,13 +1,24 @@
 import { RateLimit } from 'async-sema';
 import fetch from 'lib/fetch';
 
+// Docs: https://site.financialmodelingprep.com/developer/docs
+
 const rateLimit = RateLimit(15, { timeUnit: 60000, uniformDistribution: true })
 
 interface apiArgs {
   outputsize: 'compact' | 'full' | 'compact'
 }
 
-interface FMPTickerType {}
+interface FMPTickerType {
+  symbol: string
+  name: string
+  sector: string
+  subSector: string
+  headQuarter: string
+  dateFirstAdded: string
+  cik: string
+  founded: string
+}
 
 class FMPApi {
   apiKey: string

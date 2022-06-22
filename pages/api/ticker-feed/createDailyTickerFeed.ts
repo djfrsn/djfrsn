@@ -1,6 +1,5 @@
 import AlphaVantageApi from 'lib/AlphaVantageApi';
 import { getPreviousBusinessDay } from 'lib/dates';
-import createTicker from 'lib/db/createTicker';
 import createTickerInfo from 'lib/db/createTickerInfo';
 import prisma from 'lib/prisma';
 import { TickerType } from 'lib/types';
@@ -12,9 +11,6 @@ export default async function createDailyTickerFeed({
 }: {
   tickerList: TickerType[]
 }) {
-  // create tickers in db
-  await Promise.all(tickerList.map(ticker => createTicker(ticker.symbol)))
-
   // filter out tickers we have the latest info for based on prev biz day
   const filteredTickerList = (
     await Promise.all(
@@ -36,7 +32,7 @@ export default async function createDailyTickerFeed({
 
   // fetch daily data for each ticker
   const res = await alphaApi.core.daily(
-    filteredTickerList.slice(0, 15).map(ticker => ticker.symbol),
+    filteredTickerList.slice(0, 5).map(ticker => ticker.symbol),
     'full'
   )
 
@@ -47,6 +43,7 @@ export default async function createDailyTickerFeed({
   )
 
   // for each ticker data, use time series data to create TickerInfo models
+  // TODO: createTickerInfo should take a list and do a bulk insertion
   let tickerInfoUpdates = await Promise.all(
     filteredTickerList.map((ticker, i) => {
       const timeSeriesData = res[i]

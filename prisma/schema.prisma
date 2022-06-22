@@ -24,42 +24,49 @@ model Post {
 }
 
 model Contract {
-  id        Int     @default(autoincrement()) @id
-  label     String
-  name     String
-  isCall Boolean @default(false)
-  active Boolean @default(false)
-  strikePrice Int
-  dateLive DateTime
-  dateExpires DateTime
-  dateExercise DateTime
+  id              Int @default(autoincrement()) @id
+  label           String
+  name            String
+  isCall          Boolean @default(false)
+  active          Boolean @default(false)
+  strikePrice     Int
+  dateLive        DateTime
+  dateExpires     DateTime
+  dateExercise    DateTime
   underlyingAsset String
-  derivativeType String
-  openInterest Int
-  min_increment Int
-  multiplier Int
+  derivativeType  String
+  openInterest    Int
+  min_increment   Int
+  multiplier      Int
 }
 
 model TickerListInfo {
-  id        Int     @default(autoincrement()) @id
+  id            Int @default(autoincrement()) @id
   lastRefreshed DateTime
 }
 
 model Ticker {
-  id        Int     @default(autoincrement()) @id
-  symbol     String
-  timeSeries TickerInfo[]
+  id             Int @default(autoincrement()) @id
+  symbol         String
+  name           String
+  sector         String
+  subSector      String
+  headQuarter    String
+  dateFirstAdded String
+  cik            String
+  founded        String
+  timeSeries     TickerInfo[]
 }
 
 model TickerInfo {
-  id       Int     @default(autoincrement()) @id
-  date DateTime
+  id       Int @default(autoincrement()) @id
+  date     DateTime
   interval String
-  open String
-  close String
-  high String
-  low String
-  volume String
+  open     String
+  close    String
+  high     String
+  low      String
+  volume   String
   tickerId Int?
-  ticker Ticker?   @relation(fields: [tickerId], references: [id])
+  ticker   Ticker? @relation(fields: [tickerId], references: [id])
 }
