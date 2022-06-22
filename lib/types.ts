@@ -1,12 +1,12 @@
-import { PrismicImageProps, SliceLike } from '@prismicio/react'
+import { PrismicImageProps, SliceLike } from '@prismicio/react';
 
-type PageType = {
+export type PageType = {
   title: string
   description: string
   slices?: SliceLike[]
 }
 
-type NavigationItemType = {
+export type NavigationItemType = {
   title: string
   link: {
     uid: string
@@ -15,13 +15,13 @@ type NavigationItemType = {
   }
 }
 
-type GlobalType = {
+export type GlobalType = {
   title: string
   logo: PrismicImageProps['field']
   navigation: NavigationItemType[]
 }
 
-interface TickerInfoType {
+export interface TickerInfoType {
   id: number
   date: string
   interval: string
@@ -33,20 +33,15 @@ interface TickerInfoType {
   tickerId?: number
 }
 
-interface TickerType {
+export interface TickerListInfoType {
+  id: number
+  lastRefreshed: Date
+}
+export interface TickerType {
   id: number
   symbol: string
   timeSeries: TickerInfoType[]
 }
-interface DailyTickerFeedQueryType {
+export interface DailyTickerFeedQueryType {
   dailyTickerFeed: TickerType[]
-}
-
-export type {
-  PageType,
-  GlobalType,
-  NavigationItemType,
-  TickerType,
-  TickerInfoType,
-  DailyTickerFeedQueryType,
 }

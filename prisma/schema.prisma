@@ -40,6 +40,11 @@ model Contract {
   multiplier Int
 }
 
+model TickerListInfo {
+  id        Int     @default(autoincrement()) @id
+  lastRefreshed DateTime
+}
+
 model Ticker {
   id        Int     @default(autoincrement()) @id
   symbol     String

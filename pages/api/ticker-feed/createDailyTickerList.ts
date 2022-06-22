@@ -1,4 +1,5 @@
 import AlphaVantageApi from 'lib/AlphaVantageApi';
+import getTickerListInfo from 'lib/db/getTickerListInfo';
 import { TickerType } from 'lib/types';
 
 const alphaApi = new AlphaVantageApi({
@@ -8,8 +9,9 @@ const alphaApi = new AlphaVantageApi({
 // TODO: create TickerListInfo model lastRefreshed: DateTime
 
 export default async function createDailyTickerFeed(): Promise<TickerType[]> {
-  // get latest refreshed date from TickerListInfo
-
+  // get latest refreshed date from TickerListInfo...get method should createTickerListInfo if it isn't created
+  const lastRefreshedDate = await getTickerListInfo()
+  console.log('lastRefreshedDate', lastRefreshedDate)
   // if latest refreshed date is today...return Ticker[]
 
   // load ticker list

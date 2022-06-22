@@ -1,8 +1,9 @@
-import { NextApiRequest, NextApiResponse \} from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 import createDailyTickerFeed from './createDailyTickerFeed';
 import createDailyTickerList from './createDailyTickerList';
 
+// import createDailyTickerFeed from './createDailyTickerFeed';
 // Daily specific ticker feed
 
 // curl -H "Content-Type: application/json" -d "{\"foo\": \"bar\"}" http://localhost:3000/api/ticker-feed/update
@@ -14,10 +15,13 @@ export default async function handler(
 ) {
   if (request.method === 'POST') {
     const tickerNames = await createDailyTickerList()
+    console.log('ticker names: ', tickerNames)
 
-    await createDailyTickerFeed({
-      tickerNames: process.env.DAILY_TICKER_LIST,
-    })
+    if (tickerNames.length > 100) {
+      await createDailyTickerFeed({
+        tickerNames: process.env.DAILY_TICKER_LIST,
+      })
+    }
 
     return response.status(200).send(true)
   } else {
