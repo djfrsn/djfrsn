@@ -2,7 +2,7 @@ import { isArray } from '@apollo/client/cache/inmemory/helpers';
 import { RateLimit } from 'async-sema';
 import fetch from 'node-fetch';
 
-const rateLimit = RateLimit(5, { timeUnit: 60000, uniformDistribution: true })
+const rateLimit = RateLimit(15, { timeUnit: 60000, uniformDistribution: true })
 
 interface apiArgs {
   outputsize: 'compact' | 'full' | 'compact'

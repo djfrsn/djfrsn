@@ -14,12 +14,13 @@ export default async function handler(
   response: NextApiResponse
 ) {
   if (request.method === 'POST') {
-    const tickerNames = await createDailyTickerList()
-    console.log('ticker names: ', tickerNames)
+    const tickerList = await createDailyTickerList()
+    console.log('ticker list: ', tickerList)
+    console.log('ticker length: ', tickerList.length)
 
-    if (tickerNames.length > 100) {
+    if (tickerList.length === 500) {
       await createDailyTickerFeed({
-        tickerNames: process.env.DAILY_TICKER_LIST,
+        tickerList,
       })
     }
 

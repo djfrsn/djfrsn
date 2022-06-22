@@ -1,44 +1,33 @@
 import AlphaVantageApi from 'lib/AlphaVantageApi';
+import { getPreviousBusinessDay } from 'lib/dates';
 import createTicker from 'lib/db/createTicker';
 import createTickerInfo from 'lib/db/createTickerInfo';
 import prisma from 'lib/prisma';
-import moment from 'moment-business-days';
+import { TickerType } from 'lib/types';
 
 const alphaApi = new AlphaVantageApi({
   apiKey: process.env.ALPHA_VANTAGE_API_KEY,
 })
 
 export default async function createDailyTickerFeed({
-  tickerNames,
+  tickerList,
 }: {
-  tickerNames: string
+  tickerList: TickerType[]
 }) {
-  const tickerList =
-    tickerNames === 'string'
-      ? tickerNames.split(',')
-      : process.env.DAILY_TICKER_LIST.split(',')
-
   // create tickers in db
-  await Promise.all(tickerList.map(ticker => createTicker(ticker)))
-
-  const previousBusinessDay = moment()
-    .utcOffset(0)
-    .startOf('day')
-    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-    .prevBusinessDay()
-    .toISOString()
+  await Promise.all(tickerList.map(ticker => createTicker(ticker.symbol)))
 
   // filter out tickers we have the latest info for based on prev biz day
   const filteredTickerList = (
     await Promise.all(
       tickerList.map(async (ticker, i) => {
         const tickerData = await prisma.ticker.findFirst({
-          where: { symbol: ticker },
+          where: { symbol: ticker.symbol },
         })
         const latestTickerInfo = await prisma.tickerInfo.findFirst({
           where: {
             tickerId: tickerData.id,
-            date: previousBusinessDay,
+            date: getPreviousBusinessDay(),
           },
         })
 
@@ -48,20 +37,23 @@ export default async function createDailyTickerFeed({
   ).filter(ticker => ticker)
 
   // fetch daily data for each ticker
-  const res = await alphaApi.core.daily(filteredTickerList.slice(0, 15), 'full')
+  const res = await alphaApi.core.daily(
+    filteredTickerList.slice(0, 15).map(ticker => ticker.symbol),
+    'full'
+  )
 
   const tickersData = await Promise.all(
     filteredTickerList.map(ticker =>
-      prisma.ticker.findFirst({ where: { symbol: ticker } })
+      prisma.ticker.findFirst({ where: { symbol: ticker.symbol } })
     )
   )
 
   // for each ticker data, use time series data to create TickerInfo models
   let tickerInfoUpdates = await Promise.all(
-    filteredTickerList.map((symbol, i) => {
+    filteredTickerList.map((ticker, i) => {
       const timeSeriesData = res[i]
       const tickerData = tickersData.find(
-        tickerData => tickerData.symbol === symbol
+        tickerData => tickerData.symbol === ticker.symbol
       )
       if (!timeSeriesData) return null
 

@@ -1,5 +1,7 @@
 import AlphaVantageApi from 'lib/AlphaVantageApi';
+import { today } from 'lib/dates';
 import getTickerListInfo from 'lib/db/getTickerListInfo';
+import prisma from 'lib/prisma';
 import { TickerType } from 'lib/types';
 import moment from 'moment';
 
@@ -15,19 +17,27 @@ export default async function createDailyTickerList(): Promise<TickerType[]> {
   console.log('lastRefreshedDate', lastRefreshedDate)
   // if latest refreshed date is today...return Ticker[]
   const tickerListRefreshed = moment(lastRefreshedDate.lastRefreshed).isSame(
-    moment().toISOString(),
+    today.isoString,
     'day'
   )
-  console.log('tickerListRefreshed', tickerListRefreshed)
-  // load ticker list
+  let dailyTickerList
 
-  // create ticker if not created with lastActiveDate
+  if (!tickerListRefreshed) {
+    // load ticker list
 
-  // update ticker lastActiveDate if already created
+    // create ticker if not created with lastActiveDate
 
-  // update latest refreshed date on TickerListInfo
+    // update ticker lastActiveDate if already created
 
-  // return list of all tickers
+    // update latest refreshed date on TickerListInfo
 
-  return [{ id: 1, symbol: '', timeSeries: [] }]
+    // return list of all tickers
+    dailyTickerList = await prisma.ticker.findMany()
+  } else {
+    dailyTickerList = await prisma.ticker.findMany()
+  }
+
+  console.log('dailyTickerList', dailyTickerList)
+
+  return dailyTickerList
 }
