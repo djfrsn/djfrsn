@@ -1,0 +1,14 @@
+.navigationList {
+  @apply flex pb-1;
+
+  li {
+    @apply ml-2;
+    &:first-of-type {
+      @apply list-none ml-0;
+    }
+
+    a {
+      @apply no-underline;
+    }
+  }
+}

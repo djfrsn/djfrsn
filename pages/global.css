@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Terminator font: https://www.fontspace.com/terminator-cyr-font-f756 */
+/* Incosolata font: https://fonts.google.com/specimen/Inconsolata?query=incon#standard-styles */
+
+@font-face {
+  font-family: 'Terminator';
+  src: url('/fonts/terminator-webfont.woff2') format('woff2'),
+    url('/fonts/terminator-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  @apply bg-gradient-to-t from-wash-200 to-wash-300 bg-no-repeat bg-fixed h-full font-body;
+}
+
+body {
+  @apply h-full;
+}
+
+body,
+body > div {
+  @apply flex w-full m-0;
+}
+body > div {
+  @apply flex w-full h-auto m-0;
+}
+
+h1 {
+  @apply text-3xl;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-xl;
+
+  span {
+    @apply text-iced-neon text-xs;
+  }
+}
+
+h4 {
+  @apply text-lg;
+}
+
+h5 {
+  @apply text-base;
+}
+
+h6 {
+  @apply text-sm;
+}
+
+ol {
+  li {
+    @apply list-decimal list-inside;
+  }
+}
+
+ul {
+  li {
+    @apply list-disc list-inside;
+  }
+}
+
+button {
+  @apply rounded-md;
+}
+
+textarea,
+input[type='text'] {
+  @apply w-full p-4 my-2 rounded-md bg-ash-100 text-wash-100;
+}
+
+input[type='submit'] {
+  @apply bg-ash-100 text-wash-100 mt-4 mr-4 py-2 px-4 rounded-md;
+}
+
+@layer components {
+  .link {
+    @apply text-iced-neon underline transition-colors;
+
+    &:hover {
+      @apply text-iced-100;
+    }
+
+    &[data-active='true'] {
+      @apply text-iced-200;
+    }
+  }
+
+  .modal {
+    @apply hidden;
+  }
+
+  .modal.active {
+    @apply absolute block top-0 left-0 w-full h-full;
+    &::before {
+      content: '';
+      @apply absolute bg-wash-100 opacity-75 z-40 h-full w-full select-none;
+    }
+  }
+
+  .errorText {
+    @apply m-4 text-crayolaRed-100;
+  }
+}

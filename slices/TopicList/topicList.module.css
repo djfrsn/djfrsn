@@ -1,0 +1,15 @@
+.list {
+  @apply grid grid-cols-12 gap-6 py-4;
+}
+
+.listItem {
+  @apply col-span-12 sm:col-span-6 md:col-span-4 auto-rows-max cursor-pointer;
+}
+
+.listHeading {
+  @apply text-iced-100;
+}
+
+.topicListPreview {
+  @apply overflow-y-auto h-full flex items-center mx-2;
+}

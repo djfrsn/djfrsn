@@ -1,0 +1,363 @@
+{
+  "slices": {
+    "components": {
+      "markdown": {
+        "library": "slices",
+        "id": "markdown",
+        "name": "Markdown",
+        "description": "Markdown",
+        "model": {
+          "id": "markdown",
+          "type": "SharedSlice",
+          "name": "Markdown",
+          "description": "Markdown",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "Markdown",
+              "primary": {
+                "content": {
+                  "type": "StructuredText",
+                  "config": {
+                    "label": "Content",
+                    "placeholder": "Enter markdown here...",
+                    "allowTargetBlank": false,
+                    "single": "preformatted"
+                  }
+                }
+              },
+              "items": {},
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "name": "Default",
+            "slice_type": "markdown",
+            "items": [],
+            "primary": {
+              "content": [
+                {
+                  "type": "paragraph",
+                  "text": "Reprehenderit incididunt tempor pariatur sint ad excepteur laboris Lorem in. Nulla nisi eiusmod laborum cupidatat amet minim occaecat esse.",
+                  "spans": []
+                }
+              ]
+            }
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {}
+      },
+      "page_content": {
+        "library": "slices",
+        "id": "page_content",
+        "name": "PageContent",
+        "description": "PageContent",
+        "model": {
+          "id": "page_content",
+          "type": "SharedSlice",
+          "name": "PageContent",
+          "description": "PageContent",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "PageContent",
+              "primary": {},
+              "items": {
+                "page": {
+                  "type": "Link",
+                  "config": {
+                    "label": "Page",
+                    "select": "document"
+                  }
+                }
+              },
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "name": "Default",
+            "slice_type": "page_content",
+            "items": [
+              {
+                "page": {
+                  "link_type": "Web",
+                  "url": "https://slicemachine.dev"
+                }
+              },
+              {
+                "page": {
+                  "link_type": "Web",
+                  "url": "https://prismic.io"
+                }
+              },
+              {
+                "page": {
+                  "link_type": "Web",
+                  "url": "http://twitter.com"
+                }
+              },
+              {
+                "page": {
+                  "link_type": "Web",
+                  "url": "https://prismic.io"
+                }
+              }
+            ],
+            "primary": {}
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {}
+      },
+      "topic_list": {
+        "library": "slices",
+        "id": "topic_list",
+        "name": "TopicList",
+        "description": "TopicList",
+        "model": {
+          "id": "topic_list",
+          "type": "SharedSlice",
+          "name": "TopicList",
+          "description": "TopicList",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "TopicList",
+              "primary": {
+                "title": {
+                  "type": "StructuredText",
+                  "config": {
+                    "label": "Title",
+                    "placeholder": "",
+                    "allowTargetBlank": true,
+                    "single": "heading2"
+                  }
+                }
+              },
+              "items": {
+                "topics": {
+                  "type": "Link",
+                  "config": {
+                    "label": "Topics",
+                    "select": "document",
+                    "customtypes": [
+                      "topic"
+                    ]
+                  }
+                }
+              },
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "name": "Default",
+            "slice_type": "topic_list",
+            "items": [
+              {
+                "topics": {
+                  "link_type": "Web",
+                  "url": "https://slicemachine.dev"
+                }
+              },
+              {
+                "topics": {
+                  "link_type": "Web",
+                  "url": "https://slicemachine.dev"
+                }
+              }
+            ],
+            "primary": {
+              "title": [
+                {
+                  "type": "heading2",
+                  "text": "Aggregate plug-and-play users",
+                  "spans": []
+                }
+              ]
+            }
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {
+          "default": {
+            "path": "/Users/dennisjefferson/__underworld/den/trinityresearch-lib/.slicemachine/assets/slices/TopicList/default/preview.png",
+            "width": 800,
+            "height": 106
+          }
+        }
+      },
+      "util_bar_links": {
+        "library": "slices",
+        "id": "util_bar_links",
+        "name": "UtilBarLinks",
+        "description": "UtilBarLinks",
+        "model": {
+          "id": "util_bar_links",
+          "type": "SharedSlice",
+          "name": "UtilBarLinks",
+          "description": "UtilBarLinks",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "UtilBarLinks",
+              "primary": {},
+              "items": {
+                "links": {
+                  "type": "StructuredText",
+                  "config": {
+                    "label": "Links",
+                    "placeholder": "Title",
+                    "allowTargetBlank": true,
+                    "single": "list-item,hyperlink"
+                  }
+                }
+              },
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "name": "Default",
+            "slice_type": "util_bar_links",
+            "items": [
+              {
+                "links": [
+                  {
+                    "type": "paragraph",
+                    "text": "Lorem laboris eiusmod elit est ut id ipsum.",
+                    "spans": []
+                  }
+                ]
+              },
+              {
+                "links": [
+                  {
+                    "type": "paragraph",
+                    "text": "Reprehenderit irure ad irure quis est.",
+                    "spans": []
+                  }
+                ]
+              },
+              {
+                "links": [
+                  {
+                    "type": "paragraph",
+                    "text": "Ea id elit exercitation incididunt nisi ut ad.",
+                    "spans": []
+                  }
+                ]
+              }
+            ],
+            "primary": {}
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {
+          "default": {
+            "path": "/Users/dennisjefferson/__underworld/den/trinityresearch-lib/.slicemachine/assets/slices/UtilBarLinks/default/preview.png",
+            "width": 800,
+            "height": 38
+          }
+        }
+      },
+      "util_bar_title": {
+        "library": "slices",
+        "id": "util_bar_title",
+        "name": "UtilBarTitle",
+        "description": "UtilBarTitle",
+        "model": {
+          "id": "util_bar_title",
+          "type": "SharedSlice",
+          "name": "UtilBarTitle",
+          "description": "UtilBarTitle",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "UtilBarTitle",
+              "primary": {
+                "title": {
+                  "type": "StructuredText",
+                  "config": {
+                    "label": "Title",
+                    "placeholder": "Trinity Research",
+                    "allowTargetBlank": true,
+                    "single": "heading3,hyperlink"
+                  }
+                }
+              },
+              "items": {},
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "name": "Default",
+            "slice_type": "util_bar_title",
+            "items": [],
+            "primary": {
+              "title": [
+                {
+                  "type": "heading3",
+                  "text": "Enhance mission-critical vortals",
+                  "spans": []
+                }
+              ]
+            }
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {
+          "default": {
+            "path": "/Users/dennisjefferson/__underworld/den/trinityresearch-lib/.slicemachine/assets/slices/UtilBarTitle/default/preview.png",
+            "width": 800,
+            "height": 20
+          }
+        }
+      }
+    }
+  }
+}

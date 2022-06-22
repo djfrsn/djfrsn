@@ -1,0 +1,54 @@
+{
+  "id": "root-page",
+  "label": "Page",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "Uid",
+          "placeholder": ""
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Description",
+          "placeholder": ""
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "markdown": {
+              "type": "SharedSlice"
+            },
+            "topic_list": {
+              "type": "SharedSlice"
+            },
+            "util_bar_links": {
+              "type": "SharedSlice"
+            },
+            "util_bar_title": {
+              "type": "SharedSlice"
+            },
+            "page_content": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

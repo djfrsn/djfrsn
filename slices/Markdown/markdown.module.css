@@ -1,0 +1,46 @@
+.container {
+  h1 {
+    @apply mt-4 mb-2;
+  }
+
+  h3,
+  p,
+  pre,
+  ul,
+  ol {
+    @apply mb-2;
+  }
+
+  h3 {
+    @apply mt-8;
+
+    &:first-of-type {
+      @apply mt-4;
+    }
+  }
+
+  p {
+    pre {
+      code {
+        @apply text-maxYellow-100 bg-none;
+      }
+    }
+  }
+
+  pre {
+    @apply flex rounded-md bg-wash-300;
+
+    code {
+      @apply p-4 flex overflow-scroll;
+    }
+  }
+
+  ul,
+  ol {
+    @apply pl-4;
+  }
+
+  a {
+    @apply underline text-iced-neon;
+  }
+}

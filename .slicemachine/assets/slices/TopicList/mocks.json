@@ -1,0 +1,30 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "topic_list",
+    "items": [
+      {
+        "topics": {
+          "link_type": "Web",
+          "url": "https://slicemachine.dev"
+        }
+      },
+      {
+        "topics": {
+          "link_type": "Web",
+          "url": "https://slicemachine.dev"
+        }
+      }
+    ],
+    "primary": {
+      "title": [
+        {
+          "type": "heading2",
+          "text": "Aggregate plug-and-play users",
+          "spans": []
+        }
+      ]
+    }
+  }
+]

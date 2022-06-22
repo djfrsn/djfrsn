@@ -1,0 +1,17 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "util_bar_title",
+    "items": [],
+    "primary": {
+      "title": [
+        {
+          "type": "heading3",
+          "text": "Enhance mission-critical vortals",
+          "spans": []
+        }
+      ]
+    }
+  }
+]

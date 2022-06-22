@@ -1,0 +1,26 @@
+.utilBarContainer {
+  @apply flex items-center text-xs uppercase border-t border-b border-iced-fade;
+}
+
+.util-bar-header {
+  @apply mb-2;
+}
+
+.util-bar-footer {
+  @apply mt-2;
+
+  ul {
+    @apply items-center flex-1;
+    li {
+      @apply inline-block text-iced-100 whitespace-nowrap;
+    }
+    li + li::before {
+      content: '|';
+      @apply px-3;
+    }
+  }
+
+  li a {
+    @apply underline;
+  }
+}

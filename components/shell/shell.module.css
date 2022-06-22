@@ -1,0 +1,69 @@
+/*
+TODO: get wildcard selectors working
+*/
+
+.shellContainer {
+  @apply container w-full mx-auto flex justify-center items-center overflow-hidden;
+}
+
+.shell-os {
+  @apply items-baseline my-16 h-full max-h-[90%] overflow-visible;
+}
+
+.shell-visual {
+  @apply mb-0;
+}
+
+.shell-stream {
+  @apply h-[24rem] mb-2 md:mb-4;
+}
+
+.shell-keyboard {
+  @apply h-[24rem] mb-2 md:mb-4;
+}
+
+.shell-txt {
+  @apply h-full;
+}
+
+.outerShell,
+.innerShell {
+  border-width: 1.5px;
+  @apply w-full mx-2 my-1 flex border-iced-100 rounded-md;
+}
+
+.outerShell {
+  @apply mx-4 sm:w-5/6 md:w-full overflow-hidden;
+}
+
+.outer-shell-app,
+.outer-shell-visual,
+.outer-shell-stream,
+.outer-shell-keyboard,
+.outer-shell-txt {
+  @apply sm:w-full rounded-sm mx-0 sm:mx-0 h-full;
+}
+
+.innerShell {
+  @apply flex flex-col mx-2 sm:mx-5 my-1 py-8 px-8 md:px-12 xl:pr-8;
+}
+
+.inner-shell-os {
+  @apply 2xl:flex 2xl:flex-row;
+}
+
+.inner-shell-app,
+.inner-shell-visual,
+.inner-shell-stream,
+.inner-shell-keyboard,
+.inner-shell-txt {
+  @apply rounded-sm border mx-1 p-0 border-iced-fade;
+}
+
+.headerContainer {
+  @apply flex flex-wrap text-sm md:text-base items-center px-2 uppercase select-none border-b border-iced-fade;
+
+  em {
+    @apply ml-auto text-xxs not-italic text-iced-neon;
+  }
+}

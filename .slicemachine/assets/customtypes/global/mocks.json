@@ -1,0 +1,33 @@
+{
+  "id": "ecd80a2c-414d-469b-a21b-d5183bd9d795",
+  "uid": "et-et-fuga",
+  "type": "global",
+  "data": {
+    "title": "implement extensible communities",
+    "logo": {
+      "dimensions": {
+        "width": 900,
+        "height": 500
+      },
+      "alt": "Placeholder image",
+      "copyright": null,
+      "url": "https://images.unsplash.com/photo-1448932223592-d1fc686e76ea?w=900&h=500&fit=crop"
+    },
+    "navigation": [
+      {
+        "title": "reintermediate revolutionary schemas",
+        "link": {
+          "link_type": "Web",
+          "url": "https://prismic.io"
+        }
+      },
+      {
+        "title": "synergize distributed functionalities",
+        "link": {
+          "link_type": "Web",
+          "url": "https://prismic.io"
+        }
+      }
+    ]
+  }
+}

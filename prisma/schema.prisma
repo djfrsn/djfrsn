@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  email String  @unique
+  id    Int     @default(autoincrement()) @id
+  name  String?
+  posts Post[]
+}
+
+model Post {
+  authorId  Int?
+  content   String?
+  id        Int     @default(autoincrement()) @id
+  published Boolean @default(false)
+  title     String
+  author    User?   @relation(fields: [authorId], references: [id])
+}
+
+model Contract {
+  id        Int     @default(autoincrement()) @id
+  label     String
+  name     String
+  isCall Boolean @default(false)
+  active Boolean @default(false)
+  strikePrice Int
+  dateLive DateTime
+  dateExpires DateTime
+  dateExercise DateTime
+  underlyingAsset String
+  derivativeType String
+  openInterest Int
+  min_increment Int
+  multiplier Int
+}
+
+model Ticker {
+  id        Int     @default(autoincrement()) @id
+  symbol     String
+  timeSeries TickerInfo[]
+}
+
+model TickerInfo {
+  id       Int     @default(autoincrement()) @id
+  date DateTime
+  interval String
+  open String
+  close String
+  high String
+  low String
+  volume String
+  tickerId Int?
+  ticker Ticker?   @relation(fields: [tickerId], references: [id])
+}

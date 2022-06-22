@@ -1,0 +1,130 @@
+{
+  "_cts": {
+    "homepage": {},
+    "global": {
+      "navigation": {}
+    },
+    "signup": {},
+    "drafts": {},
+    "create": {},
+    "topic": {
+      "preview": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      }
+    },
+    "root-page": {},
+    "feed": {},
+    "contract": {},
+    "daily-ticker-feed": {}
+  },
+  "slices": {
+    "Course": {
+      "default": {
+        "primary": {
+          "title": {
+            "config": {
+              "patternType": "HEADING",
+              "blocks": 1
+            }
+          },
+          "description": {
+            "config": {
+              "patternType": "PARAGRAPH",
+              "blocks": 1
+            }
+          }
+        }
+      }
+    },
+    "Header": {
+      "default": {
+        "primary": {
+          "title": {
+            "config": {
+              "patternType": "HEADING",
+              "blocks": 1
+            }
+          }
+        }
+      }
+    },
+    "UtilBar": {
+      "default": {
+        "primary": {
+          "title": {
+            "config": {
+              "patternType": "HEADING",
+              "blocks": 1
+            }
+          }
+        },
+        "items": {
+          "helpfulLinks": {
+            "config": {
+              "patternType": "PARAGRAPH",
+              "blocks": 1
+            }
+          }
+        }
+      }
+    },
+    "TopicList": {
+      "default": {
+        "primary": {
+          "title": {
+            "config": {
+              "patternType": "HEADING",
+              "blocks": 1
+            }
+          }
+        },
+        "items": {}
+      }
+    },
+    "UtilBarLinks": {
+      "default": {
+        "items": {
+          "links": {
+            "config": {
+              "patternType": "PARAGRAPH",
+              "blocks": 1
+            }
+          }
+        },
+        "primary": {}
+      }
+    },
+    "UtilBarTitle": {
+      "default": {
+        "primary": {
+          "title": {
+            "config": {
+              "patternType": "HEADING",
+              "blocks": 1
+            }
+          }
+        }
+      }
+    },
+    "Markdown": {
+      "default": {
+        "primary": {
+          "content": {
+            "config": {
+              "patternType": "PARAGRAPH",
+              "blocks": 1
+            }
+          }
+        }
+      }
+    },
+    "PageContent": {
+      "default": {
+        "primary": {}
+      }
+    }
+  }
+}

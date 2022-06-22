@@ -1,0 +1,10 @@
+node_modules/
+.next/
+pm.todo
+.DS_Store
+prisma/dev.db
+prisma/dev.db-journal
+prisma/migrations
+generated/
+pm-bw.todo
+.env
