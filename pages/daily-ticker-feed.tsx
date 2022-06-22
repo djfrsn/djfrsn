@@ -52,7 +52,7 @@ const DailyTickerFeedPage = ({ page, global }) => {
     variables: { limit: limit },
   })
 
-  if (true) {
+  if (loading) {
     return <LoadingIndicator />
   }
   if (error) {
