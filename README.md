@@ -153,3 +153,8 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Prisma Client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client)
 - [Prismic/Next](https://prismic.io/docs/technical-reference/prismicio-next)
 - [PostgreSQL](https://www.postgresql.org/)
+
+# Libraries
+
+- [moment](https://momentjs.com/)
+- [node-fetch](https://www.npmjs.com/package/node-fetch)
