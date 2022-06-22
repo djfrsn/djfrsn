@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse \} from 'next';
 
 import createDailyTickerFeed from './createDailyTickerFeed';
+import createDailyTickerList from './createDailyTickerList';
 
 // Daily specific ticker feed
 
@@ -12,6 +13,8 @@ export default async function handler(
   response: NextApiResponse
 ) {
   if (request.method === 'POST') {
+    const tickerNames = await createDailyTickerList()
+
     await createDailyTickerFeed({
       tickerNames: process.env.DAILY_TICKER_LIST,
     })

@@ -2,7 +2,6 @@ import LineChart from 'components/LineChart';
 import chartOptions from 'lib/chartOptions';
 import getTrendDirection from 'lib/getTrendDirection';
 import { TickerType } from 'lib/types';
-import { useRouter } from 'next/router';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
 const DailyTickerFeed = ({
@@ -12,14 +11,12 @@ const DailyTickerFeed = ({
   limit: number
   data: TickerType[]
 }) => {
-  const router = useRouter()
-
   return (
     <div className="my-8">
       <h1 className="mb-4">{limit}D MicroChart</h1>
       <div className="grid md:grid-cols-6 gap-6">
         {data.length > 0 ? (
-          data.map(({ id, symbol, timeSeries }) => {
+          data.map(({ id, symbol, timeSeries, date }) => {
             const lineColor =
               getTrendDirection(timeSeries) !== 'negative'
                 ? 'limegreen'

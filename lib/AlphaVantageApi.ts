@@ -33,14 +33,13 @@ class AlphaVantageApi {
         symbols: string | string[],
         outputsize?: apiArgs['outputsize']
       ) => {
-        // TODO: alpha api should rate limit itself....fetch method should rate limit itself so it can fetch from the watchlist as quickly as possible
         let res = []
         if (isArray(symbols)) {
           console.log('fetching', symbols.length, ' symbols')
           for (const symbol of symbols) {
             await rateLimit()
-            const data = await this.fetchTimeSeriesDaily(symbol, outputsize)
             console.log('fetch', symbol)
+            const data = await this.fetchTimeSeriesDaily(symbol, outputsize)
             res.push(data)
           }
         } else {
