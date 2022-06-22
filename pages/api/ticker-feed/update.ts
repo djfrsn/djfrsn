@@ -5,7 +5,7 @@ import createDailyTickerFeed from './createDailyTickerFeed';
 // Daily specific ticker feed
 
 // curl -H "Content-Type: application/json" -d "{\"foo\": \"bar\"}" http://localhost:3000/api/ticker-feed/update
-// https://blockwizards.herokuapp.com/api/ticker-feed/update
+// curl -H "Content-Type: application/json" -d "{\"foo\": \"bar\"}" https://blockwizards.herokuapp.com/api/ticker-feed/update
 
 export default async function handler(
   request: NextApiRequest,
