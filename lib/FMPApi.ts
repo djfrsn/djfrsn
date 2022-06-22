@@ -1,5 +1,6 @@
 import { RateLimit } from 'async-sema';
 import fetch from 'lib/fetch';
+import { isArray } from 'nexus/dist/utils';
 
 // Docs: https://site.financialmodelingprep.com/developer/docs
 
@@ -20,6 +21,11 @@ interface FMPTickerType {
   cik: string
   founded: string
 }
+interface FMPPriceType {
+  date: string
+  close: string
+  open?: string
+}
 
 class FMPApi {
   apiKey: string
@@ -30,13 +36,43 @@ class FMPApi {
   }
 
   getApiUrl(apiStr: string, version = 'v3') {
-    return `${this.apiUrl}/api/${version}/${apiStr}?apikey=${this.apiKey}`
+    const apiKeySeperator = apiStr.includes('?') ? '&' : '?'
+    return `${this.apiUrl}/api/${version}/${apiStr}${apiKeySeperator}apikey=${this.apiKey}`
   }
 
   get marketIndex() {
     return {
-      sp500: async (): Promise<FMPTickerType[]> =>
-        await fetch(this.getApiUrl('sp500_constituent')),
+      async sp500(): Promise<FMPTickerType[]> {
+        return await fetch(this.getApiUrl('sp500_constituent'))
+      },
+    }
+  }
+
+  get core() {
+    const getApiUrl = this.getApiUrl.bind(this)
+
+    return {
+      async dailyHistoricalPrice(
+        symbols: string | string[]
+      ): Promise<{ symbol: string; historical: FMPPriceType[] }[]> {
+        let res = []
+        const makeUrl = val => `historical-price-full/${val}?serietype=line`
+
+        if (isArray(symbols)) {
+          console.log('fetching', symbols.length, ' symbols')
+          for (const symbol of symbols) {
+            await rateLimit()
+            console.log('fetch', symbol)
+            const data = await await fetch(getApiUrl(makeUrl(symbol)))
+            console.log('fetch', symbol, ' complete')
+            res.push(data)
+          }
+        } else {
+          res = await await fetch(getApiUrl(makeUrl(symbols)))
+        }
+
+        return res
+      },
     }
   }
 }

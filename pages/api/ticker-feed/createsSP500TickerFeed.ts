@@ -1,9 +1,9 @@
-import AlphaVantageApi from 'lib/AlphaVantageApi';
 import { isSameDay } from 'lib/dates';
+import FMPApi from 'lib/FMPApi';
 import prisma from 'lib/prisma';
 import { TickerType } from 'lib/types';
 
-const alphaApi = new AlphaVantageApi()
+const fmpApi = new FMPApi()
 
 export default async function createsSP500TickerFeed({
   tickerList,
@@ -32,10 +32,10 @@ export default async function createsSP500TickerFeed({
   console.log('tickerList.length', tickerList.length)
   console.log('filteredTickerList.length', filteredTickerList)
   // fetch daily data for each ticker
-  // const res = await alphaApi.core.daily(
-  //   filteredTickerList.slice(0, 5).map(ticker => ticker.symbol),
-  //   'full'
-  // )
+  const res = await fmpApi.core.dailyHistoricalPrice(
+    filteredTickerList.slice(0, 5).map(ticker => ticker.symbol)
+  )
+  console.log('res', res)
   // const tickersData = await Promise.all(
   //   filteredTickerList.map(ticker =>
   //     prisma.ticker.findFirst({ where: { symbol: ticker.symbol } })
