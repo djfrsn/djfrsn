@@ -1,6 +1,7 @@
 import AlphaVantageApi from 'lib/AlphaVantageApi';
 import getTickerListInfo from 'lib/db/getTickerListInfo';
 import { TickerType } from 'lib/types';
+import moment from 'moment';
 
 const alphaApi = new AlphaVantageApi({
   apiKey: process.env.ALPHA_VANTAGE_API_KEY,
@@ -8,12 +9,16 @@ const alphaApi = new AlphaVantageApi({
 
 // TODO: create TickerListInfo model lastRefreshed: DateTime
 
-export default async function createDailyTickerFeed(): Promise<TickerType[]> {
+export default async function createDailyTickerList(): Promise<TickerType[]> {
   // get latest refreshed date from TickerListInfo...get method should createTickerListInfo if it isn't created
   const lastRefreshedDate = await getTickerListInfo()
   console.log('lastRefreshedDate', lastRefreshedDate)
   // if latest refreshed date is today...return Ticker[]
-
+  const tickerListRefreshed = moment(lastRefreshedDate.lastRefreshed).isSame(
+    moment().toISOString(),
+    'day'
+  )
+  console.log('tickerListRefreshed', tickerListRefreshed)
   // load ticker list
 
   // create ticker if not created with lastActiveDate
