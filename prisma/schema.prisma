@@ -42,11 +42,21 @@ model Contract {
 
 model TickerListInfo {
   id            Int @default(autoincrement()) @id
+  updatedAt     DateTime @updatedAt @default(now())
   lastRefreshed DateTime
+}
+
+model MarketIndex {
+  id   Int @default(autoincrement()) @id
+  name String
+  displayName String
+  tickers Ticker[]
 }
 
 model Ticker {
   id             Int @default(autoincrement()) @id
+  updatedAt      DateTime @updatedAt @default(now())
+  lastRefreshed  DateTime?
   symbol         String
   name           String
   sector         String
@@ -55,18 +65,22 @@ model Ticker {
   dateFirstAdded String
   cik            String
   founded        String
+  marketIndexId  Int?
+  marketIndex    MarketIndex?   @relation(fields: [marketIndexId], references: [id])
   timeSeries     TickerInfo[]
 }
 
 model TickerInfo {
-  id       Int @default(autoincrement()) @id
-  date     DateTime
-  interval String
-  open     String
-  close    String
-  high     String
-  low      String
-  volume   String
-  tickerId Int?
-  ticker   Ticker? @relation(fields: [tickerId], references: [id])
+  id            Int @default(autoincrement()) @id
+  date          DateTime
+  updatedAt     DateTime @updatedAt @default(now())
+  lastRefreshed DateTime @default(now())
+  interval      String
+  open          String
+  close         String
+  high          String
+  low           String
+  volume        String
+  tickerId      Int?
+  ticker        Ticker? @relation(fields: [tickerId], references: [id])
 }

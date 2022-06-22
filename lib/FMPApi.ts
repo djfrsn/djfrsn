@@ -16,6 +16,7 @@ interface FMPTickerType {
   subSector: string
   headQuarter: string
   dateFirstAdded: string
+  lastRefreshed: string
   cik: string
   founded: string
 }

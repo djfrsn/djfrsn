@@ -1,4 +1,4 @@
-import { today } from 'lib/dates';
+import { isSameDay, today } from 'lib/dates';
 import getTickerListInfo from 'lib/db/getTickerListInfo';
 import FMPApi from 'lib/FMPApi';
 import prisma from 'lib/prisma';
@@ -7,13 +7,11 @@ import moment from 'moment';
 
 const fmpApi = new FMPApi()
 
-export default async function createDailyTickerList(): Promise<TickerType[]> {
+export default async function createsSP500TickerList(): Promise<TickerType[]> {
   const tickerListInfo = await getTickerListInfo()
-  const tickerListRefreshed = moment(tickerListInfo.lastRefreshed).isSame(
-    today.isoString,
-    'day'
-  )
-  let dailyTickerList
+  // TODO: migrate to lastRefreshed date of MarketIndex and delete TickerListInfo model
+  const tickerListRefreshed = isSameDay(moment(tickerListInfo.lastRefreshed))
+  let sp500tickerList
 
   if (!tickerListRefreshed) {
     // load ticker list from api
@@ -28,10 +26,10 @@ export default async function createDailyTickerList(): Promise<TickerType[]> {
       data: { lastRefreshed: today.isoString },
     })
     // return list of all tickers
-    dailyTickerList = await prisma.ticker.findMany()
+    sp500tickerList = await prisma.ticker.findMany()
   } else {
-    dailyTickerList = await prisma.ticker.findMany()
+    sp500tickerList = await prisma.ticker.findMany()
   }
 
-  return dailyTickerList
+  return sp500tickerList
 }

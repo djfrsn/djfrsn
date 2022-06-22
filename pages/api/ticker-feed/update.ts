@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import createDailyTickerFeed from './createDailyTickerFeed';
-import createDailyTickerList from './createDailyTickerList';
+import createsSp500TickerFeed from './createsSP500TickerFeed';
+import createDailyTickerList from './createsSP500TickerList';
 
 // import createDailyTickerFeed from './createDailyTickerFeed';
 // Daily specific ticker feed
@@ -15,14 +15,10 @@ export default async function handler(
 ) {
   if (request.method === 'POST') {
     const tickerList = await createDailyTickerList()
-    // console.log('ticker list: ', tickerList)
-    // console.log('ticker length: ', tickerList.length)
 
-    if (tickerList.length === 505) {
-      await createDailyTickerFeed({
-        tickerList,
-      })
-    }
+    await createsSp500TickerFeed({
+      tickerList,
+    })
 
     return response.status(200).send(true)
   } else {
