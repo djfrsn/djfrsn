@@ -2,22 +2,24 @@ import { isArray } from '@apollo/client/cache/inmemory/helpers';
 import { RateLimit } from 'async-sema';
 import fetch from 'node-fetch';
 
-const rateLimit = RateLimit(15, { timeUnit: 60000, uniformDistribution: true })
+const rateLimit = RateLimit(10, { timeUnit: 60000, uniformDistribution: true })
 
 interface apiArgs {
   outputsize: 'compact' | 'full' | 'compact'
 }
 class AlphaVantageApi {
   apiKey: string
-  constructor({ apiKey }: { apiKey: string }) {
-    this.apiKey = apiKey
+  apiUrl: string
+  constructor() {
+    this.apiUrl = process.env.ALPHA_VANTAGE_API_URL
+    this.apiKey = process.env.ALPHA_VANTAGE_API_KEY
   }
   async fetchTimeSeriesDaily(
     symbol: string,
     outputsize?: apiArgs['outputsize']
   ) {
     const data = await fetch(
-      `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=${outputsize}&apikey=${this.apiKey}`,
+      `${this.apiUrl}/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=${outputsize}&apikey=${this.apiKey}`,
       {
         method: 'GET',
       }

@@ -5,9 +5,7 @@ import createTickerInfo from 'lib/db/createTickerInfo';
 import prisma from 'lib/prisma';
 import { TickerType } from 'lib/types';
 
-const alphaApi = new AlphaVantageApi({
-  apiKey: process.env.ALPHA_VANTAGE_API_KEY,
-})
+const alphaApi = new AlphaVantageApi()
 
 export default async function createDailyTickerFeed({
   tickerList,

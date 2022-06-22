@@ -15,10 +15,10 @@ export default async function handler(
 ) {
   if (request.method === 'POST') {
     const tickerList = await createDailyTickerList()
-    console.log('ticker list: ', tickerList)
-    console.log('ticker length: ', tickerList.length)
+    // console.log('ticker list: ', tickerList)
+    // console.log('ticker length: ', tickerList.length)
 
-    if (tickerList.length === 500) {
+    if (tickerList.length === 505) {
       await createDailyTickerFeed({
         tickerList,
       })
