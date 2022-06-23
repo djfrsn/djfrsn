@@ -12,6 +12,7 @@
     "setup:dev": "npm run generate && npm run migrate:prisma:dev",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
+    "db:reset": "npx prisma migrate reset",
     "migrate:prisma": "prisma migrate deploy",
     "migrate:prisma:dev": "prisma migrate dev --name init",
     "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api",
