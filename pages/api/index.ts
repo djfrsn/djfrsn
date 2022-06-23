@@ -66,6 +66,24 @@ const Contract = objectType({
   },
 })
 
+const MarketIndex = objectType({
+  name: 'MarketIndex',
+  definition(t) {
+    t.int('id')
+    t.string('name')
+    t.string('displayName')
+    t.field('lastRefreshed', { type: 'DateTime' })
+    t.list.field('ticker', {
+      type: 'Ticker',
+      resolve: async (parent, __, ctx) => {
+        return ctx.prisma.ticker.findMany({
+          where: { marketIndexId: Number(parent.id) },
+        })
+      },
+    })
+  },
+})
+
 const Ticker = objectType({
   name: 'Ticker',
   definition(t) {
@@ -137,7 +155,19 @@ const Query = objectType({
       },
     })
 
-    t.list.field('dailyTickerFeed', {
+    t.field('marketIndex', {
+      args: {
+        name: stringArg(),
+      },
+      type: 'MarketIndex',
+      resolve: async (_, args: { name: string }, ctx) => {
+        return ctx.prisma.marketIndex.findFirst({
+          where: { name: 'sp500' },
+        })
+      },
+    })
+
+    t.list.field('tickerFeed', {
       args: {
         limit: intArg(),
       },
@@ -252,7 +282,17 @@ const Mutation = objectType({
 })
 
 export const schema = makeSchema({
-  types: [Query, Mutation, GQLDate, Post, User, Contract, Ticker, TickerInfo],
+  types: [
+    Query,
+    Mutation,
+    GQLDate,
+    Post,
+    User,
+    Contract,
+    MarketIndex,
+    Ticker,
+    TickerInfo,
+  ],
   outputs: {
     typegen: path.join(process.cwd(), 'generated/nexus-typegen.ts'),
     schema: path.join(process.cwd(), 'generated/schema.graphql'),

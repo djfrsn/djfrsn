@@ -18,7 +18,8 @@
     "root-page": {},
     "feed": {},
     "contract": {},
-    "daily-ticker-feed": {}
+    "daily-ticker-feed": {},
+    "sp500": {}
   },
   "slices": {
     "Course": {

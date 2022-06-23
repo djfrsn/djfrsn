@@ -1,3 +1,4 @@
+import { TickerInfo } from '@prisma/client';
 import { PrismicImageProps, SliceLike } from '@prismicio/react';
 
 export type PageType = {
@@ -21,18 +22,6 @@ export type GlobalType = {
   navigation: NavigationItemType[]
 }
 
-export interface TickerInfoType {
-  id: number
-  date: string
-  interval: string
-  open: string
-  close: string
-  high: string
-  low: string
-  volume: string
-  tickerId?: number
-}
-
 export interface TickerListInfoType {
   id: number
   lastRefreshed: Date
@@ -40,8 +29,8 @@ export interface TickerListInfoType {
 export interface TickerType {
   id: number
   symbol: string
-  timeSeries: TickerInfoType[]
+  timeSeries: TickerInfo[]
 }
-export interface DailyTickerFeedQueryType {
-  dailyTickerFeed: TickerType[]
+export interface TickerFeedQueryType {
+  tickerFeed: TickerType[]
 }

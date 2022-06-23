@@ -1,5 +1,4 @@
 import { createClient } from '../prismicio';
-import DailyTickerFeedPage from './daily-ticker-feed';
 
 export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData })
@@ -15,7 +14,7 @@ export async function getStaticProps({ previewData }) {
 }
 
 const Homepage = ({ page, global }) => {
-  return <DailyTickerFeedPage page={page} global={global} />
+  return null
 }
 
 export default Homepage

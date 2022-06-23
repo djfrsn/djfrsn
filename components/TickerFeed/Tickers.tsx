@@ -4,16 +4,9 @@ import getTrendDirection from 'lib/getTrendDirection';
 import { TickerType } from 'lib/types';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
-const DailyTickerFeed = ({
-  limit,
-  data,
-}: {
-  limit: number
-  data: TickerType[]
-}) => {
+const Tickers = ({ data }: { data: TickerType[] }) => {
   return (
     <div className="my-8">
-      <h1 className="mb-4">{limit}D MicroChart</h1>
       <div className="grid md:grid-cols-6 gap-6">
         {data.length > 0 ? (
           data.map(({ id, symbol, timeSeries }) => {
@@ -78,4 +71,4 @@ const DailyTickerFeed = ({
   )
 }
 
-export default DailyTickerFeed
+export default Tickers
