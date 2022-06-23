@@ -6,7 +6,7 @@ import { NextApiHandler } from 'next';
 import { asNexusMethod, intArg, makeSchema, nonNull, nullable, objectType, stringArg } from 'nexus';
 import path from 'path';
 
-import prisma from '../../lib/prisma';
+import context from './context';
 
 export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
 
@@ -18,8 +18,8 @@ const User = objectType({
     t.string('email')
     t.list.field('posts', {
       type: 'Post',
-      resolve: parent =>
-        prisma.user
+      resolve: (parent, __, ctx) =>
+        ctx.prisma.user
           .findUnique({
             where: { id: Number(parent.id) },
           })
@@ -37,8 +37,8 @@ const Post = objectType({
     t.boolean('published')
     t.nullable.field('author', {
       type: 'User',
-      resolve: parent =>
-        prisma.post
+      resolve: (parent, __, ctx) =>
+        ctx.prisma.post
           .findUnique({
             where: { id: Number(parent.id) },
           })
@@ -76,11 +76,11 @@ const Ticker = objectType({
       args: {
         limit: intArg(),
       },
-      resolve: (parent, args: { limit: number }) => {
+      resolve: (parent, args: { limit: number }, ctx) => {
         const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
         if (args.limit) options.take = args.limit
 
-        return prisma.tickerInfo.findMany({
+        return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
           where: { tickerId: Number(parent.id) },
           ...options,
@@ -104,8 +104,8 @@ const TickerInfo = objectType({
     t.nullable.int('tickerId')
     t.nullable.field('ticker', {
       type: 'Ticker',
-      resolve: parent =>
-        prisma.ticker
+      resolve: (parent, __, ctx) =>
+        ctx.prisma.ticker
           .findUnique({
             where: { id: Number(parent.id) },
           })
@@ -123,8 +123,8 @@ const Query = objectType({
       args: {
         postId: nonNull(stringArg()),
       },
-      resolve: (_, args) => {
-        return prisma.post.findUnique({
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.post.findUnique({
           where: { id: Number(args.postId) },
         })
       },
@@ -132,8 +132,8 @@ const Query = objectType({
 
     t.list.field('contracts', {
       type: 'Contract',
-      resolve: (_, args) => {
-        return prisma.contract.findMany().then()
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.contract.findMany().then()
       },
     })
 
@@ -142,15 +142,15 @@ const Query = objectType({
         limit: intArg(),
       },
       type: 'Ticker',
-      resolve: async (_, args: { limit: number }) => {
-        return prisma.ticker.findMany({ take: args.limit })
+      resolve: async (_, args: { limit: number }, ctx) => {
+        return ctx.prisma.ticker.findMany({ take: args.limit })
       },
     })
 
     t.list.field('feed', {
       type: 'Post',
-      resolve: (_parent, _args) => {
-        return prisma.post.findMany({
+      resolve: (_parent, _args, ctx) => {
+        return ctx.prisma.post.findMany({
           where: { published: true },
         })
       },
@@ -159,7 +159,7 @@ const Query = objectType({
     t.list.field('drafts', {
       type: 'Post',
       resolve: (_parent, _args, ctx) => {
-        return prisma.post.findMany({
+        return ctx.prisma.post.findMany({
           where: { published: false },
         })
       },
@@ -171,7 +171,7 @@ const Query = objectType({
         searchString: nullable(stringArg()),
       },
       resolve: (_, { searchString }, ctx) => {
-        return prisma.post.findMany({
+        return ctx.prisma.post.findMany({
           where: {
             OR: [
               { title: { contains: searchString } },
@@ -194,7 +194,7 @@ const Mutation = objectType({
         email: nonNull(stringArg()),
       },
       resolve: (_, { name, email }, ctx) => {
-        return prisma.user.create({
+        return ctx.prisma.user.create({
           data: {
             name,
             email,
@@ -209,7 +209,7 @@ const Mutation = objectType({
         postId: stringArg(),
       },
       resolve: (_, { postId }, ctx) => {
-        return prisma.post.delete({
+        return ctx.prisma.post.delete({
           where: { id: Number(postId) },
         })
       },
@@ -223,7 +223,7 @@ const Mutation = objectType({
         authorEmail: stringArg(),
       },
       resolve: (_, { title, content, authorEmail }, ctx) => {
-        return prisma.post.create({
+        return ctx.prisma.post.create({
           data: {
             title,
             content,
@@ -242,7 +242,7 @@ const Mutation = objectType({
         postId: stringArg(),
       },
       resolve: (_, { postId }, ctx) => {
-        return prisma.post.update({
+        return ctx.prisma.post.update({
           where: { id: Number(postId) },
           data: { published: true },
         })
@@ -266,7 +266,7 @@ export const config = {
   },
 }
 
-const apolloServer = new ApolloServer({ schema })
+const apolloServer = new ApolloServer({ schema, context })
 
 let apolloServerHandler: NextApiHandler
 
