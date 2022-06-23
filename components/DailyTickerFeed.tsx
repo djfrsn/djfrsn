@@ -16,7 +16,7 @@ const DailyTickerFeed = ({
       <h1 className="mb-4">{limit}D MicroChart</h1>
       <div className="grid md:grid-cols-6 gap-6">
         {data.length > 0 ? (
-          data.map(({ id, symbol, timeSeries, date }) => {
+          data.map(({ id, symbol, timeSeries }) => {
             const lineColor =
               getTrendDirection(timeSeries) !== 'negative'
                 ? 'limegreen'
