@@ -32,8 +32,9 @@ export default async function createSP500TickerInfo({
 
   console.log('tickerList.length', tickerList.length)
   console.log('filteredTickerList.length', filteredTickerList.length)
+
   const tickerPrices = await fmpApi.core.dailyHistoricalPrice(
-    filteredTickerList
+    filteredTickerList.slice(0, 50)
   )
   const marketInterval = await prisma.marketInterval.findFirst({
     where: { name: '1d' },
