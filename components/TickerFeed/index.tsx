@@ -3,13 +3,14 @@ import Container from 'components/Container';
 import Tickers from 'components/TickerFeed/Tickers';
 import gql from 'graphql-tag';
 import { TickerType } from 'lib/types';
+import { useEffect } from 'react';
 
 const TickerFeedQuery = gql`
-  query TickerFeed($limit: Int) {
-    tickerFeed {
+  query TickerFeed($marketIndexId: Int, $limit: Int, $timeSeriesLimit: Int) {
+    tickerFeed(marketIndexId: $marketIndexId, limit: $limit) {
       id
       symbol
-      timeSeries(limit: $limit) {
+      timeSeries(limit: $timeSeriesLimit) {
         id
         date
         tickerId
@@ -19,7 +20,12 @@ const TickerFeedQuery = gql`
   }
 `
 
-const TickerFeed = ({ limit }) => {
+const TickerFeed = ({
+  marketIndexId,
+  limit,
+  timeSeriesLimit,
+  setNumOfDays,
+}) => {
   const {
     loading,
     error,
@@ -30,8 +36,15 @@ const TickerFeed = ({ limit }) => {
     data: { tickerFeed: TickerType[] }
   } = useQuery(TickerFeedQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { limit },
+    variables: { marketIndexId, limit, timeSeriesLimit },
   })
+
+  useEffect(() => {
+    if (data?.tickerFeed.length > 0) {
+      const timeSeriesLength = data.tickerFeed[0].timeSeries?.length
+      if (timeSeriesLength > 0) setNumOfDays(timeSeriesLength)
+    }
+  }, [data?.tickerFeed.length])
 
   return (
     <Container loading={loading} error={error}>

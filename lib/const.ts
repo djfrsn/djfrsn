@@ -6,3 +6,4 @@ export const TOPIC_FETCH_LINKS = [
 ]
 
 export const sp500 = 'sp500'
+export const oneday = '1d'

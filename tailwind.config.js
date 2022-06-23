@@ -60,7 +60,24 @@ module.exports = {
         100: '#8B8C89',
       },
     },
-    extend: {},
+    extend: {
+      animation: {
+        fadeOut: 'fadeOut 1s ease-in-out',
+        fadeIn: 'fadeIn 1s ease-in-out',
+      },
+
+      // that is actual animation
+      keyframes: theme => ({
+        fadeOut: {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      }),
+    },
   },
   plugins: [],
 }

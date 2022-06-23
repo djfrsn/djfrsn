@@ -1,16 +1,19 @@
 import { useQuery } from '@apollo/client';
 import { MarketIndex } from '@prisma/client';
+import classnames from 'classnames';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
 import TickerFeed from 'components/TickerFeed';
 import gql from 'graphql-tag';
+import { sp500 } from 'lib/const';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import { createClient } from '../prismicio';
 
 const MarketIndexQuery = gql`
-  query MarketIndex {
-    marketIndex {
+  query MarketIndex($name: String) {
+    marketIndex(name: $name) {
       id
       displayName
     }
@@ -21,7 +24,7 @@ export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData })
 
   const [page, global] = await Promise.all([
-    client.getSingle('sp500'),
+    client.getSingle(sp500),
     client.getSingle('global'),
   ])
 
@@ -31,8 +34,11 @@ export async function getStaticProps({ previewData }) {
 }
 
 const sp500Page = ({ page, global }) => {
-  const limitQuery = useRouter().query.limit
-  const limit = Number(limitQuery) || 100
+  const routerQuery = useRouter().query
+  const limitQuery = routerQuery.limit
+  const timeSeriesLimitQuery = routerQuery.days
+  const limit = Number(limitQuery)
+  const timeSeriesLimit = Number(timeSeriesLimitQuery)
   const {
     loading,
     error,
@@ -43,17 +49,35 @@ const sp500Page = ({ page, global }) => {
     data: { marketIndex: MarketIndex }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { limit: limit },
+    variables: { name: sp500 },
   })
+  const [numOfDays, setNumOfDays] = useState(null)
+  const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
 
   return (
     <Container loading={loading} error={error}>
       <Layout data={{ page: page.data, global: global.data }}>
-        <div className="flex flex-row">
-          {data?.marketIndex && <h1>{data.marketIndex.displayName}</h1>}
-          <span className="ml-1">{limit}d</span>
-        </div>
-        <TickerFeed limit={limit} />
+        {data?.marketIndex && (
+          <>
+            <div className="flex flex-row">
+              <h1>{data.marketIndex.displayName}</h1>
+              <span
+                className={classnames('ml-1', {
+                  hidden: !days,
+                  ['animate-fadeIn']: days > 0,
+                })}
+              >
+                {days}D
+              </span>
+            </div>
+            <TickerFeed
+              marketIndexId={data.marketIndex.id}
+              limit={limit}
+              timeSeriesLimit={timeSeriesLimit}
+              setNumOfDays={setNumOfDays}
+            />
+          </>
+        )}
       </Layout>
     </Container>
   )

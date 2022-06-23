@@ -1,4 +1,4 @@
-import { sp500 } from 'lib/const';
+import { oneday, sp500 } from 'lib/const';
 import { isSameDay, today } from 'lib/dates';
 import FMPApi from 'lib/FMPApi';
 import prisma from 'lib/prisma';
@@ -37,7 +37,7 @@ export default async function createSP500TickerInfo({
     filteredTickerList
   )
   const marketInterval = await prisma.marketInterval.findFirst({
-    where: { name: '1d' },
+    where: { name: oneday },
   })
 
   const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {

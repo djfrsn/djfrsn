@@ -7,7 +7,7 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 const Tickers = ({ data }: { data: TickerType[] }) => {
   return (
     <div className="my-8">
-      <div className="grid md:grid-cols-6 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {data.length > 0 ? (
           data.map(({ id, symbol, timeSeries }) => {
             const lineColor =

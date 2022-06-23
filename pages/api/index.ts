@@ -97,6 +97,7 @@ const Ticker = objectType({
       resolve: (parent, args: { limit: number }, ctx) => {
         const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
         if (args.limit) options.take = args.limit
+        else options.take = 100
 
         return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
@@ -162,18 +163,29 @@ const Query = objectType({
       type: 'MarketIndex',
       resolve: async (_, args: { name: string }, ctx) => {
         return ctx.prisma.marketIndex.findFirst({
-          where: { name: 'sp500' },
+          where: { name: args.name },
         })
       },
     })
 
     t.list.field('tickerFeed', {
       args: {
+        marketIndexId: intArg(),
         limit: intArg(),
       },
       type: 'Ticker',
-      resolve: async (_, args: { limit: number }, ctx) => {
-        return ctx.prisma.ticker.findMany({ take: args.limit })
+      resolve: async (
+        _,
+        args: { marketIndexId: number; limit: number },
+        ctx
+      ) => {
+        const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
+        if (args.limit) options.take = args.limit
+
+        return ctx.prisma.ticker.findMany({
+          where: { marketIndexId: args.marketIndexId },
+          ...options,
+        })
       },
     })
 

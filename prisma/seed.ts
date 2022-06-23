@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { oneday, sp500 } from 'lib/const';
 
 const prisma = new PrismaClient()
 
@@ -50,14 +51,14 @@ const userData: Prisma.UserCreateInput[] = [
 
 const marketIndexData = [
   {
-    name: 'sp500',
+    name: sp500,
     displayName: 'S&P 500',
   },
 ]
 
 const marketIntervalData = [
   {
-    name: '1d',
+    name: oneday,
   },
 ]
 
