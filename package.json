@@ -4,6 +4,7 @@
   "description": "Build new apps quickly",
   "main": "lib/index.ts",
   "scripts": {
+    "analyze": "ANALYZE=true npm run build",
     "dev": "next",
     "build": "npm run setup && next build",
     "build:dev": "npm run setup:dev && next build",
@@ -53,6 +54,7 @@
     "react-markdown": "^8.0.2"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^12.1.6",
     "@types/graphql": "14.5.0",
     "@types/micro-cors": "0.1.2",
     "@types/node": "16.11.36",

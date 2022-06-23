@@ -262,6 +262,7 @@ export const schema = makeSchema({
 export const config = {
   api: {
     bodyParser: false,
+    responseLimit: '8mb',
   },
 }
 
