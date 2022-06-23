@@ -266,7 +266,7 @@ export const config = {
   },
 }
 
-const apolloServer = new ApolloServer({ schema, context })
+const apolloServer = new ApolloServer({ schema, context, cache: 'bounded' })
 
 let apolloServerHandler: NextApiHandler
 
