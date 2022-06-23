@@ -2,7 +2,6 @@ import prisma from 'lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // Daily specific ticker feed
-
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
