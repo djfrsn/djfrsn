@@ -4,3 +4,5 @@ export const TOPIC_FETCH_LINKS = [
   'topic.tier',
   'topic.category',
 ]
+
+export const sp500 = 'sp500'

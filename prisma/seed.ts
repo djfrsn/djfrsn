@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 
@@ -48,6 +48,19 @@ const userData: Prisma.UserCreateInput[] = [
   },
 ]
 
+const marketIndexData = [
+  {
+    name: 'sp500',
+    displayName: 'S&P 500',
+  },
+]
+
+const marketIntervalData = [
+  {
+    name: '1d',
+  },
+]
+
 export async function main() {
   try {
     console.log(`Start seeding ...`)
@@ -56,6 +69,18 @@ export async function main() {
         data: u,
       })
       console.log(`Created user with id: ${user.id}`)
+    }
+    for (const u of marketIntervalData) {
+      const marketInterval = await prisma.marketInterval.create({
+        data: u,
+      })
+      console.log(`Created market interval with id: ${marketInterval.id}`)
+    }
+    for (const u of marketIndexData) {
+      const marketIndex = await prisma.marketIndex.create({
+        data: u,
+      })
+      console.log(`Created market index with id: ${marketIndex.id}`)
     }
     console.log(`Seeding finished.`)
   } catch (err) {

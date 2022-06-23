@@ -1,14 +1,9 @@
-import { RateLimit } from 'async-sema';
 import fetch from 'lib/fetch';
-import { isArray } from 'nexus/dist/utils';
+
+import chunk from './chunk';
+import { TickerType } from './types';
 
 // Docs: https://site.financialmodelingprep.com/developer/docs
-
-const rateLimit = RateLimit(15, { timeUnit: 60000, uniformDistribution: true })
-
-interface apiArgs {
-  outputsize: 'compact' | 'full' | 'compact'
-}
 
 interface FMPTickerType {
   symbol: string
@@ -33,6 +28,7 @@ class FMPApi {
   constructor() {
     this.apiUrl = process.env.FMP_API_URL
     this.apiKey = process.env.FMP_API_KEY
+    this.getApiUrl = this.getApiUrl.bind(this)
   }
 
   getApiUrl(apiStr: string, version = 'v3') {
@@ -41,34 +37,56 @@ class FMPApi {
   }
 
   get marketIndex() {
+    const getApiUrl = this.getApiUrl
+
     return {
       async sp500(): Promise<FMPTickerType[]> {
-        return await fetch(this.getApiUrl('sp500_constituent'))
+        return await fetch(getApiUrl('sp500_constituent'))
       },
     }
   }
 
   get core() {
-    const getApiUrl = this.getApiUrl.bind(this)
+    const getApiUrl = this.getApiUrl
 
     return {
       async dailyHistoricalPrice(
-        symbols: string | string[]
+        tickers: string | string[] | TickerType[]
       ): Promise<{ symbol: string; historical: FMPPriceType[] }[]> {
         let res = []
-        const makeUrl = val => `historical-price-full/${val}?serietype=line`
+        const batchLimit = 3
+        const chunkList = tickers.length > 1
+        const tickersList =
+          chunkList && Array.isArray(tickers)
+            ? chunk(tickers, batchLimit)
+            : tickers
 
-        if (isArray(symbols)) {
-          console.log('fetching', symbols.length, ' symbols')
-          for (const symbol of symbols) {
-            await rateLimit()
-            console.log('fetch', symbol)
-            const data = await await fetch(getApiUrl(makeUrl(symbol)))
-            console.log('fetch', symbol, ' complete')
-            res.push(data)
+        if (Array.isArray(tickersList)) {
+          console.log('fetching', tickers.length, ' tickers')
+
+          for (const ticker of tickersList) {
+            const arg = Array.isArray(ticker)
+              ? ticker.map(item => item.symbol).join(',')
+              : ticker
+
+            console.log('fetch', arg)
+
+            let data = await fetch(
+              getApiUrl(`historical-price-full/${arg}?serietype=line`)
+            )
+
+            console.log('fetch', arg, ' complete')
+
+            if (data.historicalStockList) {
+              res.push(...data.historicalStockList)
+            } else {
+              res.push(data)
+            }
           }
         } else {
-          res = await await fetch(getApiUrl(makeUrl(symbols)))
+          res = await await fetch(
+            getApiUrl(`historical-price-full/${tickers}?serietype=line`)
+          )
         }
 
         return res

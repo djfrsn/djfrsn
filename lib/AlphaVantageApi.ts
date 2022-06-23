@@ -1,8 +1,4 @@
-import { isArray } from '@apollo/client/cache/inmemory/helpers';
-import { RateLimit } from 'async-sema';
-import fetch from 'node-fetch';
-
-const rateLimit = RateLimit(10, { timeUnit: 60000, uniformDistribution: true })
+import fetch from 'lib/fetch';
 
 interface apiArgs {
   outputsize: 'compact' | 'full' | 'compact'
@@ -36,10 +32,9 @@ class AlphaVantageApi {
         outputsize?: apiArgs['outputsize']
       ) => {
         let res = []
-        if (isArray(symbols)) {
+        if (Array.isArray(symbols)) {
           console.log('fetching', symbols.length, ' symbols')
           for (const symbol of symbols) {
-            await rateLimit()
             console.log('fetch', symbol)
             const data = await this.fetchTimeSeriesDaily(symbol, outputsize)
             res.push(data)

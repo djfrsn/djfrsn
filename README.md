@@ -116,8 +116,6 @@ New pages can be created without code on Prismic using the "Page" content type a
 
 Components are any reusable UI code found in [`/pages`](./pages) or [`/slices`](./slices).
 
-- Add new components in the dir [./components](./components/) and export them in [`./index.ts`](./index.ts) to allow for use as an npm package.
-
 <br />
 
 ### Add server side api code
@@ -128,7 +126,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 
 <br />
 
-## References
+## Third Party References
 
 ### General
 
@@ -145,6 +143,8 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [TailwindCSS](https://tailwindcss.com/)
 - [Apollo Client](https://www.apollographql.com/docs/react/)
 - [Prismic Templating](https://prismic.io/docs/technologies/template-content-nextjs#intro-to-templating)
+- [React Markdown](https://www.npmjs.com/package/react-markdown)
+- [React Chart.js](https://www.npmjs.com/package/react-chartjs-2)
 
 ### Backend
 
@@ -153,8 +153,12 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Prisma Client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client)
 - [Prismic/Next](https://prismic.io/docs/technical-reference/prismicio-next)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Node Resque](https://www.npmjs.com/package/node-resque)
+- [p-queue](https://www.npmjs.com/package/p-queue)
+- [got](https://www.npmjs.com/package/got)
 
-# Libraries
+# Universal
 
 - [moment](https://momentjs.com/)
-- [node-fetch](https://www.npmjs.com/package/node-fetch)
+- [moment-business-days](https://www.npmjs.com/package/moment-business-days)
+- [lodash](https://www.npmjs.com/package/lodash)

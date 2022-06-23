@@ -50,7 +50,14 @@ model MarketIndex {
   id   Int @default(autoincrement()) @id
   name String
   displayName String
+  lastRefreshed  DateTime?
   tickers Ticker[]
+}
+
+model MarketInterval {
+  id   Int @default(autoincrement()) @id
+  name String
+  timeSeries TickerInfo[]
 }
 
 model Ticker {
@@ -74,13 +81,13 @@ model TickerInfo {
   id            Int @default(autoincrement()) @id
   date          DateTime
   updatedAt     DateTime @updatedAt @default(now())
-  lastRefreshed DateTime @default(now())
-  interval      String
-  open          String
+  intervalId    Int?
+  interval      MarketInterval? @relation(fields: [intervalId], references: [id])
+  open          String?
   close         String
-  high          String
-  low           String
-  volume        String
+  high          String?
+  low           String?
+  volume        String?
   tickerId      Int?
   ticker        Ticker? @relation(fields: [tickerId], references: [id])
 }
