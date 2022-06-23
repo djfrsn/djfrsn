@@ -1,7 +1,7 @@
-import { TickerInfoType } from './types';
+import { TickerInfo } from '@prisma/client';
 
 function getTrendDirection(
-  timeSeries: TickerInfoType[]
+  timeSeries: TickerInfo[]
 ): 'positive' | 'negative' | 'neutral' | string | null {
   if (timeSeries.length <= 0) return null
 
