@@ -324,10 +324,12 @@ export const schema = makeSchema({
 
 export const config = {
   api: {
-    bodyParser: false,
     responseLimit: '8mb',
   },
 }
+
+// TODO: get time to run first job, use data to extrapolate job time est on status route
+// TODO: use flow pattern and set createSP500Ticker as first job
 
 const apolloServer = new ApolloServer({ schema, context, cache: 'bounded' })
 
