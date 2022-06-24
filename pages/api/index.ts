@@ -3,7 +3,7 @@ import { ApolloServer } from 'apollo-server-micro';
 import { DateTimeResolver } from 'graphql-scalars';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
-import { asNexusMethod, intArg, makeSchema, nonNull, nullable, objectType, stringArg } from 'nexus';
+import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, nullable, objectType, stringArg } from 'nexus';
 import path from 'path';
 
 import context from './context';
@@ -93,11 +93,20 @@ const Ticker = objectType({
       type: 'TickerInfo',
       args: {
         limit: intArg(),
+        bypassLimit: booleanArg(),
       },
-      resolve: (parent, args: { limit: number }, ctx) => {
+      resolve: (parent, args: { limit: number; bypassLimit: boolean }, ctx) => {
         const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
+        const takeLimit = Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
+
         if (args.limit) options.take = args.limit
-        else options.take = 100
+        else
+          options.take = Number(
+            process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT_DEFAULT
+          )
+
+        if (options.take > takeLimit && !args.bypassLimit)
+          options.take = takeLimit
 
         return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
@@ -179,13 +188,15 @@ const Query = objectType({
         args: { marketIndexId: number; limit: number },
         ctx
       ) => {
-        const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
+        const options: {
+          take?: Prisma.UserFindManyArgs['take']
+          where?: { marketIndexId: number }
+        } = {}
+        if (args.marketIndexId)
+          options.where = { marketIndexId: args.marketIndexId }
         if (args.limit) options.take = args.limit
 
-        return ctx.prisma.ticker.findMany({
-          where: { marketIndexId: args.marketIndexId },
-          ...options,
-        })
+        return ctx.prisma.ticker.findMany(options)
       },
     })
 

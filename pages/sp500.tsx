@@ -7,7 +7,7 @@ import TickerFeed from 'components/TickerFeed';
 import gql from 'graphql-tag';
 import { sp500 } from 'lib/const';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { createClient } from '../prismicio';
 
@@ -38,7 +38,14 @@ const sp500Page = ({ page, global }) => {
   const limitQuery = routerQuery.limit
   const timeSeriesLimitQuery = routerQuery.days
   const limit = Number(limitQuery)
-  const timeSeriesLimit = Number(timeSeriesLimitQuery)
+  const bypassLimit = limit <= Number(process.env.NEXT_PUBLIC_FEED_BYPASS_LIMIT)
+  let timeSeriesLimit = Number(timeSeriesLimitQuery)
+  timeSeriesLimit =
+    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT) &&
+    !bypassLimit
+      ? Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
+      : timeSeriesLimit
+
   const {
     loading,
     error,
@@ -73,6 +80,7 @@ const sp500Page = ({ page, global }) => {
             <TickerFeed
               marketIndexId={data.marketIndex.id}
               limit={limit}
+              bypassLimit={bypassLimit}
               timeSeriesLimit={timeSeriesLimit}
               setNumOfDays={setNumOfDays}
             />

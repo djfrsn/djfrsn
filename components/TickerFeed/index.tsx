@@ -6,11 +6,16 @@ import { TickerType } from 'lib/types';
 import { useEffect } from 'react';
 
 const TickerFeedQuery = gql`
-  query TickerFeed($marketIndexId: Int, $limit: Int, $timeSeriesLimit: Int) {
+  query TickerFeed(
+    $marketIndexId: Int
+    $limit: Int
+    $timeSeriesLimit: Int
+    $bypassLimit: Boolean
+  ) {
     tickerFeed(marketIndexId: $marketIndexId, limit: $limit) {
       id
       symbol
-      timeSeries(limit: $timeSeriesLimit) {
+      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassLimit) {
         id
         date
         tickerId
@@ -23,6 +28,7 @@ const TickerFeedQuery = gql`
 const TickerFeed = ({
   marketIndexId,
   limit,
+  bypassLimit,
   timeSeriesLimit,
   setNumOfDays,
 }) => {
@@ -36,9 +42,8 @@ const TickerFeed = ({
     data: { tickerFeed: TickerType[] }
   } = useQuery(TickerFeedQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { marketIndexId, limit, timeSeriesLimit },
+    variables: { marketIndexId, limit, bypassLimit, timeSeriesLimit },
   })
-
   useEffect(() => {
     if (data?.tickerFeed.length > 0) {
       const timeSeriesLength = data.tickerFeed[0].timeSeries?.length
