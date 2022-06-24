@@ -135,6 +135,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Prismic Content Modeling](https://prismic.io/concepts/content-modeling)
 - [Prismic Helpers](https://prismic.io/docs/technical-reference/prismicio-helpers)
 - [Prismic Client](https://prismic.io/docs/technical-reference/prismicio-client)
+- [JSDoc](https://jsdoc.app/)
 
 ### Frontend
 
