@@ -1,5 +1,4 @@
-import { Queue } from 'bullmq';
-import connection from 'lib/db/redis';
+import { sp500UpdateQueue } from 'lib/db/queue';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // import createDailyTickerFeed from './createDailyTickerFeed';
@@ -13,11 +12,13 @@ export default async function handler(
   response: NextApiResponse
 ) {
   if (request.method === 'GET') {
-    const sp500Queue = new Queue('sp500Update', { connection })
-    const counts = await sp500Queue.getJobCounts('wait', 'completed', 'failed')
+    const counts = await sp500UpdateQueue.getJobCounts(
+      'wait',
+      'completed',
+      'failed'
+    )
 
     return response.status(200).send(counts)
-    // return response.status(200).send(res)
   } else {
     return response.status(405).send('Method not allowed')
   }

@@ -5,7 +5,7 @@ import Container from 'components/Container';
 import Layout from 'components/Layout';
 import TickerFeed from 'components/TickerFeed';
 import gql from 'graphql-tag';
-import { sp500 } from 'lib/const';
+import { MARKET_INDEX } from 'lib/const';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -24,7 +24,7 @@ export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData })
 
   const [page, global] = await Promise.all([
-    client.getSingle(sp500),
+    client.getSingle(MARKET_INDEX.sp500),
     client.getSingle('global'),
   ])
 
@@ -56,7 +56,7 @@ const sp500Page = ({ page, global }) => {
     data: { marketIndex: MarketIndex }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { name: sp500 },
+    variables: { name: MARKET_INDEX.sp500 },
   })
   const [numOfDays, setNumOfDays] = useState(null)
   const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays

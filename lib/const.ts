@@ -5,5 +5,14 @@ export const TOPIC_FETCH_LINKS = [
   'topic.category',
 ]
 
-export const sp500 = 'sp500'
-export const oneday = '1d'
+export const MARKET_INDEX = {
+  sp500: 'sp500',
+}
+
+export const MARKET_INTERVAL = {
+  oneday: '1d',
+}
+
+export const QUEUE = {
+  updateSP500: 'update-sp500',
+}
