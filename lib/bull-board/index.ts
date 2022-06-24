@@ -1,26 +1,14 @@
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
-import { Queue } from 'bullmq';
-import dotenv from 'dotenv';
 import express from 'express';
-import IORedis from 'ioredis';
 
-import { QUEUE } from '../const';
-import devOnlyIgnoreTLSReject from '../devOnlyIgnoreTLSReject';
-
-dotenv.config()
-
-devOnlyIgnoreTLSReject()
-
-const queueMQ = new Queue(QUEUE.updateSP500, {
-  connection: new IORedis(process.env.REDIS_URL),
-})
+import { sp500UpdateQueue } from '../db/queue';
 
 const serverAdapter = new ExpressAdapter()
 
 createBullBoard({
-  queues: [new BullMQAdapter(queueMQ)],
+  queues: [new BullMQAdapter(sp500UpdateQueue)],
   serverAdapter: serverAdapter,
 })
 

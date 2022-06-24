@@ -23,7 +23,7 @@
     "publish": "npm publish --access public",
     "log": "heroku logs -a blockwizards",
     "log:tail": "heroku logs -a blockwizards  --tail",
-    "bull-board": "ts-node lib/bull-board"
+    "bull-board": "ts-node -r dotenv/config lib/bull-board"
   },
   "dependencies": {
     "@apollo/client": "3.6.4",

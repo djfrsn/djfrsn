@@ -1,6 +1,7 @@
 import { Queue, QueueScheduler } from 'bullmq';
-import { QUEUE } from 'lib/const';
-import connection from 'lib/db/redis';
+
+import { QUEUE } from '../const';
+import connection from '../db/redis';
 
 // Docs: https://docs.bullmq.io/
 const options = {
@@ -11,4 +12,5 @@ export const sp500QueueScheduler = new QueueScheduler(
   QUEUE.updateSP500,
   options
 )
+
 export const sp500UpdateQueue = new Queue(QUEUE.updateSP500, options)
