@@ -126,6 +126,15 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 
 <br />
 
+## Architecture
+
+[CQRS pattern](https://martinfowler.com/bliki/CQRS.html)
+
+- UI - React
+- Query Model - GraphQl
+- Command Model - Node.js + BullMQ
+- Database - PostgreSQL + Redis
+
 ## Third Party References
 
 ### General
