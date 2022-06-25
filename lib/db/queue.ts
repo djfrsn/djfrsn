@@ -1,4 +1,4 @@
-import { Queue, QueueScheduler } from 'bullmq';
+import { FlowProducer, Queue, QueueScheduler } from 'bullmq';
 
 import { QUEUE } from '../const';
 import connection from '../db/redis';
@@ -14,3 +14,4 @@ export const sp500QueueScheduler = new QueueScheduler(
 )
 
 export const sp500UpdateQueue = new Queue(QUEUE.updateMarketIndex, options)
+export const sp500UpdateFlow = new FlowProducer(options)
