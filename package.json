@@ -5,7 +5,7 @@
   "main": "lib/index.ts",
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "dev": "next",
+    "dev": "NODE_OPTIONS='--no-experimental-fetch' next",
     "build": "npm run setup && next build",
     "build:dev": "npm run setup:dev && next build",
     "start": "next start",
@@ -105,8 +105,8 @@
     "boilerplate"
   ],
   "engines": {
-    "node": "~16.14.0",
-    "npm": "~8.3.1"
+    "node": "~18.4.0",
+    "npm": "~8.12.1"
   },
   "homepage": "https://github.com/djfrsn/trinity-app#readme"
 }
