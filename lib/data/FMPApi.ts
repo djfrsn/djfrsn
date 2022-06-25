@@ -1,26 +1,9 @@
+import { FMPPrice, FMPTicker, Ticker } from 'lib/interfaces';
 import fetch from 'lib/utils/fetch';
 
-import { TickerType } from '../types';
 import chunk from '../utils/chunk';
 
 // Docs: https://site.financialmodelingprep.com/developer/docs
-
-interface FMPTickerType {
-  symbol: string
-  name: string
-  sector: string
-  subSector: string
-  headQuarter: string
-  dateFirstAdded: string
-  lastRefreshed: string
-  cik: string
-  founded: string
-}
-interface FMPPriceType {
-  date: string
-  close: string
-  open?: string
-}
 
 class FMPApi {
   apiKey: string
@@ -40,7 +23,7 @@ class FMPApi {
     const getApiUrl = this.getApiUrl
 
     return {
-      async sp500(): Promise<FMPTickerType[]> {
+      async sp500(): Promise<FMPTicker[]> {
         return await fetch(getApiUrl('sp500_constituent'))
       },
     }
@@ -51,8 +34,8 @@ class FMPApi {
 
     return {
       async dailyHistoricalPrice(
-        tickers: string | string[] | TickerType[]
-      ): Promise<{ symbol: string; historical: FMPPriceType[] }[]> {
+        tickers: string | string[] | Ticker[]
+      ): Promise<{ symbol: string; historical: FMPPrice[] }[]> {
         let res = []
         const batchLimit = 3
         const chunkList = tickers.length > 1

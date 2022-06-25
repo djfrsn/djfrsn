@@ -1,7 +1,7 @@
 import { Ticker } from '@prisma/client';
 import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
-import { MarketIndexJobOptions } from 'lib/types';
+import { MarketIndexJobOptions } from 'lib/interfaces';
 import { isSameDay } from 'lib/utils/dates';
 import moment from 'moment';
 

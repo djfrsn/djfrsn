@@ -2,8 +2,8 @@ import { QUEUE } from 'lib/const';
 import { sp500UpdateFlow } from 'lib/db/queue';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// curl http://localhost:3000/api/ticker-feed/status?jobId=2
-// curl https://blockwizards.herokuapp.com/api/ticker-feed/status?jobId=2
+// curl http://localhost:3000/api/market-index/status?jobId=2
+// curl https://blockwizards.herokuapp.com/api/market-index/status?jobId=2
 
 export default async function handler(
   request: NextApiRequest,

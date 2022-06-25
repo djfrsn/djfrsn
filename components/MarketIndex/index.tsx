@@ -1,18 +1,18 @@
 import { useQuery } from '@apollo/client';
 import Container from 'components/Container';
-import Tickers from 'components/TickerFeed/Tickers';
+import Tickers from 'components/MarketIndex/Tickers';
 import gql from 'graphql-tag';
-import { TickerType } from 'lib/types';
+import { Ticker } from 'lib/interfaces';
 import { useEffect } from 'react';
 
-const TickerFeedQuery = gql`
-  query TickerFeed(
+const MarketIndexTickersQuery = gql`
+  query MarketIndexTickers(
     $marketIndexId: Int
     $limit: Int
     $timeSeriesLimit: Int
     $bypassLimit: Boolean
   ) {
-    tickerFeed(marketIndexId: $marketIndexId, limit: $limit) {
+    marketIndexTickers(marketIndexId: $marketIndexId, limit: $limit) {
       id
       symbol
       timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassLimit) {
@@ -25,7 +25,7 @@ const TickerFeedQuery = gql`
   }
 `
 
-const TickerFeed = ({
+const MarketIndex = ({
   marketIndexId,
   limit,
   bypassLimit,
@@ -39,23 +39,25 @@ const TickerFeed = ({
   }: {
     loading?: boolean
     error?: { message: string }
-    data: { tickerFeed: TickerType[] }
-  } = useQuery(TickerFeedQuery, {
+    data: { marketIndexTickers: Ticker[] }
+  } = useQuery(MarketIndexTickersQuery, {
     fetchPolicy: 'cache-and-network',
     variables: { marketIndexId, limit, bypassLimit, timeSeriesLimit },
   })
+  const marketIndexTickers = data?.marketIndexTickers
+
   useEffect(() => {
-    if (data?.tickerFeed.length > 0) {
-      const timeSeriesLength = data.tickerFeed[0].timeSeries?.length
+    if (marketIndexTickers.length > 0) {
+      const timeSeriesLength = marketIndexTickers[0].timeSeries?.length
       if (timeSeriesLength > 0) setNumOfDays(timeSeriesLength)
     }
-  }, [data?.tickerFeed.length])
+  }, [marketIndexTickers.length])
 
   return (
     <Container loading={loading} error={error}>
-      <Tickers data={data?.tickerFeed || []} />
+      <Tickers data={marketIndexTickers || []} />
     </Container>
   )
 }
 
-export default TickerFeed
+export default MarketIndex

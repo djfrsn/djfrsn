@@ -1,8 +1,8 @@
 import prisma from 'lib/db/prisma';
-import { TickerListInfoType } from 'lib/types';
+import { TickerListInfo } from 'lib/interfaces';
 import { today } from 'lib/utils/dates';
 
-export default async function getTickerListInfo(): Promise<TickerListInfoType> {
+export default async function getTickerListInfo(): Promise<TickerListInfo> {
   let tickerListInfo = await prisma.tickerListInfo.findFirst()
 
   if (!tickerListInfo) {

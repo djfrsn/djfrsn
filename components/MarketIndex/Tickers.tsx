@@ -1,10 +1,10 @@
 import LineChart from 'components/LineChart';
 import getTrendDirection from 'lib/data/getTrendDirection';
-import { TickerType } from 'lib/types';
+import { Ticker } from 'lib/interfaces';
 import chartOptions from 'lib/utils/chartOptions';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
-const Tickers = ({ data }: { data: TickerType[] }) => {
+const Tickers = ({ data }: { data: Ticker[] }) => {
   return (
     <div className="my-8">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">

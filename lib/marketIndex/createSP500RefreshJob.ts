@@ -2,7 +2,7 @@ import { Job, Ticker } from '@prisma/client';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { sp500UpdateFlow } from 'lib/db/queue';
-import { MarketIndexJobOptions } from 'lib/types';
+import { MarketIndexJobOptions } from 'lib/interfaces';
 import chunk from 'lib/utils/chunk';
 
 import createSP500Ticker from './createSP500Ticker';

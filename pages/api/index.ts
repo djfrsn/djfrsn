@@ -197,7 +197,7 @@ const Query = objectType({
       },
     })
 
-    t.list.field('tickerFeed', {
+    t.list.field('marketIndexTickers', {
       args: {
         marketIndexId: intArg(),
         limit: intArg(),

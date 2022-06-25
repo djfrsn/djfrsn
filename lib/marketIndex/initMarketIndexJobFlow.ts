@@ -1,5 +1,5 @@
 import { Job } from '@prisma/client';
-import { MarketIndexJobOptions } from 'lib/types';
+import { MarketIndexJobOptions } from 'lib/interfaces';
 
 import createSP500RefreshJob from './createSP500RefreshJob';
 

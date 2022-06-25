@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
-import { MarketIndex } from '@prisma/client';
+import { MarketIndex as MarketIndexType } from '@prisma/client';
 import classnames from 'classnames';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
-import TickerFeed from 'components/TickerFeed';
+import MarketIndex from 'components/MarketIndex';
 import gql from 'graphql-tag';
 import { MARKET_INDEX } from 'lib/const';
 import { useRouter } from 'next/router';
@@ -53,7 +53,7 @@ const sp500Page = ({ page, global }) => {
   }: {
     loading?: boolean
     error?: { message: string }
-    data: { marketIndex: MarketIndex }
+    data: { marketIndex: MarketIndexType }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
     variables: { name: MARKET_INDEX.sp500 },
@@ -77,7 +77,7 @@ const sp500Page = ({ page, global }) => {
                 {days}D
               </span>
             </div>
-            <TickerFeed
+            <MarketIndex
               marketIndexId={data.marketIndex.id}
               limit={limit}
               bypassLimit={bypassLimit}
