@@ -38,9 +38,9 @@ export async function getStaticProps({ previewData }) {
 const formatJobData = {
   [QUEUE.marketIndexRefresh.sp500TickerInfo]: data => {
     return (
-      <div>
+      <p>
         <span className="text-iced-100">Tickers</span> {data.symbols.join(',')}
-      </div>
+      </p>
     )
   },
 }
@@ -63,10 +63,15 @@ function JobInfo({ data }) {
         <p>Attempts: {data.job.attemptsMade}</p>
       </div>
       <div className="mt-6">
-        <span className="text-iced-100 mb-1 block">Children</span>
+        <span className="text-iced-100 mb-1 block">
+          Children
+          <span className="text-ash-100 text-xxs">
+            ({data.job.children.length})
+          </span>
+        </span>
         {data.job.children.map(childJob => (
           <div key={childJob.id} className="mb-2 text-xs">
-            <p>{childJob.name}</p>
+            <p className="text-iced-neon">{childJob.name}</p>
             <p>
               <span className="text-iced-200">Progress</span>{' '}
               {childJob.progress}
@@ -76,7 +81,7 @@ function JobInfo({ data }) {
               {childJob.attemptsMade}
             </p>
             {formatJobData[childJob.name] && (
-              <p>{formatJobData[childJob.name](childJob.data)}</p>
+              <div>{formatJobData[childJob.name](childJob.data)}</div>
             )}
           </div>
         ))}
@@ -88,18 +93,21 @@ function JobInfo({ data }) {
 const Job = ({ job }) => {
   const { data, error } = useSWR(
     `/api/ticker-feed/status?jobId=${job.jobId}`,
-    fetcher
+    fetcher,
+    { refreshInterval: 1000 }
   )
 
   if (error) return <div>failed to load</div>
   if (!data) return <Loading />
+
   return (
-    <article className="mt-12">
+    <article className="mt-10 ml-2">
       <h2>
-        <span>Queue</span> {job.queueName}
+        <span className="text-iced-100">Queue</span>{' '}
+        <span>{job.queueName}</span>
       </h2>
       <h3>
-        <span>Job</span> {job.name}
+        <span className="text-iced-100">Job</span> <span>{job.name}</span>
       </h3>
       {data ? (
         <div>
@@ -128,14 +136,24 @@ const Jobs = ({ page, global }) => {
     return <div className="errorText">Error: {error.message}</div>
   }
 
-  console.log('data', data)
+  const jobs = data.jobs
+  const jobsCount = jobs.length
 
   return (
     <Layout data={{ page: page.data, global: global.data }}>
-      <h1 className="text-maxYellow-100">Jobs</h1>
-      {data.jobs.map(job => {
-        return <Job key={job.id} job={job} />
-      })}
+      <div className="mb-16">
+        <h1 className="text-maxYellow-100">
+          Jobs
+          <span className="text-xs text-iced-100">
+            ({jobsCount}
+            {jobsCount === 0 && ' queued'})
+          </span>
+        </h1>
+        {jobsCount > 0 &&
+          jobs.map(job => {
+            return <Job key={job.id} job={job} />
+          })}
+      </div>
     </Layout>
   )
 }
