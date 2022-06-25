@@ -44,7 +44,7 @@ const MarketIndex = ({
     fetchPolicy: 'cache-and-network',
     variables: { marketIndexId, limit, bypassLimit, timeSeriesLimit },
   })
-  const marketIndexTickers = data?.marketIndexTickers
+  const marketIndexTickers = data?.marketIndexTickers || []
 
   useEffect(() => {
     if (marketIndexTickers.length > 0) {
