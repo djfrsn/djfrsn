@@ -11,8 +11,7 @@ async function createMarketIndexRefreshJob(
   const initJobFlow = initMarketIndexJobFlow[marketIndex.name]
 
   if (initJobFlow) {
-    const job = await initJobFlow({ marketIndex })
-    result.job = job
+    result.job = await initJobFlow({ marketIndex })
   } else {
     result.error = { message: `Job flow not found for ${marketIndex.name}` }
   }

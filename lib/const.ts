@@ -14,6 +14,10 @@ export const MARKET_INTERVAL = {
 }
 
 export const QUEUE = {
-  updateMarketIndex: 'update-market-index',
-  updateMarketIndexTickerInfo: 'update-market-index-ticker-info',
+  marketIndexRefresh: {
+    sp500: 'refresh-sp500',
+    sp500TickerInfo: 'refresh-sp500-ticker-info',
+  },
+  refreshMarketIndex: 'update-market-index',
+  refreshMarketIndexTickerInfo: 'update-market-index-ticker-info',
 }

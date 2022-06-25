@@ -3,7 +3,7 @@ import { MarketIndexJob } from 'lib/types';
 
 async function getMarketIndexJob(id: number | string): Promise<MarketIndexJob> {
   const job = await prisma.job.findFirst({
-    where: { id: Number(id) },
+    where: { modelId: Number(id) },
   })
 
   return { job }

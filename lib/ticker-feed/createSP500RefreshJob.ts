@@ -1,5 +1,8 @@
-import { Job } from '@prisma/client';
+import { Job, Ticker } from '@prisma/client';
 import chunk from 'lib/chunk';
+import { QUEUE } from 'lib/const';
+import { sp500UpdateFlow } from 'lib/db/queue';
+import prisma from 'lib/prisma';
 import { MarketIndexJobOptions } from 'lib/types';
 
 import createSP500Ticker from './createSP500Ticker';
@@ -14,35 +17,44 @@ async function createSP500RefreshJob(
   const { marketIndex } = options
   const tickerList = await createSP500Ticker(options)
   const tickerListChunks = chunk(tickerList, 6)
+  const name = QUEUE.marketIndexRefresh.sp500
+  const queueName = QUEUE.refreshMarketIndex
   console.log('tickerListChunks', tickerListChunks.length)
 
-  return null
-  // const result = await sp500UpdateFlow.add({
-  //   name: 'refresh-sp500',
-  //   queueName: QUEUE.updateMarketIndex,
-  //   data: { id: marketIndex.id, name: marketIndex.name },
-  //   children: tickerListChunks.map((tickerListChunk: Ticker[]) => {
-  //     const dict = {}
+  const result = await sp500UpdateFlow.add({
+    name,
+    queueName,
+    data: { id: marketIndex.id, name: marketIndex.name },
+    children: tickerListChunks.map((tickerListChunk: Ticker[]) => {
+      const dict = {}
 
-  //     const symbols = tickerListChunk.map((ticker: Ticker) => {
-  //       const symbol = ticker.symbol
+      const symbols = tickerListChunk.map((ticker: Ticker) => {
+        const symbol = ticker.symbol
 
-  //       dict[symbol] = { tickerId: ticker.id }
+        dict[symbol] = { tickerId: ticker.id }
 
-  //       return symbol
-  //     })
+        return symbol
+      })
 
-  //     return {
-  //       name: 'update-sp500-ticker-info',
-  //       queueName: QUEUE.updateMarketIndexTickerInfo,
-  //       data: { symbols, dict },
-  //     }
-  //   }),
-  // })
+      return {
+        name: QUEUE.marketIndexRefresh.sp500TickerInfo,
+        queueName: QUEUE.refreshMarketIndexTickerInfo,
+        data: { symbols, dict },
+      }
+    }),
+  })
 
-  // // TODO: store result as Job
+  const job = await prisma.job.create({
+    data: {
+      name,
+      modelName: 'marketIndex',
+      modelId: marketIndex.id,
+      jobId: result.job.id,
+      queueName,
+    },
+  })
 
-  // return result
+  return job
 }
 
 export default createSP500RefreshJob

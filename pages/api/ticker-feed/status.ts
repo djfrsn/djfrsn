@@ -2,25 +2,57 @@ import { QUEUE } from 'lib/const';
 import { sp500UpdateFlow } from 'lib/db/queue';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// import createDailyTickerFeed from './createDailyTickerFeed';
-// Daily specific ticker feed
-
-// curl -H "Content-Type: application/json" -d "{\"foo\": \"bar\"}" http://localhost:3000/api/ticker-feed/update
-// curl -H "Content-Type: application/json" -d "{\"foo\": \"bar\"}" https://blockwizards.herokuapp.com/api/ticker-feed/update
+// curl http://localhost:3000/api/ticker-feed/status?jobId=2
+// curl https://blockwizards.herokuapp.com/api/ticker-feed/status?jobId=2
 
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
   if (request.method === 'GET') {
-    const result = await sp500UpdateFlow.getFlow({
-      id: '0274f079-c84d-431d-a527-19ee28a38fa3',
-      queueName: QUEUE.updateMarketIndex,
-    })
+    let result
+    const jobId = request.query.jobId
 
-    return response.status(200).send({
-      message: `${result.children.length} waitingjobs need to be processed before next update.`,
-    })
+    if (typeof jobId === 'string') {
+      const flow = await sp500UpdateFlow.getFlow({
+        id: jobId,
+        queueName: QUEUE.refreshMarketIndex,
+      })
+
+      if (Array.isArray(flow?.children)) {
+        const state = await flow.job.getState()
+        const dependencies = await flow.job.getDependencies()
+
+        result = {
+          state,
+          message: `${dependencies.unprocessed.length} jobs waiting to be processed.`,
+          job: {
+            id: flow.job.id,
+            name: flow.job.name,
+            timestamp: flow.job.timestamp,
+            progress: flow.job.progress,
+            attemptsMade: flow.job.attemptsMade,
+            children: flow.children.map(childJob => ({
+              id: childJob.job.id,
+              timestamp: childJob.job.timestamp,
+              progress: childJob.job.progress,
+              attemptsMade: childJob.job.attemptsMade,
+              data: childJob.job.data,
+            })),
+          },
+        }
+      } else {
+        result = {
+          message: `Job ${jobId} not found`,
+        }
+      }
+    } else {
+      result = {
+        message: `jobId query not found`,
+      }
+    }
+
+    return response.status(200).send(result)
   } else {
     return response.status(405).send('Method not allowed')
   }

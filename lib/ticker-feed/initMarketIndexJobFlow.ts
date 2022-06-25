@@ -8,7 +8,7 @@ type InitMarketIndexRefreshJob = (
 ) => Promise<Job>
 
 const initMarketIndexJobFlow: { [name: string]: InitMarketIndexRefreshJob } = {
-  async sp500(options: MarketIndexJobOptions): Promise<Job> {
+  async sp500(options: MarketIndexJobOptions) {
     const job = await createSP500RefreshJob(options)
 
     return job
