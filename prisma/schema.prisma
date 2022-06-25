@@ -45,6 +45,7 @@ model Job {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
   modelId   Int
+  modelName String
   jobId     String
   name      String
   queueName String
