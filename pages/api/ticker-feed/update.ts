@@ -10,13 +10,14 @@ export default async function handler(
   response: NextApiResponse
 ) {
   if (request.method === 'POST') {
-    const { error, marketIndexJob } = await handleMarketIndexJobRequest(
-      request.body
-    )
+    const { error, job } = await handleMarketIndexJobRequest(request.body)
+
+    console.log('error', error)
+    console.log('job', job)
 
     return error
       ? response.status(405).send(error)
-      : response.status(200).send(marketIndexJob)
+      : response.status(200).send(job)
   } else {
     return response.status(405).send({ message: 'Method not allowed' })
   }

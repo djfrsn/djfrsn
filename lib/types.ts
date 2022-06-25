@@ -1,4 +1,4 @@
-import { TickerInfo } from '@prisma/client';
+import { Job, MarketIndex, TickerInfo } from '@prisma/client';
 import { PrismicImageProps, SliceLike } from '@prismicio/react';
 
 export type PageType = {
@@ -34,3 +34,13 @@ export interface TickerType {
 export interface TickerFeedQueryType {
   tickerFeed: TickerType[]
 }
+
+export interface MarketIndexJob {
+  error?: { message: string }
+  job?: Job
+}
+export interface MarketIndexJobOptions {
+  marketIndex: MarketIndex
+}
+
+export type CreateMarketIndexJob = Promise<MarketIndexJob>

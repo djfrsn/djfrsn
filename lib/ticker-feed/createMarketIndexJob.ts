@@ -1,17 +1,23 @@
 // addSP500UpdateJobs()
-import { Job, MarketIndex } from '@prisma/client';
+import { MarketIndex } from '@prisma/client';
+import { CreateMarketIndexJob } from 'lib/types';
 
-async function createMarketIndexJob(marketIndex: MarketIndex): Promise<Job> {
-  // TODO: create switch based on marketIndex.name
-  console.log('createMarketIndexJobmarketIndex', marketIndex)
-  return {
-    id: 1,
-    name: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    jobId: '',
-    queueName: '',
+import initMarketIndexJobFlow from './initMarketIndexJobFlow';
+
+async function createMarketIndexJob(
+  marketIndex: MarketIndex
+): CreateMarketIndexJob {
+  const result = { error: null, job: null }
+  const initJobFlow = initMarketIndexJobFlow[marketIndex.name]
+
+  if (initJobFlow) {
+    const job = await initJobFlow(marketIndex)
+    result.job = job
+  } else {
+    result.error = { message: `Job flow not found for ${marketIndex.name}` }
   }
+
+  return result
 }
 
 export default createMarketIndexJob

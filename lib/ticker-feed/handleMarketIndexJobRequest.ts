@@ -1,8 +1,8 @@
 // import addSP500UpdateJobs from 'lib/ticker-feed/addSP500UpdateJobs'
-import { Job } from '@prisma/client';
 import prisma from 'lib/prisma';
 import createMarketIndexJob from 'lib/ticker-feed/createMarketIndexJob';
 import getMarketIndexJob from 'lib/ticker-feed/getMarketIndexJob';
+import { MarketIndexJob } from 'lib/types';
 
 interface handleMarketIndexJobRequestOptions {
   marketIndexId: number | string
@@ -12,8 +12,7 @@ async function handleMarketIndexJobRequest(
   options: handleMarketIndexJobRequestOptions
 ) {
   let marketIndexId = options.marketIndexId
-  let marketIndexJob: Job | undefined | null
-  let error: { message: string }
+  let result: MarketIndexJob = {}
 
   if (marketIndexId) {
     const marketIndex = await prisma.marketIndex.findFirst({
@@ -21,19 +20,21 @@ async function handleMarketIndexJobRequest(
     })
 
     if (marketIndex) {
-      marketIndexJob = await getMarketIndexJob(marketIndex.id)
+      result = await getMarketIndexJob(marketIndex.id)
 
-      if (!marketIndexJob) {
-        marketIndexJob = await createMarketIndexJob(marketIndex)
+      if (!result.job) {
+        result = await createMarketIndexJob(marketIndex)
       }
     } else {
-      error = { message: `MarketIndex with id ${marketIndexId} not found.` }
+      result.error = {
+        message: `MarketIndex with id ${marketIndexId} not found.`,
+      }
     }
   } else {
-    error = { message: 'marketIndexId required in body.' }
+    result.error = { message: 'marketIndexId required in body.' }
   }
 
-  return { marketIndexJob, error }
+  return result
 }
 
 export default handleMarketIndexJobRequest
