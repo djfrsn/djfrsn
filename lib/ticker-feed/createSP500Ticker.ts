@@ -1,17 +1,14 @@
-import { MarketIndex, Ticker } from '@prisma/client';
+import { Ticker } from '@prisma/client';
 import { isSameDay } from 'lib/dates';
 import FMPApi from 'lib/FMPApi';
 import prisma from 'lib/prisma';
+import { MarketIndexJobOptions } from 'lib/types';
 import moment from 'moment';
 
 const fmpApi = new FMPApi()
 
-interface createSP500TickerOptions {
-  marketIndex: MarketIndex
-}
-
 export default async function createSP500Ticker(
-  options: createSP500TickerOptions
+  options: MarketIndexJobOptions
 ): Promise<Ticker[]> {
   const { marketIndex } = options
   const marketIndexId = { marketIndexId: marketIndex.id }

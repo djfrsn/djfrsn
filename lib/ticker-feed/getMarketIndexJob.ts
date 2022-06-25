@@ -1,9 +1,7 @@
 import prisma from 'lib/prisma';
-import { CreateMarketIndexJobInterface } from 'lib/types';
+import { MarketIndexJob } from 'lib/types';
 
-async function getMarketIndexJob(
-  id: number | string
-): CreateMarketIndexJobInterface {
+async function getMarketIndexJob(id: number | string): Promise<MarketIndexJob> {
   const job = await prisma.job.findFirst({
     where: { id: Number(id) },
   })

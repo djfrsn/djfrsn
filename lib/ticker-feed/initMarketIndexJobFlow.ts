@@ -1,10 +1,17 @@
 import { Job } from '@prisma/client';
 import { MarketIndexJobOptions } from 'lib/types';
 
-const initMarketIndexJobFlow = {
+import createSP500RefreshJob from './createSP500RefreshJob';
+
+type InitMarketIndexRefreshJob = (
+  options: MarketIndexJobOptions
+) => Promise<Job>
+
+const initMarketIndexJobFlow: { [name: string]: InitMarketIndexRefreshJob } = {
   async sp500(options: MarketIndexJobOptions): Promise<Job> {
-    console.log('options', options)
-    return null
+    const job = await createSP500RefreshJob(options)
+
+    return job
   },
 }
 

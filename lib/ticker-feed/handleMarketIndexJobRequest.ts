@@ -1,6 +1,6 @@
 // import addSP500UpdateJobs from 'lib/ticker-feed/addSP500UpdateJobs'
 import prisma from 'lib/prisma';
-import createMarketIndexJob from 'lib/ticker-feed/createMarketIndexJob';
+import createMarketIndexRefreshJob from 'lib/ticker-feed/createMarketIndexRefreshJob';
 import getMarketIndexJob from 'lib/ticker-feed/getMarketIndexJob';
 import { MarketIndexJob } from 'lib/types';
 
@@ -23,7 +23,7 @@ async function handleMarketIndexJobRequest(
       result = await getMarketIndexJob(marketIndex.id)
 
       if (!result.job) {
-        result = await createMarketIndexJob(marketIndex)
+        result = await createMarketIndexRefreshJob(marketIndex)
       }
     } else {
       result.error = {

@@ -1,4 +1,5 @@
-import { sp500UpdateQueue } from 'lib/db/queue';
+import { QUEUE } from 'lib/const';
+import { sp500UpdateFlow } from 'lib/db/queue';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // import createDailyTickerFeed from './createDailyTickerFeed';
@@ -12,13 +13,14 @@ export default async function handler(
   response: NextApiResponse
 ) {
   if (request.method === 'GET') {
-    const counts = await sp500UpdateQueue.getJobCounts(
-      'wait',
-      'completed',
-      'failed'
-    )
+    const result = await sp500UpdateFlow.getFlow({
+      id: '0274f079-c84d-431d-a527-19ee28a38fa3',
+      queueName: QUEUE.updateMarketIndex,
+    })
 
-    return response.status(200).send(counts)
+    return response.status(200).send({
+      message: `${result.children.length} waitingjobs need to be processed before next update.`,
+    })
   } else {
     return response.status(405).send('Method not allowed')
   }
