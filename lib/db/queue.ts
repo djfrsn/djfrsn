@@ -6,6 +6,11 @@ import connection from '../db/redis';
 // Docs: https://docs.bullmq.io/
 const options = {
   connection,
+  attempts: 3,
+  backoff: {
+    type: 'exponential',
+    delay: 1000,
+  },
 }
 
 export const sp500QueueScheduler = new QueueScheduler(
