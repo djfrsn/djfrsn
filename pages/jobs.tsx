@@ -38,15 +38,20 @@ export async function getStaticProps({ previewData }) {
 const formatJobData = {
   [QUEUE.marketIndexRefresh.sp500TickerInfo]: data => {
     return (
-      <p>
-        <span className="text-iced-100">Tickers</span> {data.symbols.join(',')}
-      </p>
+      <div>
+        <p className="text-iced-100">Tickers</p>
+        <p className="break-words text-xxs lg:text-xs">
+          {data.symbols.join(',')}
+        </p>
+      </div>
     )
   },
 }
 
 function JobInfo({ data }) {
   const createdAt = moment(data.job.createdAt)
+  const children = data.job.children
+  const hasChildren = children.length > 0
 
   return (
     <div>
@@ -69,22 +74,26 @@ function JobInfo({ data }) {
             ({data.job.children.length})
           </span>
         </span>
-        {data.job.children.map(childJob => (
-          <div key={childJob.id} className="mb-2 text-xs">
-            <p className="text-iced-neon">{childJob.name}</p>
-            <p>
-              <span className="text-iced-200">Progress</span>{' '}
-              {childJob.progress}
-            </p>
-            <p>
-              <span className="text-iced-200">Attempts</span>{' '}
-              {childJob.attemptsMade}
-            </p>
-            {formatJobData[childJob.name] && (
-              <div>{formatJobData[childJob.name](childJob.data)}</div>
-            )}
+        {hasChildren && (
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {children.map(childJob => (
+              <div key={childJob.id} className="mb-2 text-xs">
+                <p className="text-iced-neon">{childJob.name}</p>
+                <p>
+                  <span className="text-iced-200">Progress</span>{' '}
+                  {childJob.progress}
+                </p>
+                <p>
+                  <span className="text-iced-200">Attempts</span>{' '}
+                  {childJob.attemptsMade}
+                </p>
+                {formatJobData[childJob.name] && (
+                  <div>{formatJobData[childJob.name](childJob.data)}</div>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </div>
   )
