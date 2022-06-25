@@ -66,6 +66,19 @@ const Contract = objectType({
   },
 })
 
+const Job = objectType({
+  name: 'Job',
+  definition(t) {
+    t.int('id')
+    t.field('createdAt', { type: 'DateTime' })
+    t.string('modelId')
+    t.string('modelName')
+    t.string('jobId')
+    t.string('name')
+    t.string('queueName')
+  },
+})
+
 const MarketIndex = objectType({
   name: 'MarketIndex',
   definition(t) {
@@ -161,7 +174,14 @@ const Query = objectType({
     t.list.field('contracts', {
       type: 'Contract',
       resolve: (_, args, ctx) => {
-        return ctx.prisma.contract.findMany().then()
+        return ctx.prisma.contract.findMany()
+      },
+    })
+
+    t.list.field('jobs', {
+      type: 'Job',
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.job.findMany()
       },
     })
 
@@ -311,6 +331,7 @@ export const schema = makeSchema({
     GQLDate,
     Post,
     User,
+    Job,
     Contract,
     MarketIndex,
     Ticker,

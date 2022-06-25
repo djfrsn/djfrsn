@@ -19,7 +19,8 @@
     "feed": {},
     "contract": {},
     "daily-ticker-feed": {},
-    "sp500": {}
+    "sp500": {},
+    "jobs": {}
   },
   "slices": {
     "Course": {

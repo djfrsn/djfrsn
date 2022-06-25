@@ -22,18 +22,23 @@ export default async function handler(
       if (Array.isArray(flow?.children)) {
         const state = await flow.job.getState()
         const dependencies = await flow.job.getDependencies()
+        const totalJobCount =
+          Object.keys(dependencies.processed).length +
+          dependencies.unprocessed.length
+        const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
 
         result = {
           state,
-          message: `${dependencies.unprocessed.length} jobs waiting to be processed.`,
+          message: `${jobsWaitingCount}/${totalJobCount} jobs have been processed.`,
           job: {
             id: flow.job.id,
             name: flow.job.name,
-            timestamp: flow.job.timestamp,
+            createdAt: flow.job.timestamp,
             progress: flow.job.progress,
             attemptsMade: flow.job.attemptsMade,
             children: flow.children.map(childJob => ({
               id: childJob.job.id,
+              name: childJob.job.name,
               timestamp: childJob.job.timestamp,
               progress: childJob.job.progress,
               attemptsMade: childJob.job.attemptsMade,

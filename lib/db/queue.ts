@@ -4,6 +4,7 @@ import { QUEUE } from '../const';
 import connection from '../db/redis';
 
 // Docs: https://docs.bullmq.io/
+
 const options = {
   connection,
   attempts: 3,
