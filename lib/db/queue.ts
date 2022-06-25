@@ -9,8 +9,8 @@ const options = {
 }
 
 export const sp500QueueScheduler = new QueueScheduler(
-  QUEUE.updateSP500,
+  QUEUE.updateMarketIndex,
   options
 )
 
-export const sp500UpdateQueue = new Queue(QUEUE.updateSP500, options)
+export const sp500UpdateQueue = new Queue(QUEUE.updateMarketIndex, options)
