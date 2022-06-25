@@ -6,7 +6,7 @@ import Router, { useRouter } from 'next/router';
 import { createClient } from 'prismicio';
 
 import Layout from '../../components/Layout';
-import prisma from '../../lib/prisma';
+import prisma from '../../lib/db/prisma';
 
 const PostQuery = gql`
   query PostQuery($postId: String!) {

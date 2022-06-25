@@ -1,8 +1,8 @@
 import { MARKET_INDEX, MARKET_INTERVAL } from 'lib/const';
-import { isSameDay, today } from 'lib/dates';
-import FMPApi from 'lib/FMPApi';
-import prisma from 'lib/prisma';
+import FMPApi from 'lib/data/FMPApi';
+import prisma from 'lib/db/prisma';
 import { TickerType } from 'lib/types';
+import { isSameDay, today } from 'lib/utils/dates';
 import moment from 'moment';
 
 const fmpApi = new FMPApi()

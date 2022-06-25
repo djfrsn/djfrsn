@@ -1,6 +1,6 @@
 import Layout from 'components/Layout';
 import { TOPIC_FETCH_LINKS } from 'lib/const';
-import { getStaticPathsData } from 'lib/getStaticPathsData';
+import { getStaticPathsData } from 'lib/utils/getStaticPathsData';
 import { GetStaticPaths } from 'next';
 
 import { createClient } from '../prismicio';

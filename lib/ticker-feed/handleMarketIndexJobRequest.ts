@@ -1,9 +1,9 @@
-// import addSP500UpdateJobs from 'lib/ticker-feed/addSP500UpdateJobs'
-import prisma from 'lib/prisma';
+import prisma from 'lib/db/prisma';
 import createMarketIndexRefreshJob from 'lib/ticker-feed/createMarketIndexRefreshJob';
 import getMarketIndexJob from 'lib/ticker-feed/getMarketIndexJob';
 import { MarketIndexJob } from 'lib/types';
 
+// import addSP500UpdateJobs from 'lib/ticker-feed/addSP500UpdateJobs'
 interface handleMarketIndexJobRequestOptions {
   marketIndexId: number | string
 }

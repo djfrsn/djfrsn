@@ -1,4 +1,4 @@
-import prisma from 'lib/prisma';
+import prisma from 'lib/db/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // Daily specific ticker feed

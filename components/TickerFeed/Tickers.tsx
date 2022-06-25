@@ -1,7 +1,7 @@
 import LineChart from 'components/LineChart';
-import chartOptions from 'lib/chartOptions';
-import getTrendDirection from 'lib/getTrendDirection';
+import getTrendDirection from 'lib/data/getTrendDirection';
 import { TickerType } from 'lib/types';
+import chartOptions from 'lib/utils/chartOptions';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
 const Tickers = ({ data }: { data: TickerType[] }) => {

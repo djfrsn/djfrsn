@@ -1,7 +1,7 @@
-import fetch from 'lib/fetch';
+import fetch from 'lib/utils/fetch';
 
-import chunk from './chunk';
-import { TickerType } from './types';
+import { TickerType } from '../types';
+import chunk from '../utils/chunk';
 
 // Docs: https://site.financialmodelingprep.com/developer/docs
 

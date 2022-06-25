@@ -1,4 +1,4 @@
-import { createClient } from '../prismicio';
+import { createClient } from '../../prismicio';
 
 export async function getStaticPathsData(type: string) {
   const client = createClient()

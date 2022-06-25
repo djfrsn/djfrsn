@@ -1,4 +1,4 @@
-import fetch from 'lib/fetch';
+import fetch from 'lib/utils/fetch';
 
 interface apiArgs {
   outputsize: 'compact' | 'full' | 'compact'

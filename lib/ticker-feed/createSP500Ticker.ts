@@ -1,8 +1,8 @@
 import { Ticker } from '@prisma/client';
-import { isSameDay } from 'lib/dates';
-import FMPApi from 'lib/FMPApi';
-import prisma from 'lib/prisma';
+import FMPApi from 'lib/data/FMPApi';
+import prisma from 'lib/db/prisma';
 import { MarketIndexJobOptions } from 'lib/types';
+import { isSameDay } from 'lib/utils/dates';
 import moment from 'moment';
 
 const fmpApi = new FMPApi()

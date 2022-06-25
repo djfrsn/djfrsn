@@ -2,7 +2,7 @@ import { PrismicRichText } from '@prismicio/react';
 import classNames from 'classnames';
 import BackButton from 'components/BackButton';
 import UtilBar from 'components/UtilBar';
-import parseUrl from 'lib/parseUrl';
+import parseUrl from 'lib/utils/parseUrl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';

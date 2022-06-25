@@ -1,5 +1,5 @@
 import Layout from 'components/Layout';
-import { getStaticPathsData } from 'lib/getStaticPathsData';
+import { getStaticPathsData } from 'lib/utils/getStaticPathsData';
 import { GetStaticPaths } from 'next';
 
 import { createClient } from '../../prismicio';
