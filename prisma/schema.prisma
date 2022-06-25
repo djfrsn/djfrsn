@@ -40,6 +40,15 @@ model Contract {
   multiplier      Int
 }
 
+model Job {
+  id        Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  name      String
+  jobId     String
+  queueName String
+}
+
 model TickerListInfo {
   id            Int @default(autoincrement()) @id
   updatedAt     DateTime @updatedAt @default(now())

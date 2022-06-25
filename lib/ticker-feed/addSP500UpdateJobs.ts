@@ -22,7 +22,7 @@ async function addSP500UpdateJobs() {
   const marketIndex = await prisma.marketIndex.findFirst({
     where: { name: MARKET_INDEX.sp500 },
   })
-  const tickerList = await createSP500Ticker()
+  const tickerList = await createSP500Ticker({ marketIndex })
   const tickerListChunks = chunk(tickerList, 6)
   console.log('tickerListChunks', tickerListChunks.length)
   const result = await sp500UpdateFlow.add({
