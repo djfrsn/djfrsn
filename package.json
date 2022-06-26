@@ -23,7 +23,7 @@
     "publish": "npm publish --access public",
     "log": "heroku logs -a blockwizards",
     "log:tail": "heroku logs -a blockwizards  --tail",
-    "workers": "npm run ts-node lib/workers",
+    "workers": "nodemon --watch lib/workers/** --ext ts --exec 'npm run ts-node lib/workers'",
     "bull-board": "npm run ts-node ts-node lib/bull-board"
   },
   "dependencies": {
@@ -74,6 +74,7 @@
     "autoprefixer": "^10.4.7",
     "chalk": "^5.0.1",
     "next": "^12.1.6",
+    "nodemon": "^2.0.18",
     "postcss": "^8.4.14",
     "postcss-import": "^14.1.0",
     "prisma": "^3.15.2",
