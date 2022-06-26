@@ -5,8 +5,6 @@ import refreshMarketIndexProcessor from './marketIndex/refresh';
 import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
 import { createWorker } from './worker.factory';
 
-// TODO: get time to run first job, use data to extrapolate job time est on status route
-
 const {
   worker: refreshMarketIndexWorker,
   scheduler: refreshMarketIndexWorkerScheduler,

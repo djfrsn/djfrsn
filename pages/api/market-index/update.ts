@@ -12,7 +12,7 @@ export default async function handler(
     const { error, job } = await handleMarketIndexJobRequest(request.body)
 
     console.log('error', error)
-    console.log('job', job)
+    console.log('jobId', job.jobId)
 
     return error
       ? response.status(405).send(error)

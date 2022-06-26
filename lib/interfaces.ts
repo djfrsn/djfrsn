@@ -1,4 +1,4 @@
-import { Job, MarketIndex, TickerInfo } from '@prisma/client';
+import { Job, MarketIndex, MarketInterval, TickerInfo } from '@prisma/client';
 
 export interface TickerListInfo {
   id: number
@@ -27,6 +27,7 @@ export interface TickerData {
 export interface RefreshMarketIndexTickerJob {
   tickers: TickerData[]
   symbolDict: { [name: string]: { tickerId: string } }
+  marketInterval: MarketInterval
 }
 
 export interface MarketIndexJobOptions {

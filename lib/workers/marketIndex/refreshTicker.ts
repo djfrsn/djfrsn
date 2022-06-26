@@ -9,6 +9,7 @@ export default async function refreshMarketIndexTickerProcessor(
   console.log('start refresh ticker job', job.name)
 
   // TODO: ensure retries are working
+  // TODO: get time to run first job, use data to extrapolate job time est on status route
 
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
