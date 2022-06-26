@@ -4,7 +4,7 @@ import { RefreshMarketIndexJob } from 'lib/interfaces';
 export default async function refreshMarketIndexProcessor(
   job: Job<RefreshMarketIndexJob>
 ) {
-  console.log('start refresh market index job', job)
+  console.log('start refresh market index job', job.name)
 
   return null
 }

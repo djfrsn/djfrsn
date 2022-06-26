@@ -69,6 +69,12 @@ The data from the seed file [`prisma/seed.ts`](./prisma/seed.ts) will be used to
 npm run dev
 ```
 
+In another terminal:
+
+```
+npm run workers
+```
+
 Visit [`http://localhost:3000/`](http://localhost:3000/) in your browser to see the app running.
 
 <br />
