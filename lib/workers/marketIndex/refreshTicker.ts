@@ -13,7 +13,11 @@ export default async function refreshMarketIndexTickerProcessor(
 
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
-      await createSP500TickerInfo(job.data)
+      // TODO: check if marketIndex.lastRefreshedDate before today
+      // TODO: get num of days before
+      // TODO: pass as query timeseries = num
+      // TODO: do nothing if marketIndex.lastRefreshedDate not before today and log message
+      await createSP500TickerInfo(job.data, { query: null })
       break
     default:
       console.log(

@@ -34,7 +34,8 @@ class FMPApi {
 
     return {
       async dailyHistoricalPrice(
-        tickers: string | string[] | TickerData[]
+        tickers: string | string[] | TickerData[],
+        query?: string
       ): Promise<{ symbol: string; historical: FMPPrice[] }[]> {
         let res: any = []
         const batchLimit = 3
@@ -55,7 +56,11 @@ class FMPApi {
             console.log('fetch', arg)
 
             let data: any = await fetch(
-              getApiUrl(`historical-price-full/${arg}?serietype=line`)
+              getApiUrl(
+                `historical-price-full/${arg}?serietype=line${
+                  query ? `&{query}` : ''
+                }`
+              )
             )
 
             console.log('fetch', arg, ' complete')

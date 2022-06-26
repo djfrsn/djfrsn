@@ -16,10 +16,10 @@ export default async function refreshMarketIndexProcessor(
           where: { id: job.data.id },
           data: { lastRefreshed: today.isoString },
         }),
-        prisma.job.update({
-          where: { modelId: job.data.id },
-          data: { jobId: null },
-        }),
+        // prisma.job.update({
+        //   where: { modelId: job.data.id },
+        //   data: { jobId: null },
+        // }),
       ])
       break
     default:

@@ -7,13 +7,18 @@ export function today(): moment.Moment {
 
 today.isoString = today().toISOString()
 
+export function zeroDate(date: moment.Moment | string) {
+  const zero = val =>
+    val
+      .utcOffset(0)
+      .startOf('day')
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+
+  return moment.isMoment(date) ? zero(date) : zero(moment(date))
+}
+
 export function getPreviousBusinessDay(): string {
-  return momentBusinessDays()
-    .utcOffset(0)
-    .startOf('day')
-    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-    .prevBusinessDay()
-    .toISOString()
+  return zeroDate(momentBusinessDays()).prevBusinessDay().toISOString()
 }
 
 export function isSameDay(date: Moment | Date): boolean {

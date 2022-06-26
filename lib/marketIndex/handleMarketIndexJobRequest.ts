@@ -15,6 +15,10 @@ async function handleMarketIndexJobRequest(
   let result: IndexJob = {}
 
   if (marketIndexId) {
+    await prisma.job.update({
+      where: { modelId: Number(marketIndexId) },
+      data: { jobId: null },
+    })
     const marketIndex = await prisma.marketIndex.findFirst({
       where: { id: Number(marketIndexId) },
     })
