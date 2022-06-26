@@ -1,9 +1,13 @@
 {
-  "id": "8f194b3d-c21d-40ba-90e3-cd79932afa57",
-  "uid": "dicta-ut-sit",
+  "id": "7fb4fb17-e793-4fd7-8cbe-d538cfff8da6",
+  "uid": "fugit-ut-sunt",
   "type": "homepage",
   "data": {
-    "title": "synergize bricks-and-clicks e-tailers",
-    "description": "iterate dynamic functionalities"
+    "title": "innovate web-enabled e-markets",
+    "description": "empower viral relationships",
+    "redirectPath": {
+      "link_type": "Web",
+      "url": "https://slicemachine.dev"
+    }
   }
 }

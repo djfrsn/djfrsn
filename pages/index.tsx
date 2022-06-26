@@ -10,6 +10,10 @@ export async function getStaticProps({ previewData }) {
 
   return {
     props: { page, global },
+    redirect: {
+      destination: `/${page.data.redirectPath.uid}`,
+      permanent: true,
+    },
   }
 }
 

@@ -26,6 +26,16 @@
           "placeholder": ""
         }
       },
+      "redirectPath": {
+        "type": "Link",
+        "config": {
+          "label": "Redirect Path",
+          "select": "document",
+          "customtypes": [
+            "sp500"
+          ]
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
