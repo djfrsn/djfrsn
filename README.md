@@ -1,6 +1,6 @@
 # Trinity Research Application
 
-This repo contains an implementation of a **fullstack web application** designed to author and display market research content. The underlying code is a general purpose library and architecture reference for creating new modern web applications. The core techonologies are **programming language - [TypeScript](https://www.typescriptlang.org/), web framework - [Next.js](https://nextjs.org/), UI library - [React](https://reactjs.org/), CSS framework - [TailwindCSS](https://tailwindcss.com/) and State management - [Apollo Client](https://www.apollographql.com/docs/react/)**. The application interfaces with a **backend built using a [GraphQL](https://graphql.org/) server, via Schema and Resolvers - [Nexus Schema](https://nxs.li/components/standalone/schema), a Database client - [Prisma Client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client) and data stored in [PostgreSQL](https://www.postgresql.org/)**.
+This repo contains an implementation of a **fullstack web application** designed to author and display market research content. The underlying code is a general purpose library and architecture reference for creating new modern web applications. The core techonologies are **programming language - [TypeScript](https://www.typescriptlang.org/), web framework - [Next.js](https://nextjs.org/), UI library - [React](https://reactjs.org/), CSS framework - [TailwindCSS](https://tailwindcss.com/) and State management - [Apollo Client](https://www.apollographql.com/docs/react/)**. The application interfaces with a **backend built using a [GraphQL](https://graphql.org/) server, via Schema and Resolvers - [Nexus Schema](https://nxs.li/components/standalone/schema), a Database client - [Prisma Client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client) and data stored in [PostgreSQL](https://www.postgresql.org/)/[Redis](https://redis.io/)**.
 
 ## Getting started
 
@@ -145,6 +145,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Prismic Helpers](https://prismic.io/docs/technical-reference/prismicio-helpers)
 - [Prismic Client](https://prismic.io/docs/technical-reference/prismicio-client)
 - [JSDoc](https://jsdoc.app/)
+- [BullMQ Flow Pattern](https://blog.taskforce.sh/splitting-heavy-jobs-using-bullmq-flows/)
 
 ### Frontend
 
@@ -163,6 +164,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Prisma Client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client)
 - [Prismic/Next](https://prismic.io/docs/technical-reference/prismicio-next)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
 - [BullMQ](https://docs.bullmq.io/)
 - [p-queue](https://www.npmjs.com/package/p-queue)
 - [got](https://www.npmjs.com/package/got)
