@@ -11,7 +11,6 @@ export default async function refreshMarketIndexProcessor(
 
   switch (true) {
     case QUEUE.refresh.sp500 === job.name:
-      console.log('handle sp500 refresh', job.data)
       await Promise.all([
         prisma.marketIndex.update({
           where: { id: job.data.id },

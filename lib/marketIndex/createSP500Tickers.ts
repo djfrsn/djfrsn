@@ -16,6 +16,7 @@ export default async function createSP500Tickers(
 
   if (!tickerListRefreshed) {
     const tickerList = await fmpApi.marketIndex.sp500()
+
     const existingTickers = await prisma.ticker.findMany({
       where: { symbol: { in: tickerList.map(ticker => ticker.symbol) } },
     })

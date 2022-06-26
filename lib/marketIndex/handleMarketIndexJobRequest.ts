@@ -10,7 +10,7 @@ interface handleMarketIndexJobRequestOptions {
 
 async function handleMarketIndexJobRequest(
   options: handleMarketIndexJobRequestOptions
-) {
+): Promise<IndexJob> {
   let marketIndexId = options.marketIndexId
   let result: IndexJob = {}
 
@@ -31,6 +31,10 @@ async function handleMarketIndexJobRequest(
 
       if (!result.job.jobId) {
         result = await initMarketIndexFlow(marketIndex)
+      }
+    } else {
+      result.error = {
+        message: `MarketIndex with id of ${marketIndexId} not found`,
       }
     }
   } else {

@@ -50,7 +50,7 @@ const Post = objectType({
 const Contract = objectType({
   name: 'Contract',
   definition(t) {
-    t.int('id')
+    t.string('id')
     t.string('label')
     t.string('name')
     t.boolean('isCall')
@@ -69,7 +69,7 @@ const Contract = objectType({
 const Job = objectType({
   name: 'Job',
   definition(t) {
-    t.int('id')
+    t.string('id')
     t.field('createdAt', { type: 'DateTime' })
     t.string('modelId')
     t.string('modelName')
@@ -100,7 +100,7 @@ const MarketIndex = objectType({
 const Ticker = objectType({
   name: 'Ticker',
   definition(t) {
-    t.int('id')
+    t.string('id')
     t.string('symbol')
     t.list.field('timeSeries', {
       type: 'TickerInfo',
@@ -123,7 +123,7 @@ const Ticker = objectType({
 
         return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
-          where: { tickerId: Number(parent.id) },
+          where: { tickerId: parent.id },
           ...options,
         })
       },
@@ -134,7 +134,7 @@ const Ticker = objectType({
 const TickerInfo = objectType({
   name: 'TickerInfo',
   definition(t) {
-    t.int('id')
+    t.string('id')
     t.field('date', { type: 'DateTime' })
     t.string('interval')
     t.string('open')
@@ -142,7 +142,7 @@ const TickerInfo = objectType({
     t.string('high')
     t.string('low')
     t.string('volume')
-    t.nullable.int('tickerId')
+    t.nullable.string('tickerId')
     t.nullable.field('ticker', {
       type: 'Ticker',
       resolve: (parent, __, ctx) =>

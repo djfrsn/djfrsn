@@ -3,7 +3,7 @@ import { IndexJob } from 'lib/interfaces';
 
 async function getJob(whereOptions: {
   modelId?: number
-  id?: number
+  id?: string
 }): Promise<IndexJob> {
   const job = await prisma.job.findFirst({
     where: whereOptions,

@@ -24,7 +24,7 @@ model Post {
 }
 
 model Contract {
-  id              Int @default(autoincrement()) @id
+  id              String @default(cuid()) @id
   label           String
   name            String
   isCall          Boolean @default(false)
@@ -41,7 +41,7 @@ model Contract {
 }
 
 model Job {
-  id        Int @default(autoincrement()) @id
+  id        String @default(cuid()) @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
   modelId   Int? @unique
@@ -52,13 +52,13 @@ model Job {
 }
 
 model TickerListInfo {
-  id            Int @default(autoincrement()) @id
+  id            String @default(cuid()) @id
   updatedAt     DateTime @updatedAt @default(now())
   lastRefreshed DateTime
 }
 
 model MarketIndex {
-  id   Int @default(autoincrement()) @id
+  id   Int     @default(autoincrement()) @id
   name String
   displayName String
   lastRefreshed  DateTime?
@@ -66,13 +66,13 @@ model MarketIndex {
 }
 
 model MarketInterval {
-  id   Int @default(autoincrement()) @id
+  id   String @default(cuid()) @id
   name String
   timeSeries TickerInfo[]
 }
 
 model Ticker {
-  id             Int @default(autoincrement()) @id
+  id             String @default(cuid()) @id
   updatedAt      DateTime @updatedAt @default(now())
   lastRefreshed  DateTime?
   symbol         String
@@ -89,16 +89,16 @@ model Ticker {
 }
 
 model TickerInfo {
-  id            Int @default(autoincrement()) @id
+  id            String @default(cuid()) @id
   date          DateTime
   updatedAt     DateTime @updatedAt @default(now())
-  intervalId    Int?
+  intervalId    String?
   interval      MarketInterval? @relation(fields: [intervalId], references: [id])
   open          String?
   close         String
   high          String?
   low           String?
   volume        String?
-  tickerId      Int?
+  tickerId      String?
   ticker        Ticker? @relation(fields: [tickerId], references: [id])
 }
