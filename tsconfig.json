@@ -25,6 +25,7 @@
   "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "ts-node": {
+    "require": ["tsconfig-paths/register"], // allow paths like lib/pkg when running ts-node https://typestrong.org/ts-node/docs/paths/
     "compilerOptions": {
       "module": "commonjs"
     }
