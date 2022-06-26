@@ -19,6 +19,9 @@ const instance = got.extend({
   mutableDefaults: true,
 })
 
+/*
+ * Fetch with rate limiting(p-queue) and retries(got)
+ **/
 async function fetch(
   url: string | URL,
   options?: OptionsOfTextResponseBody
