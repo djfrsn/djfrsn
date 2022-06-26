@@ -52,6 +52,7 @@ function JobInfo({ data }) {
   const createdAt = moment(data.job.createdAt)
   const children = data.job.children
   const hasChildren = children.length > 0
+  const messageParts = data.message.split('/')
 
   return (
     <div>
@@ -62,7 +63,11 @@ function JobInfo({ data }) {
         <span className="text-iced-200">Created</span> {createdAt.fromNow()} -{' '}
         {createdAt.format('M-D h:ma')}
       </p>
-      <p>{data.message}</p>
+      <p>
+        <span className="text-maxYellow-100">{messageParts[0]}</span>
+        <span className="text-iced-100">/</span>
+        {messageParts[1]}
+      </p>
       <div className="text-xs">
         <p>Progress: {data.job.progress}</p>
         <p>Attempts: {data.job.attemptsMade}</p>
