@@ -155,7 +155,12 @@ const Jobs = ({ page, global }) => {
   const jobsCount = jobs.length
 
   return (
-    <Layout data={{ page: page.data, global: global.data }}>
+    <Layout
+      data={{
+        page: { ...page.data, title: `${page.data.title}(${jobsCount})` },
+        global: global.data,
+      }}
+    >
       <div className="mb-16">
         <h1 className="text-maxYellow-100">
           Jobs
