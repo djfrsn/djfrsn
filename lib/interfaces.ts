@@ -10,7 +10,7 @@ export interface Ticker {
   timeSeries: TickerInfo[]
 }
 
-export interface MarketIndexJob {
+export interface IndexJob {
   error?: { message: string }
   job?: Job
 }

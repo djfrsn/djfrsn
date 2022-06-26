@@ -1,6 +1,6 @@
 import { PrismicImageProps, SliceLike } from '@prismicio/react';
 
-import { MarketIndexJob } from './interfaces';
+import { IndexJob } from './interfaces';
 
 export type PageType = {
   title: string
@@ -23,4 +23,4 @@ export type GlobalType = {
   navigation: NavigationItemType[]
 }
 
-export type CreateMarketIndexJob = Promise<MarketIndexJob>
+export type InitMarketIndexFlow = Promise<IndexJob>

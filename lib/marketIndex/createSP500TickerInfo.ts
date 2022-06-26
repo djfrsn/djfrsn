@@ -2,7 +2,7 @@ import { MARKET_INDEX, MARKET_INTERVAL } from 'lib/const';
 import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
 import { Ticker } from 'lib/interfaces';
-import { isSameDay, today } from 'lib/utils/dates';
+import { isSameDay } from 'lib/utils/dates';
 import moment from 'moment';
 
 const fmpApi = new FMPApi()
@@ -54,11 +54,6 @@ export default async function createSP500TickerInfo({
   const res = await prisma.tickerInfo.createMany({
     data: tickerPriceData,
     skipDuplicates: true,
-  })
-
-  await prisma.marketIndex.update({
-    where: { id: marketIndex.id },
-    data: { lastRefreshed: today.isoString },
   })
 
   return {

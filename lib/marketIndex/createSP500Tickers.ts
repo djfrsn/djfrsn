@@ -7,7 +7,7 @@ import moment from 'moment';
 
 const fmpApi = new FMPApi()
 
-export default async function createSP500Ticker(
+export default async function createSP500Tickers(
   options: MarketIndexJobOptions
 ): Promise<Ticker[]> {
   const { marketIndex } = options

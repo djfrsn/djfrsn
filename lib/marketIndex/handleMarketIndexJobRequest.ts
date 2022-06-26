@@ -1,7 +1,8 @@
+import createJob from 'lib/db/createJob';
+import getJob from 'lib/db/getJob';
 import prisma from 'lib/db/prisma';
-import { MarketIndexJob } from 'lib/interfaces';
-import createMarketIndexRefreshJob from 'lib/marketIndex/createMarketIndexRefreshJob';
-import getMarketIndexJob from 'lib/marketIndex/getMarketIndexJob';
+import { IndexJob } from 'lib/interfaces';
+import initMarketIndexFlow from 'lib/marketIndex/initMarketIndexFlow';
 
 interface handleMarketIndexJobRequestOptions {
   marketIndexId: number | string
@@ -11,7 +12,7 @@ async function handleMarketIndexJobRequest(
   options: handleMarketIndexJobRequestOptions
 ) {
   let marketIndexId = options.marketIndexId
-  let result: MarketIndexJob = {}
+  let result: IndexJob = {}
 
   if (marketIndexId) {
     const marketIndex = await prisma.marketIndex.findFirst({
@@ -19,14 +20,17 @@ async function handleMarketIndexJobRequest(
     })
 
     if (marketIndex) {
-      result = await getMarketIndexJob(marketIndex.id)
+      result = await getJob({ modelId: marketIndex.id })
 
       if (!result.job) {
-        result = await createMarketIndexRefreshJob(marketIndex)
+        result = await createJob({
+          modelName: 'marketIndex',
+          modelId: marketIndex.id,
+        })
       }
-    } else {
-      result.error = {
-        message: `MarketIndex with id ${marketIndexId} not found.`,
+
+      if (!result.job.jobId) {
+        result = await initMarketIndexFlow(marketIndex)
       }
     }
   } else {

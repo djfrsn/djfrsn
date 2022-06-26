@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
+import { request } from 'graphql-request';
 import gql from 'graphql-tag';
 import { QUEUE } from 'lib/const';
 import moment from 'moment';
@@ -10,6 +10,7 @@ import useSWR from 'swr';
 import { createClient } from '../prismicio';
 
 const fetcher = url => fetch(url).then(res => res.json())
+const gqlFetcher = query => request('/api', query)
 
 const JobQuery = gql`
   query JobQuery {
@@ -139,11 +140,11 @@ const Job = ({ job }) => {
 }
 
 const Jobs = ({ page, global }) => {
-  const { loading, error, data } = useQuery(JobQuery, {
-    fetchPolicy: 'cache-and-network',
+  const { error, data } = useSWR(JobQuery, gqlFetcher, {
+    refreshInterval: 15000,
   })
 
-  if (loading) {
+  if (!data) {
     return <Loading />
   }
   if (error) {

@@ -44,11 +44,11 @@ model Job {
   id        Int @default(autoincrement()) @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  modelId   Int
-  modelName String
-  jobId     String
-  name      String
-  queueName String
+  modelId   Int? @unique
+  modelName String?
+  jobId     String?
+  name      String?
+  queueName String?
 }
 
 model TickerListInfo {

@@ -48,7 +48,10 @@ export default async function handler(
         }
       } else {
         result = {
-          message: `Job ${jobId} not found`,
+          message:
+            typeof jobId === 'string' && jobId !== 'null'
+              ? `Job ${jobId} not found`
+              : 'queue empty',
         }
       }
     } else {

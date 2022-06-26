@@ -5,20 +5,21 @@ import { sp500UpdateFlow } from 'lib/db/queue';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import chunk from 'lib/utils/chunk';
 
-import createSP500Ticker from './createSP500Ticker';
+import createSP500Tickers from './createSP500Tickers';
 
 /**
- * Description: Fetch list of S&P 500 symbols and create upsert jobs in batches of 6 symbols
+ * Description: Fetch list of S&P 500 symbols and create jobs in batches of 6 symbols
  * @constructor
  */
 async function createSP500RefreshJob(
   options: MarketIndexJobOptions
 ): Promise<Job> {
   const { marketIndex } = options
-  const tickerList = await createSP500Ticker(options)
+  const tickerList = await createSP500Tickers(options)
   const tickerListChunks = chunk(tickerList, 6)
   const name = QUEUE.marketIndexRefresh.sp500
   const queueName = QUEUE.refreshMarketIndex
+
   console.log('tickerListChunks', tickerListChunks.length)
 
   const result = await sp500UpdateFlow.add({
@@ -44,11 +45,10 @@ async function createSP500RefreshJob(
     }),
   })
 
-  const job = await prisma.job.create({
+  const job = await prisma.job.update({
+    where: { modelId: marketIndex.id },
     data: {
       name,
-      modelName: 'marketIndex',
-      modelId: marketIndex.id,
       jobId: result.job.id,
       queueName,
     },
