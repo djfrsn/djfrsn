@@ -49,7 +49,7 @@
     "color": "^4.2.3",
     "dotenv": "^16.0.1",
     "express": "4.18.1",
-    "got": "^12.1.0",
+    "got": "^11.8.3",
     "graphql": "15.8.0",
     "graphql-request": "^4.3.0",
     "graphql-scalars": "1.17.0",

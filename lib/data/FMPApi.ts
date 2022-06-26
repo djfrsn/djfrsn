@@ -1,6 +1,7 @@
-import { FMPPrice, FMPTicker, Ticker } from 'lib/interfaces';
+import { FMPPrice, FMPTicker, TickerData } from 'lib/interfaces';
 
 import chunk from '../utils/chunk';
+import fetch from '../utils/fetch';
 
 // Docs: https://site.financialmodelingprep.com/developer/docs
 
@@ -23,7 +24,7 @@ class FMPApi {
 
     return {
       async sp500(): Promise<FMPTicker[]> {
-        return await (await fetch(getApiUrl('sp500_constituent'))).json()
+        return await fetch(getApiUrl('sp500_constituent'))
       },
     }
   }
@@ -33,7 +34,7 @@ class FMPApi {
 
     return {
       async dailyHistoricalPrice(
-        tickers: string | string[] | Ticker[]
+        tickers: string | string[] | TickerData[]
       ): Promise<{ symbol: string; historical: FMPPrice[] }[]> {
         let res: any = []
         const batchLimit = 3

@@ -20,7 +20,7 @@ export interface RefreshMarketIndexJob {
   name: string
 }
 
-interface TickerData {
+export interface TickerData {
   symbol: string
   tickerId: number
 }

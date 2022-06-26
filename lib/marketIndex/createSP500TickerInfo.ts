@@ -27,13 +27,11 @@ export default async function createSP500TickerInfo({
   //   )
   // ).filter(ticker => ticker?.symbol)
 
-  const symbols = tickers.map(ticker => ticker.symbol).join(',')
-
-  console.log('Creating sp500 ticker info for:', symbols)
-
-  const tickerPrices = await fmpApi.core.dailyHistoricalPrice(
-    symbols.slice(0, 3)
+  console.log(
+    'Creating sp500 ticker info for:',
+    tickers.map(ticker => ticker.symbol).join(',')
   )
+  const tickerPrices = await fmpApi.core.dailyHistoricalPrice(tickers)
   const marketInterval = await prisma.marketInterval.findFirst({
     where: { name: MARKET_INTERVAL.oneday },
   })

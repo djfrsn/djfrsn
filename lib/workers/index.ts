@@ -31,4 +31,4 @@ process.on('SIGTERM', async () => {
   console.info('All closed')
 })
 
-process.once('SIGUSR2', gracefulShutdown)
+process.once('SIGUSR2', () => gracefulShutdown())
