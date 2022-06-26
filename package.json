@@ -23,8 +23,14 @@
     "publish": "npm publish --access public",
     "log": "heroku logs -a blockwizards",
     "log:tail": "heroku logs -a blockwizards  --tail",
-    "workers": "nodemon --watch lib/workers/** --ext ts --exec 'npm run ts-node lib/workers'",
+    "workers": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
     "bull-board": "npm run ts-node ts-node lib/bull-board"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".next/*",
+      "./slices/"
+    ]
   },
   "dependencies": {
     "@apollo/client": "3.6.4",
