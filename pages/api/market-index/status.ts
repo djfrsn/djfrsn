@@ -16,7 +16,7 @@ export default async function handler(
     if (typeof jobId === 'string') {
       const flow = await sp500UpdateFlow.getFlow({
         id: jobId,
-        queueName: QUEUE.refreshMarketIndex,
+        queueName: QUEUE.refresh.marketIndex,
       })
 
       if (Array.isArray(flow?.children)) {

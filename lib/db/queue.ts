@@ -14,5 +14,5 @@ export const options = {
   },
 }
 
-export const sp500UpdateQueue = new Queue(QUEUE.refreshMarketIndex, options)
+export const sp500UpdateQueue = new Queue(QUEUE.refresh.marketIndex, options)
 export const sp500UpdateFlow = new FlowProducer(options)

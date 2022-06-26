@@ -37,7 +37,7 @@ export async function getStaticProps({ previewData }) {
 }
 
 const formatJobData = {
-  [QUEUE.marketIndexRefresh.sp500TickerInfo]: data => {
+  [QUEUE.refresh.sp500TickerInfo]: data => {
     return (
       <div>
         <p className="text-iced-100">Tickers</p>

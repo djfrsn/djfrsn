@@ -16,8 +16,8 @@ export interface IndexJob {
 }
 
 export interface RefreshMarketIndexJob {
-  symbols: string[]
-  dict: { [name: string]: string }
+  id: number
+  name: string
 }
 export interface RefreshMarketIndexTickerJob {
   symbols: string[]

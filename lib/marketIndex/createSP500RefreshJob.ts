@@ -17,8 +17,8 @@ async function createSP500RefreshJob(
   const { marketIndex } = options
   const tickerList = await createSP500Tickers(options)
   const tickerListChunks = chunk(tickerList, 6)
-  const name = QUEUE.marketIndexRefresh.sp500
-  const queueName = QUEUE.refreshMarketIndex
+  const name = QUEUE.refresh.sp500
+  const queueName = QUEUE.refresh.marketIndex
 
   console.log('tickerListChunks', tickerListChunks.length)
 
@@ -38,8 +38,8 @@ async function createSP500RefreshJob(
       })
 
       return {
-        name: QUEUE.marketIndexRefresh.sp500TickerInfo,
-        queueName: QUEUE.refreshMarketIndexTicker,
+        name: QUEUE.refresh.sp500TickerInfo,
+        queueName: QUEUE.refresh.marketIndexTicker,
         data: { symbols, dict },
       }
     }),
