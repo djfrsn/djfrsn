@@ -1,4 +1,5 @@
 import { QUEUE } from 'lib/const';
+import gracefulShutdown from 'lib/utils/gracefulShutdown';
 
 import refreshMarketIndexProcessor from './marketIndex/refresh';
 import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
@@ -29,3 +30,5 @@ process.on('SIGTERM', async () => {
 
   console.info('All closed')
 })
+
+process.once('SIGUSR2', gracefulShutdown)

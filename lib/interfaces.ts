@@ -19,9 +19,14 @@ export interface RefreshMarketIndexJob {
   id: number
   name: string
 }
+
+interface TickerData {
+  symbol: string
+  tickerId: number
+}
 export interface RefreshMarketIndexTickerJob {
-  symbols: string[]
-  dict: { [name: string]: string }
+  tickers: TickerData[]
+  symbolDict: { [name: string]: { tickerId: string } }
 }
 
 export interface MarketIndexJobOptions {

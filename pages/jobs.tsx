@@ -3,6 +3,7 @@ import Loading from 'components/Loading';
 import { request } from 'graphql-request';
 import gql from 'graphql-tag';
 import { QUEUE } from 'lib/const';
+import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
 import moment from 'moment';
 import fetch from 'node-fetch';
 import useSWR from 'swr';
@@ -37,12 +38,12 @@ export async function getStaticProps({ previewData }) {
 }
 
 const formatJobData = {
-  [QUEUE.refresh.sp500TickerInfo]: data => {
+  [QUEUE.refresh.sp500TickerInfo]: (data: RefreshMarketIndexTickerJob) => {
     return (
       <div>
         <p className="text-iced-100">Tickers</p>
         <p className="break-words text-xxs lg:text-xs">
-          {data.symbols.join(',')}
+          {data.tickers.map(d => d.symbol).join(',')}
         </p>
       </div>
     )
@@ -141,7 +142,7 @@ const Job = ({ job }) => {
 
 const Jobs = ({ page, global }) => {
   const { error, data } = useSWR(JobQuery, gqlFetcher, {
-    refreshInterval: 15000,
+    refreshInterval: 1000,
   })
 
   if (!data) {

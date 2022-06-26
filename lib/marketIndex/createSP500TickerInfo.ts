@@ -1,48 +1,48 @@
-import { MARKET_INDEX, MARKET_INTERVAL } from 'lib/const';
+import { MARKET_INTERVAL } from 'lib/const';
 import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
-import { Ticker } from 'lib/interfaces';
-import { isSameDay } from 'lib/utils/dates';
+import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
 import moment from 'moment';
 
 const fmpApi = new FMPApi()
 
 export default async function createSP500TickerInfo({
-  tickerList,
-}: {
-  tickerList: Ticker[]
-}) {
-  const marketIndex = await prisma.marketIndex.findFirst({
-    where: { name: MARKET_INDEX.sp500 },
-  })
-  const tickerSymbolDict = {}
+  tickers,
+  symbolDict,
+}: RefreshMarketIndexTickerJob) {
+  // const marketIndex = await prisma.marketIndex.findFirst({
+  //   where: { name: MARKET_INDEX.sp500 },
+  // })
   // filter for tickers with stale data
-  const filteredTickerList = (
-    await Promise.all(
-      tickerList.map(async ticker => {
-        const tickerData = await prisma.ticker.findFirst({
-          where: { symbol: ticker.symbol, marketIndexId: marketIndex.id },
-        })
-        tickerSymbolDict[ticker.symbol] = ticker
+  // const filteredTickerList = (
+  //   await Promise.all(
+  //     tickerList.map(async ticker => {
+  //       const tickerData = await prisma.ticker.findFirst({
+  //         where: { symbol: ticker.symbol, marketIndexId: marketIndex.id },
+  //       })
+  //       tickerSymbolDict[ticker.symbol] = ticker
 
-        return isSameDay(tickerData?.lastRefreshed) ? null : ticker
-      })
-    )
-  ).filter(ticker => ticker?.symbol)
+  //       return isSameDay(tickerData?.lastRefreshed) ? null : ticker
+  //     })
+  //   )
+  // ).filter(ticker => ticker?.symbol)
 
-  console.log('tickerList.length', tickerList.length)
-  console.log('filteredTickerList.length', filteredTickerList.length)
+  const symbols = tickers.map(ticker => ticker.symbol).join(',')
+
+  console.log('Creating sp500 ticker info for:', symbols)
 
   const tickerPrices = await fmpApi.core.dailyHistoricalPrice(
-    filteredTickerList
+    symbols.slice(0, 3)
   )
   const marketInterval = await prisma.marketInterval.findFirst({
     where: { name: MARKET_INTERVAL.oneday },
   })
 
+  console.log('tickerPrices', tickerPrices)
+
   const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {
     const historicalTickerPrices = ticker.historical.map(tick => ({
-      tickerId: tickerSymbolDict[ticker.symbol].id,
+      tickerId: symbolDict[ticker.symbol].tickerId,
       intervalId: marketInterval.id,
       date: moment(tick.date).toISOString(),
       close: String(tick.close),
@@ -57,7 +57,7 @@ export default async function createSP500TickerInfo({
   })
 
   return {
-    ticker: { count: filteredTickerList.length },
+    ticker: { count: tickers.length },
     tickerInfo: { count: res.count },
   }
 }
