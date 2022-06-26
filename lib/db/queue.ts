@@ -1,11 +1,11 @@
-import { FlowProducer, Queue, QueueScheduler } from 'bullmq';
+import { FlowProducer, Queue } from 'bullmq';
+import { QUEUE } from 'lib/const';
 
-import { QUEUE } from '../const';
-import connection from '../db/redis';
+import connection from './redis';
 
 // Docs: https://docs.bullmq.io/
 
-const options = {
+export const options = {
   connection,
   attempts: 3,
   backoff: {
@@ -13,11 +13,6 @@ const options = {
     delay: 1000,
   },
 }
-
-export const sp500QueueScheduler = new QueueScheduler(
-  QUEUE.refreshMarketIndex,
-  options
-)
 
 export const sp500UpdateQueue = new Queue(QUEUE.refreshMarketIndex, options)
 export const sp500UpdateFlow = new FlowProducer(options)

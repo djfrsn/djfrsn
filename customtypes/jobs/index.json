@@ -12,7 +12,7 @@
           "placeholder": ""
         }
       },
-      "Title": {
+      "title": {
         "type": "Text",
         "config": {
           "label": "Title",

@@ -15,6 +15,15 @@ export interface IndexJob {
   job?: Job
 }
 
+export interface RefreshMarketIndexJob {
+  symbols: string[]
+  dict: { [name: string]: string }
+}
+export interface RefreshMarketIndexTickerJob {
+  symbols: string[]
+  dict: { [name: string]: string }
+}
+
 export interface MarketIndexJobOptions {
   marketIndex: MarketIndex
 }

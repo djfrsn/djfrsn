@@ -2,8 +2,7 @@ import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import express from 'express';
-
-import { sp500UpdateQueue } from '../db/queue';
+import { sp500UpdateQueue } from 'lib/db/queue';
 
 const serverAdapter = new ExpressAdapter()
 

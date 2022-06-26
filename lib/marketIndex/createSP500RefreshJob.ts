@@ -39,7 +39,7 @@ async function createSP500RefreshJob(
 
       return {
         name: QUEUE.marketIndexRefresh.sp500TickerInfo,
-        queueName: QUEUE.refreshMarketIndexTickerInfo,
+        queueName: QUEUE.refreshMarketIndexTicker,
         data: { symbols, dict },
       }
     }),

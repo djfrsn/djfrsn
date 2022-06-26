@@ -19,5 +19,5 @@ export const QUEUE = {
     sp500TickerInfo: 'refresh-sp500-ticker-info',
   },
   refreshMarketIndex: 'update-market-index',
-  refreshMarketIndexTickerInfo: 'update-market-index-ticker-info',
+  refreshMarketIndexTicker: 'update-market-index-ticker-info',
 }
