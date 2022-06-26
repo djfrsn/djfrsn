@@ -28,8 +28,6 @@ export default function Layout({
     return <LoadingIndicator />
   }
 
-  console.log('data.page.title', data.page.title)
-
   return (
     <>
       <Head>
