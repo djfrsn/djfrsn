@@ -20,7 +20,7 @@ const {
   refreshMarketIndexTickerProcessor
 )
 
-process.on('SIGTERM', async () => {
+const onShutdown = async () => {
   console.info('SIGTERM signal received: closing queues')
 
   await refreshMarketIndexWorker.close()
@@ -29,6 +29,10 @@ process.on('SIGTERM', async () => {
   await refreshMarketIndexTickerWorkerScheduler.close()
 
   console.info('All closed')
-})
+}
 
-process.once('SIGUSR2', () => gracefulShutdown())
+process.on('SIGTERM', onShutdown)
+
+gracefulShutdown(() => {
+  process.removeAllListeners('SIGTERM')
+})

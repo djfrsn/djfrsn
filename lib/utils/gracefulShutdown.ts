@@ -1,9 +1,8 @@
-function gracefulShutdown(
-  onShutdown = function () {
+function gracefulShutdown(onShutdown = () => null): void {
+  process.once('SIGUSR2', () => {
+    onShutdown()
     process.kill(process.pid, 'SIGUSR2')
-  }
-): void {
-  onShutdown()
+  })
 }
 
 export default gracefulShutdown
