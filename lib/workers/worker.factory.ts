@@ -1,15 +1,23 @@
-import { Processor, QueueScheduler, Worker } from 'bullmq';
-import { options } from 'lib/db/queue';
-import connection from 'lib/db/redis';
+import { Processor, QueueScheduler, QueueSchedulerOptions, Worker, WorkerOptions } from 'bullmq';
+import { options as defaultOptions } from 'lib/db/queue';
+
+interface WorkerOptionsInterface {
+  worker?: WorkerOptions
+  scheduler?: QueueSchedulerOptions
+}
 
 export function createWorker(
   name: string,
   processor: Processor,
-  concurrency = 1
+  concurrency = 1,
+  options: WorkerOptionsInterface = {}
 ) {
+  if (!options?.worker) options.worker = { concurrency }
+  if (!options?.scheduler) options.scheduler = { autorun: true }
+
   const worker = new Worker(name, processor, {
-    connection,
-    concurrency,
+    ...defaultOptions,
+    ...options.worker,
   })
 
   worker.on('completed', (job, err) => {
@@ -20,7 +28,10 @@ export function createWorker(
     console.error(`Failed job on queue ${name}`, err)
   })
 
-  const scheduler = new QueueScheduler(name, options)
+  const scheduler = new QueueScheduler(name, {
+    ...defaultOptions,
+    ...options.scheduler,
+  })
 
   return { worker, scheduler }
 }
