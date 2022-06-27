@@ -15,7 +15,8 @@ export default async function createSP500Tickers(
   options: MarketIndexJobOptions
 ): Promise<Ticker[]> {
   const { marketIndex } = options
-  const marketIndexId = { marketIndexId: marketIndex.id }
+  const marketIndexId = marketIndex.id
+  const tickerUpdateData = { marketIndexId: marketIndex.id }
   const tickerListRefreshed = isSameDay(moment(marketIndex.lastRefreshed))
 
   if (!tickerListRefreshed) {
@@ -25,7 +26,10 @@ export default async function createSP500Tickers(
       where: { symbol: { in: tickerList.map(ticker => ticker.symbol) } },
     })
     const existingTickersDict = existingTickers.reduce(
-      (a, v) => ({ ...a, [v.symbol]: true }),
+      (a, existingTicker) => ({
+        ...a,
+        [existingTicker.symbol]: { ...existingTicker },
+      }),
       {}
     )
     const updateTickerList = []
@@ -39,14 +43,7 @@ export default async function createSP500Tickers(
 
       return !existingTicker
     })
-    const transactions = [
-      prisma.ticker.updateMany({
-        where: marketIndexId,
-        data: {
-          marketIndexId: null,
-        },
-      }),
-    ]
+    const transactions = []
 
     console.log('Creating %s tickers', createTickerList.length)
     console.log('Updating %s tickers', updateTickerList.length)
@@ -56,7 +53,7 @@ export default async function createSP500Tickers(
         prisma.ticker.createMany({
           data: createTickerList.map(ticker => ({
             ...ticker,
-            ...marketIndexId,
+            ...tickerUpdateData,
           })),
         })
       )
@@ -68,7 +65,7 @@ export default async function createSP500Tickers(
           where: {
             symbol: { in: updateTickerList.map(ticker => ticker.symbol) },
           },
-          data: marketIndexId,
+          data: tickerUpdateData,
         })
       )
     }
@@ -76,7 +73,9 @@ export default async function createSP500Tickers(
     await prisma.$transaction(transactions)
   }
 
-  const sp500tickerList = await prisma.ticker.findMany({ where: marketIndexId })
+  const sp500tickerList = await prisma.ticker.findMany({
+    where: tickerUpdateData,
+  })
 
   return sp500tickerList
 }
