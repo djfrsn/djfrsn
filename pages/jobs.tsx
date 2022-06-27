@@ -62,8 +62,8 @@ function JobInfo({ data }) {
         <span className="text-iced-200">State</span> {data.state}
       </p>
       <p className="text-xs">
-        <span className="text-iced-200">Created</span> {createdAt.fromNow()} -{' '}
-        {createdAt.format('M-D h:ma')}
+        <span className="text-iced-200">Created</span>{' '}
+        {(() => createdAt.fromNow())()} - {createdAt.format('M-D h:ma')}
       </p>
       <p>
         <span className="text-maxYellow-100">{messageParts[0]}</span>
@@ -142,7 +142,7 @@ const Job = ({ job }) => {
 
 const Jobs = ({ page, global }) => {
   const { error, data } = useSWR(JobQuery, gqlFetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 100,
   })
 
   if (!data) {

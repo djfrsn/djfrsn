@@ -1,7 +1,7 @@
 import { Job, MarketIndex, MarketInterval, TickerInfo } from '@prisma/client';
 
 export interface TickerListInfo {
-  id: number
+  id: string
   lastRefreshed: Date
 }
 export interface Ticker {
@@ -28,6 +28,11 @@ export interface RefreshMarketIndexTickerJob {
   tickers: TickerData[]
   symbolDict: { [name: string]: { tickerId: string } }
   marketInterval: MarketInterval
+}
+
+export interface CreateSp500TickerOptions {
+  query?: string
+  job: any
 }
 
 export interface MarketIndexJobOptions {

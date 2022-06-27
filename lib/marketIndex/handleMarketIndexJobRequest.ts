@@ -15,6 +15,7 @@ async function handleMarketIndexJobRequest(
   let result: IndexJob = {}
 
   if (marketIndexId) {
+    // TODO: remove after testing
     await prisma.job.update({
       where: { modelId: Number(marketIndexId) },
       data: { jobId: null },

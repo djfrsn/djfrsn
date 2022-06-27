@@ -1,13 +1,13 @@
 import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
-import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
-import { zeroDate } from 'lib/utils/dates';
+import { CreateSp500TickerOptions, RefreshMarketIndexTickerJob } from 'lib/interfaces';
+import { normalizeDate } from 'lib/utils/dates';
 
 const fmpApi = new FMPApi()
 
-export default async function createSP500TickerInfo(
+export default async function createSp500TickerInfo(
   { tickers, symbolDict, marketInterval }: RefreshMarketIndexTickerJob,
-  options: { query?: string } = {}
+  options: CreateSp500TickerOptions
 ) {
   console.log(
     'Creating sp500 ticker info for:',
@@ -17,21 +17,27 @@ export default async function createSP500TickerInfo(
     tickers,
     options.query
   )
+
+  await options.job.updateProgress(50)
+
   const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {
     const historicalTickerPrices = ticker.historical.map(tick => ({
       tickerId: symbolDict[ticker.symbol].tickerId,
       intervalId: marketInterval.id,
-      date: zeroDate(tick.date).toISOString(),
+      date: normalizeDate(tick.date).toISOString(),
       close: String(tick.close),
     }))
 
     return allTickers.concat(historicalTickerPrices)
   }, [])
 
+  console.log('latest date', tickerPriceData[0].date)
+
   const res = await prisma.tickerInfo.createMany({
     data: tickerPriceData,
-    skipDuplicates: true,
   })
+
+  await options.job.updateProgress(100)
 
   return {
     ticker: { count: tickers.length },

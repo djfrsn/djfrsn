@@ -58,7 +58,7 @@ class FMPApi {
             let data: any = await fetch(
               getApiUrl(
                 `historical-price-full/${arg}?serietype=line${
-                  query ? `&{query}` : ''
+                  query ? `&${query}` : ''
                 }`
               )
             )

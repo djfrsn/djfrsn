@@ -7,7 +7,7 @@ export default async function getTickerListInfo(): Promise<TickerListInfo> {
 
   if (!tickerListInfo) {
     tickerListInfo = await prisma.tickerListInfo.create({
-      data: { lastRefreshed: today.isoString },
+      data: { lastRefreshed: today().toISOString() },
     })
   }
 
