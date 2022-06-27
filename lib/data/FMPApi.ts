@@ -58,21 +58,20 @@ class FMPApi {
               : ticker
 
             console.log('fetch', arg)
+            const apiUrl = `historical-price-full/${arg}?serietype=line${
+              query ? `&${query}` : ''
+            }`
 
-            let data: any = await fetch(
-              getApiUrl(
-                `historical-price-full/${arg}?serietype=line${
-                  query ? `&${query}` : ''
-                }`
-              )
-            )
+            let data: any = await fetch(getApiUrl(apiUrl))
 
             console.log('fetch %s complete', arg)
 
-            if (data.historicalStockList) {
+            if (data?.historicalStockList) {
               res.push(...data.historicalStockList)
-            } else {
+            } else if (data?.historical) {
               res.push(data)
+            } else {
+              throw new Error(`FMPApi Error: data not found fetching ${apiUrl}`)
             }
           }
         } else {

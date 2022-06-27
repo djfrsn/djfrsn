@@ -1,6 +1,7 @@
 import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
 import { CreateSp500TickerOptions, RefreshMarketIndexTickerJob } from 'lib/interfaces';
+import arrayHasItems from 'lib/utils/arrayHasItems';
 import { normalizeDate } from 'lib/utils/dates';
 
 const fmpApi = new FMPApi()
@@ -37,50 +38,52 @@ export default async function createSp500TickerInfo(
 
   await options.job.updateProgress(50)
 
-  const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {
-    const historicalTickerPrices = ticker.historical.reduce(
-      (historicalInfo, tick) => {
-        const date = normalizeDate(tick.date).toISOString()
-        const shouldUpdate = !existingTickerInfoDict[date]
+  if (arrayHasItems(tickerPrices)) {
+    const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {
+      const historicalTickerPrices = ticker.historical.reduce(
+        (historicalInfo, tick) => {
+          const date = normalizeDate(tick.date).toISOString()
+          const shouldUpdate = !existingTickerInfoDict[date]
 
-        if (shouldUpdate) {
-          historicalInfo.push({
-            tickerId: symbolDict[ticker.symbol].tickerId,
-            intervalId: marketInterval.id,
-            date,
-            close: String(tick.close),
-          })
-        }
+          if (shouldUpdate) {
+            historicalInfo.push({
+              tickerId: symbolDict[ticker.symbol].tickerId,
+              intervalId: marketInterval.id,
+              date,
+              close: String(tick.close),
+            })
+          }
 
-        return historicalInfo
-      },
-      []
-    )
-
-    if (historicalTickerPrices.length) {
-      console.log(
-        'Updating',
-        historicalTickerPrices.length,
-        'out of',
-        ticker.historical.length,
-        'tickers'
+          return historicalInfo
+        },
+        []
       )
-      allTickers = allTickers.concat(historicalTickerPrices)
+
+      if (historicalTickerPrices.length) {
+        console.log(
+          'Updating',
+          historicalTickerPrices.length,
+          'out of',
+          ticker.historical.length,
+          'tickers'
+        )
+        allTickers = allTickers.concat(historicalTickerPrices)
+      }
+
+      return allTickers
+    }, [])
+
+    console.log('ticker info update count', tickerPriceData.length)
+
+    if (tickerPriceData.length) {
+      res = await prisma.tickerInfo.createMany({
+        data: tickerPriceData,
+        skipDuplicates: true,
+      })
     }
 
-    return allTickers
-  }, [])
-
-  console.log('ticker info update count', tickerPriceData.length)
-
-  if (tickerPriceData.length) {
-    res = await prisma.tickerInfo.createMany({
-      data: tickerPriceData,
-      skipDuplicates: true,
-    })
+    await options.job.updateProgress(100)
   }
-
-  await options.job.updateProgress(100)
 
   return {
     ticker: { count: tickers.length },
