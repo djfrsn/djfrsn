@@ -22,7 +22,7 @@ export interface RefreshMarketIndexJob {
 
 export interface TickerData {
   symbol: string
-  tickerId: number
+  tickerId: string
 }
 export interface RefreshMarketIndexTickerJob {
   tickers: TickerData[]

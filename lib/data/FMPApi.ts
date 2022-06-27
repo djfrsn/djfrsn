@@ -67,7 +67,7 @@ class FMPApi {
               )
             )
 
-            console.log('fetch', arg, ' complete')
+            console.log('fetch %s complete', arg)
 
             if (data.historicalStockList) {
               res.push(...data.historicalStockList)

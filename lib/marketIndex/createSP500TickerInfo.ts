@@ -6,7 +6,7 @@ import { normalizeDate } from 'lib/utils/dates';
 const fmpApi = new FMPApi()
 
 /**
- * Description: Fetch and store tickerInfo from FMP daily historical API
+ * Description: Fetch and store tickerInfo from FMP daily historical API, compare new data with existing to prevent dupes
  * @constructor
  */
 export default async function createSp500TickerInfo(
@@ -17,29 +17,69 @@ export default async function createSp500TickerInfo(
     'Creating sp500 ticker info for:',
     tickers.map(ticker => ticker.symbol).join(',')
   )
-  const tickerPrices = await fmpApi.core.dailyHistoricalPrice(
-    tickers,
-    options.query
+  let res = { count: 0 }
+  const [tickerPrices, existingTickerInfo] = await Promise.all([
+    fmpApi.core.dailyHistoricalPrice(tickers, options.query),
+    prisma.tickerInfo.findMany({
+      where: { tickerId: { in: tickers.map(ticker => ticker.tickerId) } },
+    }),
+  ])
+
+  const existingTickerInfoDict = existingTickerInfo.reduce(
+    (a, existingTickerInfo) => ({
+      ...a,
+      [normalizeDate(existingTickerInfo.date).toISOString()]: {
+        ...existingTickerInfo,
+      },
+    }),
+    {}
   )
 
   await options.job.updateProgress(50)
 
   const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {
-    const historicalTickerPrices = ticker.historical.map(tick => ({
-      tickerId: symbolDict[ticker.symbol].tickerId,
-      intervalId: marketInterval.id,
-      date: normalizeDate(tick.date).toISOString(),
-      close: String(tick.close),
-    }))
+    const historicalTickerPrices = ticker.historical.reduce(
+      (historicalInfo, tick) => {
+        const date = normalizeDate(tick.date).toISOString()
+        const shouldUpdate = !existingTickerInfoDict[date]
 
-    return allTickers.concat(historicalTickerPrices)
+        if (shouldUpdate) {
+          historicalInfo.push({
+            tickerId: symbolDict[ticker.symbol].tickerId,
+            intervalId: marketInterval.id,
+            date,
+            close: String(tick.close),
+          })
+        }
+
+        return historicalInfo
+      },
+      []
+    )
+
+    if (historicalTickerPrices.length) {
+      console.log(
+        'Updating',
+        historicalTickerPrices.length,
+        'out of',
+        ticker.historical.length,
+        'tickers'
+      )
+      allTickers = allTickers.concat(historicalTickerPrices)
+    }
+
+    return allTickers
   }, [])
 
-  console.log('latest date', tickerPriceData[0].date)
+  console.log('ticker info update count', tickerPriceData.length)
 
-  const res = await prisma.tickerInfo.createMany({
-    data: tickerPriceData,
-  })
+  if (tickerPriceData.length) {
+    res = await prisma.tickerInfo.createMany({
+      data: tickerPriceData,
+      skipDuplicates: true,
+    })
+  }
+  // bugfix: createSP500TickerInfo skip duplicates doesn't prevent creation of multiple entries with the same properties(see: date)
 
   await options.job.updateProgress(100)
 
