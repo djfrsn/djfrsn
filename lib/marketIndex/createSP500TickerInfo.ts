@@ -79,7 +79,6 @@ export default async function createSp500TickerInfo(
       skipDuplicates: true,
     })
   }
-  // bugfix: createSP500TickerInfo skip duplicates doesn't prevent creation of multiple entries with the same properties(see: date)
 
   await options.job.updateProgress(100)
 

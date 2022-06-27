@@ -1,18 +1,17 @@
-import { createClient } from '../prismicio';
-
-export async function getStaticProps({ previewData }) {
-  const client = createClient({ previewData })
-
+export async function getServerSideProps(context) {
   const [page, global] = await Promise.all([
-    client.getSingle('homepage'),
-    client.getSingle('global'),
+    context.client.getSingle('homepage'),
+    context.client.getSingle('global'),
   ])
 
   return {
-    props: { page, global },
-    redirect: {
-      destination: `/${page.data.redirectPath.uid}`,
-      permanent: true,
+    props: {
+      page,
+      global,
+      redirect: {
+        destination: `/${page.data.redirectPath.uid}`,
+        fallback: true,
+      },
     },
   }
 }

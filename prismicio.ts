@@ -27,7 +27,7 @@ export function linkResolver(doc) {
 }
 
 // This factory function allows smooth preview setup
-export function createClient(config = {}) {
+export function createClient(config: any = {}) {
   const client = prismic.createClient(endpoint, {
     ...config,
   })

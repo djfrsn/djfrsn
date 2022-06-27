@@ -1,3 +1,4 @@
+const TerserPlugin = require('terser-webpack-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -5,6 +6,24 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /**
  * @type {import('next').NextConfig}
  */
-const moduleExports = {}
+const moduleExports = {
+  webpack: config => {
+    // see https://duncanleung.com/next-js-typescript-svg-any-module-declaration/
+    config.optimization = {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+            },
+          },
+        }),
+      ],
+    }
+
+    return config
+  },
+}
 
 module.exports = withBundleAnalyzer(moduleExports)
