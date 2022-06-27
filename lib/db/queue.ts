@@ -16,3 +16,9 @@ export const options = {
 
 export const sp500UpdateQueue = new Queue(QUEUE.refresh.marketIndex, options)
 export const sp500RefreshFlow = new FlowProducer(options)
+export const getSp500RefreshFlow = id =>
+  sp500RefreshFlow.getFlow({
+    id,
+    queueName: QUEUE.refresh.marketIndex,
+    depth: 1,
+  })
