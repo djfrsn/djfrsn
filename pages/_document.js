@@ -1,20 +1,16 @@
-import { sp500QueueScheduler } from 'lib/db/queue';
+import gracefulShutdown from 'lib/utils/gracefulShutdown';
 import { Head, Html, Main, NextScript } from 'next/document';
-
-const onShutdown = async () => {
-  await sp500QueueScheduler.close()
-}
 
 if (process.env.NEXT_MANUAL_SIG_HANDLE) {
   process.on('SIGTERM', async () => {
     console.log('Received SIGTERM: ', 'cleaning up')
-    await onShutdown()
+    gracefulShutdown()
     process.exit(0)
   })
 
   process.on('SIGINT', async () => {
     console.log('Received SIGINT: ', 'cleaning up')
-    await onShutdown()
+    gracefulShutdown()
     process.exit(0)
   })
 }
