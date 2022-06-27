@@ -13,7 +13,7 @@ const fmpApi = new FMPApi()
 export default async function createSp500TickerInfo(
   { tickers, symbolDict, marketInterval }: RefreshMarketIndexTickerJob,
   options: CreateSp500TickerOptions
-) {
+): Promise<{ ticker: { count: number }; tickerInfo: { count: number } }> {
   console.log(
     'Creating sp500 ticker info for:',
     tickers.map(ticker => ticker.symbol).join(',')

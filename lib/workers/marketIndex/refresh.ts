@@ -18,9 +18,6 @@ export default async function refreshMarketIndexProcessor(
       await Promise.all([
         prisma.marketIndex.update({
           where: { id: job.data.id },
-          // data: {
-          //   lastRefreshed: normalizeDate(new Date('2022-06-21')).toISOString(),
-          // },
           data: { lastRefreshed: getMostRecentBusinessDay().toISOString() },
         }),
         // prisma.tickerInfo.deleteMany(),
