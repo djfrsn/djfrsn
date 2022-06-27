@@ -10,6 +10,7 @@ export default async function refreshMarketIndexTickerProcessor(
 ) {
   console.log('start refresh ticker job', job.name)
   // TODO: ensure retries are working
+  // TODO: how can we update the parent job progress?
 
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
