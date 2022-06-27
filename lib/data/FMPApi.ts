@@ -5,6 +5,10 @@ import fetch from '../utils/fetch';
 
 // Docs: https://site.financialmodelingprep.com/developer/docs
 
+/**
+ * Description: Connect to Financial Modeling Prep API for market data
+ * @constructor
+ */
 class FMPApi {
   apiKey: string
   apiUrl: string

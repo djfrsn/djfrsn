@@ -4,7 +4,7 @@ import momentBusinessDays from 'moment-business-days';
 export const momentBusiness = momentBusinessDays
 
 export function today(): moment.Moment {
-  return moment.utc()
+  return normalizeDate(moment.utc())
 }
 
 export function normalizeDate(
@@ -20,16 +20,23 @@ export function getPreviousBusinessDay(): moment.Moment {
   return normalizeDate(momentBusinessDays()).prevBusinessDay()
 }
 
-export function getMostRecentBusinessDay(): string {
-  const _today = today().toISOString()
+export function getMostRecentBusinessDay(): moment.Moment {
+  const _today = today()
   return momentBusinessDays(_today).isBusinessDay()
     ? _today
-    : getPreviousBusinessDay().toISOString()
+    : getPreviousBusinessDay()
 }
 
 export function isSameDay(date: Moment | Date): boolean {
   if (!date) return false
   if (!moment.isMoment(date)) date = moment(date)
 
-  return date.isSame(today().toISOString(), 'day')
+  return date.isSame(today(), 'day')
+}
+
+export function isLatestBusinessDay(date: Moment | Date): boolean {
+  if (!date) return false
+  if (!moment.isMoment(date)) date = moment(date)
+
+  return date.isSame(getMostRecentBusinessDay(), 'day')
 }

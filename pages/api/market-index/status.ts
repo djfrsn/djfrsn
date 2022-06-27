@@ -5,6 +5,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // curl http://localhost:3000/api/market-index/status?jobId=2
 // curl https://blockwizards.herokuapp.com/api/market-index/status?jobId=2
 
+/**
+ * Description: Return list of jobs in Redis + BullMQ
+ * @constructor
+ */
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse

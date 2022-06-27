@@ -3,7 +3,7 @@ import { MARKET_INDEX, QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
-import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
+import { getMostRecentBusinessDay, isLatestBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
 
 export default async function refreshMarketIndexTickerProcessor(
   job: Job<RefreshMarketIndexTickerJob>
@@ -19,20 +19,21 @@ export default async function refreshMarketIndexTickerProcessor(
       })
       const mostRecentBusinessDay = getMostRecentBusinessDay()
       const lastRefreshed = normalizeDate(marketIndex.lastRefreshed)
-      const shouldRefresh = lastRefreshed.isBefore(mostRecentBusinessDay)
+      const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
       // get num of days passed since lastRefreshed
-      console.log('mostRecentBusinessDay', mostRecentBusinessDay)
-      console.log('lastRefreshed', lastRefreshed)
       const dayDiff = momentBusiness(mostRecentBusinessDay).businessDiff(
         lastRefreshed
       )
       const query = dayDiff > 0 ? `timeseries=${dayDiff}` : ''
       // const query =
-      //   dayDiff > 1000 ? `timeseries=${dayDiff}` : 'from=2020-03-12&to=2022-6-21'
-      // TODO: pass as query timeseries = num
-      console.log('shouldRefresh', shouldRefresh)
-      console.log('query', query)
-      console.log('dayDiff', dayDiff)
+      //   dayDiff > 1000
+      //     ? `timeseries=${dayDiff}`
+      //     : 'from=2020-03-12&to=2022-6-21'
+      // pass as query timeseries = num
+      console.log('number of days passed', dayDiff)
+      console.log('lastRefreshed', lastRefreshed)
+      console.log('mostRecentBusinessDay', mostRecentBusinessDay)
+      console.log('should refresh', shouldRefresh)
       if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
       // do nothing if marketIndex.lastRefreshedDate not before today and log message
       break

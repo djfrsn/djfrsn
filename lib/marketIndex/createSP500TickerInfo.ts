@@ -5,6 +5,10 @@ import { normalizeDate } from 'lib/utils/dates';
 
 const fmpApi = new FMPApi()
 
+/**
+ * Description: Fetch and store tickerInfo from FMP daily historical API
+ * @constructor
+ */
 export default async function createSp500TickerInfo(
   { tickers, symbolDict, marketInterval }: RefreshMarketIndexTickerJob,
   options: CreateSp500TickerOptions

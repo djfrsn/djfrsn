@@ -4,6 +4,10 @@ import prisma from 'lib/db/prisma';
 import { RefreshMarketIndexJob } from 'lib/interfaces';
 import { getMostRecentBusinessDay } from 'lib/utils/dates';
 
+/**
+ * Description: Runs after all tickers for a given index have been updated(see: refreshTicker.ts)
+ * @constructor
+ */
 export default async function refreshMarketIndexProcessor(
   job: Job<RefreshMarketIndexJob>
 ) {
@@ -17,9 +21,8 @@ export default async function refreshMarketIndexProcessor(
           // data: {
           //   lastRefreshed: normalizeDate(new Date('2022-06-21')).toISOString(),
           // },
-          data: { lastRefreshed: getMostRecentBusinessDay() },
+          data: { lastRefreshed: getMostRecentBusinessDay().toISOString() },
         }),
-        // TODO: delete after testing
         // prisma.tickerInfo.deleteMany(),
         // prisma.job.update({
         //   where: { modelId: job.data.id },
