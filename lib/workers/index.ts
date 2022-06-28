@@ -17,7 +17,7 @@ const {
 } = createWorker(
   QUEUE.refresh.marketIndexTicker,
   refreshMarketIndexTickerProcessor,
-  5
+  1
 )
 
 const marketIndexQueueScheduler = MarketIndexQueueScheduler()

@@ -7,7 +7,6 @@ import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
 import { getMostRecentBusinessDay, isLatestBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
 
 let parent: JobNode | null
-let progressIncrement: number | null
 
 export default async function refreshMarketIndexTickerProcessor(
   job: Job<RefreshMarketIndexTickerJob>
@@ -48,7 +47,9 @@ export default async function refreshMarketIndexTickerProcessor(
       if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
       else onComplete.push(job.updateProgress(100))
 
-      let progress = job.data.progressIncrement + Number(parent.job.progress)
+      let progress = Math.floor(
+        job.data.progressIncrement + Number(parent.job.progress)
+      )
 
       await Promise.all([
         ...onComplete,
