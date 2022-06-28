@@ -28,6 +28,7 @@ export interface RefreshMarketIndexTickerJob {
   tickers: TickerData[]
   symbolDict: { [name: string]: { tickerId: string } }
   marketInterval: MarketInterval
+  progressIncrement: number
 }
 
 export interface CreateSp500TickerOptions {

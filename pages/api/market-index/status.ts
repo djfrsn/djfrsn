@@ -1,5 +1,5 @@
-import { QUEUE } from 'lib/const';
-import { sp500RefreshFlow } from 'lib/db/queue';
+import { getSp500RefreshFlow } from 'lib/db/queue';
+import { getDependenciesCount } from 'lib/utils/bullmq';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // curl http://localhost:3000/api/market-index/status?jobId=2
@@ -18,18 +18,15 @@ export default async function handler(
     const jobId = request.query.jobId
 
     if (typeof jobId === 'string') {
-      const flow = await sp500RefreshFlow.getFlow({
-        id: jobId,
-        queueName: QUEUE.refresh.marketIndex,
-      })
+      const flow = await getSp500RefreshFlow(jobId)
 
       if (Array.isArray(flow?.children)) {
         const state = await flow.job.getState()
         const dependencies = await flow.job.getDependencies()
-        const totalJobCount =
-          Object.keys(dependencies.processed).length +
-          dependencies.unprocessed.length
+        const totalJobCount = getDependenciesCount(dependencies)
         const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
+
+        // BUG: job.children doesn't return all children
 
         result = {
           state,

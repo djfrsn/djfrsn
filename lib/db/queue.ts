@@ -22,9 +22,9 @@ export const MarketIndexQueueScheduler = () =>
 export const MarketIndexTickerQueueScheduler = () =>
   new QueueScheduler(QUEUE.refresh.marketIndexTicker, options)
 export const sp500RefreshFlow = new FlowProducer(options)
-export const getSp500RefreshFlow = id =>
+export const getSp500RefreshFlow = (id, depth = 0) =>
   sp500RefreshFlow.getFlow({
     id,
     queueName: QUEUE.refresh.marketIndex,
-    depth: 1,
+    depth,
   })

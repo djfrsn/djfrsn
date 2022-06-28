@@ -71,7 +71,7 @@ function JobInfo({ data }) {
         {messageParts[1]}
       </p>
       <div className="text-xs">
-        <p>Progress: {data.job.progress}</p>
+        <p>Progress: {data.job.progress}%</p>
         <p>Attempts: {data.job.attemptsMade}</p>
       </div>
       <div className="mt-6">
@@ -88,7 +88,7 @@ function JobInfo({ data }) {
                 <p className="text-iced-neon">{childJob.name}</p>
                 <p>
                   <span className="text-iced-200">Progress</span>{' '}
-                  {childJob.progress}
+                  {childJob.progress}%
                 </p>
                 <p>
                   <span className="text-iced-200">Attempts</span>{' '}

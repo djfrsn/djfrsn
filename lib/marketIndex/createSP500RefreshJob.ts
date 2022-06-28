@@ -30,6 +30,7 @@ async function createSP500RefreshJob(
     tickerList.length,
     'tickers'
   )
+  const progressIncrement = Math.ceil(100 / tickerList.length)
 
   const result = await sp500RefreshFlow.add({
     name,
@@ -55,6 +56,7 @@ async function createSP500RefreshJob(
           tickers,
           symbolDict,
           marketInterval,
+          progressIncrement,
         },
       }
     }),

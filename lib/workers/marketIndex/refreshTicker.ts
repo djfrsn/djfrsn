@@ -17,10 +17,9 @@ export default async function refreshMarketIndexTickerProcessor(
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
       if (parent?.job?.id !== job.parent.id) {
-        parent = await getSp500RefreshFlow(job.parent.id)
-        const children = Object.keys(await parent.job.getChildrenValues())
-        progressIncrement = children.length / 100
+        parent = await getSp500RefreshFlow(job.parent.id, 1)
       }
+
       const marketIndex = await prisma.marketIndex.findFirst({
         where: { name: MARKET_INDEX.sp500 },
       })
@@ -49,11 +48,11 @@ export default async function refreshMarketIndexTickerProcessor(
       if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
       else onComplete.push(job.updateProgress(100))
 
+      let progress = job.data.progressIncrement + Number(parent.job.progress)
+
       await Promise.all([
         ...onComplete,
-        parent.job.updateProgress(
-          progressIncrement + Number(parent.job.progress)
-        ),
+        parent.job.updateProgress(progress > 100 ? 100 : progress),
       ])
       break
     default:
