@@ -1,4 +1,5 @@
 import { QUEUE } from 'lib/const';
+import { MarketIndexQueueScheduler, MarketIndexTickerQueueScheduler } from 'lib/db/queue';
 import gracefulShutdown from 'lib/utils/gracefulShutdown';
 
 import refreshMarketIndexProcessor from './marketIndex/refresh';
@@ -19,9 +20,14 @@ const {
   5
 )
 
+const marketIndexQueueScheduler = MarketIndexQueueScheduler()
+const marketIndexTickerQueueScheduler = MarketIndexTickerQueueScheduler()
+
 const onShutdown = async () => {
   console.info('SIGTERM signal received: closing queues')
 
+  await marketIndexQueueScheduler.close()
+  await marketIndexTickerQueueScheduler.close()
   await refreshMarketIndexWorker.close()
   await refreshMarketIndexWorkerScheduler.close()
   await refreshMarketIndexTickerWorker.close()

@@ -13,7 +13,6 @@ export default async function refreshMarketIndexTickerProcessor(
   job: Job<RefreshMarketIndexTickerJob>
 ) {
   console.log('start refresh ticker job', job.name)
-  // TODO: ensure retries are working
 
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
@@ -41,15 +40,15 @@ export default async function refreshMarketIndexTickerProcessor(
       //   dayDiff > 1000
       //     ? `timeseries=${dayDiff}`
       //     : 'from=2020-03-12&to=2022-6-21'
-      // pass as query timeseries = num
       console.log('number of days passed', dayDiff)
       console.log('lastRefreshed', lastRefreshed.toISOString())
       console.log('mostRecentBusinessDay', mostRecentBusinessDay.toISOString())
       console.log('should refresh', shouldRefresh)
       const onComplete = []
+
       if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
       else onComplete.push(job.updateProgress(100))
-      // do nothing if marketIndex.lastRefreshedDate not before today and log message
+
       await Promise.all([
         ...onComplete,
         parent.job.updateProgress(

@@ -1,7 +1,7 @@
 import { Job, Ticker } from '@prisma/client';
 import { MARKET_INTERVAL, QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
-import { sp500RefreshFlow } from 'lib/db/queue';
+import { defaultJobOptions, sp500RefreshFlow } from 'lib/db/queue';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import chunk from 'lib/utils/chunk';
 
@@ -34,6 +34,7 @@ async function createSP500RefreshJob(
   const result = await sp500RefreshFlow.add({
     name,
     queueName,
+    opts: defaultJobOptions,
     data: { id: marketIndex.id, name: marketIndex.name },
     children: tickerListChunks.map((tickerListChunk: Ticker[]) => {
       const symbolDict = {}
@@ -49,6 +50,7 @@ async function createSP500RefreshJob(
       return {
         name: QUEUE.refresh.sp500TickerInfo,
         queueName: QUEUE.refresh.marketIndexTicker,
+        opts: defaultJobOptions,
         data: {
           tickers,
           symbolDict,
