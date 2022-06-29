@@ -18,7 +18,7 @@ async function getJobData(
       res = await refreshMarketIndexesQueue.getJob(jobId)
       return {
         job: res,
-        message: `Scheduled: ${cronstrue.toString(res.opts.repeat.cron)}`,
+        message: `Scheduled: ${cronstrue.toString(res?.opts.repeat.cron)}`,
       }
   }
 }

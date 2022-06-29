@@ -9,7 +9,7 @@ import { createWorker } from './worker.factory';
 const {
   worker: refreshMarketIndexCronWorker,
   scheduler: refreshMarketIndexCronWorkerScheduler,
-} = createWorker(QUEUE.refresh.marketIndex, refreshMarketIndexCronProcessor)
+} = createWorker(QUEUE.refresh.marketIndexes, refreshMarketIndexCronProcessor)
 
 const {
   worker: refreshMarketIndexWorker,

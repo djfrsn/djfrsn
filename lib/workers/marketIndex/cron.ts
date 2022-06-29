@@ -9,13 +9,13 @@ import { RefreshMarketIndexJob } from 'lib/interfaces';
 export default async function refreshMarketIndexCronProcessor(
   job: Job<RefreshMarketIndexJob>
 ) {
-  console.log('start refresh market indexes cron job', job)
+  console.log('start refresh market indexes cron', job.name)
 
   switch (true) {
-    case QUEUE.refresh.marketIndexes === job.name:
+    case QUEUE.refresh.marketIndexes === job.queueName:
       // TODO: create worker to call handleMarketIndexJobRequest from data
       // const { error, job } = await handleMarketIndexJobRequest(request.body)
-      console.log('init market index')
+      console.log('init market index', job.data)
       await job.updateProgress(100)
       break
     default:
