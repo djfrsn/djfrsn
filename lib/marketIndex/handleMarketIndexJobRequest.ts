@@ -1,4 +1,3 @@
-import createJob from 'lib/db/createJob';
 import getJob from 'lib/db/getJob';
 import prisma from 'lib/db/prisma';
 import { IndexJob } from 'lib/interfaces';
@@ -15,7 +14,6 @@ async function handleMarketIndexJobRequest(
   let result: IndexJob = {}
 
   if (marketIndexId) {
-    // TODO: remove after testing
     await prisma.job.update({
       where: { modelId: Number(marketIndexId) },
       data: { jobId: null },
@@ -27,14 +25,7 @@ async function handleMarketIndexJobRequest(
     if (marketIndex) {
       result = await getJob({ modelId: marketIndex.id })
 
-      if (!result.job) {
-        result = await createJob({
-          modelName: 'marketIndex',
-          modelId: marketIndex.id,
-        })
-      }
-
-      if (!result.job.jobId) {
+      if (!result.job || !result.job?.jobId) {
         result = await initMarketIndexFlow(marketIndex)
       }
     } else {

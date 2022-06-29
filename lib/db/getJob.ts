@@ -1,10 +1,10 @@
+import { Job } from '@prisma/client';
 import prisma from 'lib/db/prisma';
-import { IndexJob } from 'lib/interfaces';
 
 async function getJob(whereOptions: {
   modelId?: number
   id?: string
-}): Promise<IndexJob> {
+}): Promise<{ job: Job }> {
   const job = await prisma.job.findFirst({
     where: whereOptions,
   })

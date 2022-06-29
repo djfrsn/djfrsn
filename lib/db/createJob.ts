@@ -1,5 +1,5 @@
+import { Job } from '@prisma/client';
 import prisma from 'lib/db/prisma';
-import { IndexJob } from 'lib/interfaces';
 
 async function createJob({
   modelName,
@@ -7,7 +7,7 @@ async function createJob({
 }: {
   modelName: string
   modelId: number
-}): Promise<IndexJob> {
+}): Promise<{ job: Job }> {
   const job = await prisma.job.create({
     data: {
       modelName,

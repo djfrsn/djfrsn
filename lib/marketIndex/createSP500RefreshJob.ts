@@ -64,13 +64,15 @@ async function createSP500RefreshJob(
     }),
   })
 
-  const job = await prisma.job.update({
+  const jobData = {
+    name,
+    jobId: result.job.id,
+    queueName,
+  }
+  const job = await prisma.job.upsert({
     where: { modelId: marketIndex.id },
-    data: {
-      name,
-      jobId: result.job.id,
-      queueName,
-    },
+    create: jobData,
+    update: jobData,
   })
 
   return job

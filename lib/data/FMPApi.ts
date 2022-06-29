@@ -3,11 +3,10 @@ import { FMPPrice, FMPTicker, TickerData } from 'lib/interfaces';
 import chunk from '../utils/chunk';
 import fetch from '../utils/fetch';
 
-// Docs: https://site.financialmodelingprep.com/developer/docs
-
 /**
  * Description: Connect to Financial Modeling Prep API for market data
  * @constructor
+ * @see {@link https://site.financialmodelingprep.com/developer/docs}
  */
 class FMPApi {
   apiKey: string

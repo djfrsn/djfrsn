@@ -1,10 +1,15 @@
 import { QUEUE } from 'lib/const';
-import { MarketIndexQueueScheduler, MarketIndexTickerQueueScheduler } from 'lib/db/queue';
 import gracefulShutdown from 'lib/utils/gracefulShutdown';
 
+import refreshMarketIndexCronProcessor from './marketIndex/cron';
 import refreshMarketIndexProcessor from './marketIndex/refresh';
 import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
 import { createWorker } from './worker.factory';
+
+const {
+  worker: refreshMarketIndexCronWorker,
+  scheduler: refreshMarketIndexCronWorkerScheduler,
+} = createWorker(QUEUE.refresh.marketIndex, refreshMarketIndexCronProcessor)
 
 const {
   worker: refreshMarketIndexWorker,
@@ -20,14 +25,17 @@ const {
   1
 )
 
-const marketIndexQueueScheduler = MarketIndexQueueScheduler()
-const marketIndexTickerQueueScheduler = MarketIndexTickerQueueScheduler()
+// const marketIndexQueueScheduler = MarketIndexQueueScheduler()
+// const marketIndexTickerQueueScheduler = MarketIndexTickerQueueScheduler()
 
 const onShutdown = async () => {
   console.info('SIGTERM signal received: closing queues')
 
-  await marketIndexQueueScheduler.close()
-  await marketIndexTickerQueueScheduler.close()
+  await refreshMarketIndexCronWorker.close()
+  await refreshMarketIndexCronWorkerScheduler.close()
+  // await marketIndexQueueScheduler.close()
+  // await marketIndexQueueScheduler.close()
+  // await marketIndexTickerQueueScheduler.close()
   await refreshMarketIndexWorker.close()
   await refreshMarketIndexWorkerScheduler.close()
   await refreshMarketIndexTickerWorker.close()

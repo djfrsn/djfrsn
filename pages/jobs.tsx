@@ -52,9 +52,11 @@ const formatJobData = {
 
 function JobInfo({ data }) {
   const createdAt = moment(data.job.createdAt)
-  const children = data.job.children
-  const hasChildren = children.length > 0
-  const messageParts = data.message.split('/')
+  const children = data.job?.children
+  const hasChildren = children?.length > 0
+  const messageParts = data.message.includes('/')
+    ? data.message.split('/')
+    : null
 
   return (
     <div>
@@ -66,40 +68,48 @@ function JobInfo({ data }) {
         {(() => createdAt.fromNow())()} - {createdAt.format('M-D h:ma')}
       </p>
       <p>
-        <span className="text-maxYellow-100">{messageParts[0]}</span>
-        <span className="text-iced-100">/</span>
-        {messageParts[1]}
+        <span className="text-maxYellow-100">
+          {messageParts ? messageParts[0] : data.message}
+        </span>
+        {messageParts && (
+          <>
+            <span className="text-iced-100">/</span>
+            {messageParts[1]}
+          </>
+        )}
       </p>
       <div className="text-xs">
         <p>Progress: {data.job.progress}%</p>
         <p>Attempts: {data.job.attemptsMade}</p>
       </div>
       <div className="mt-6">
-        <span className="text-iced-100 mb-1 block">
-          Children
-          <span className="text-ash-100 text-xxs">
-            ({data.job.children.length})
-          </span>
-        </span>
         {hasChildren && (
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {children.map(childJob => (
-              <div key={childJob.id} className="mb-2 text-xs">
-                <p className="text-iced-neon">{childJob.name}</p>
-                <p>
-                  <span className="text-iced-200">Progress</span>{' '}
-                  {childJob.progress}%
-                </p>
-                <p>
-                  <span className="text-iced-200">Attempts</span>{' '}
-                  {childJob.attemptsMade}
-                </p>
-                {formatJobData[childJob.name] && (
-                  <div>{formatJobData[childJob.name](childJob.data)}</div>
-                )}
-              </div>
-            ))}
-          </div>
+          <>
+            <span className="text-iced-100 mb-1 block">
+              Children
+              <span className="text-ash-100 text-xxs">
+                ({data.job.children.length})
+              </span>
+            </span>
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {children.map(childJob => (
+                <div key={childJob.id} className="mb-2 text-xs">
+                  <p className="text-iced-neon">{childJob.name}</p>
+                  <p>
+                    <span className="text-iced-200">Progress</span>{' '}
+                    {childJob.progress}%
+                  </p>
+                  <p>
+                    <span className="text-iced-200">Attempts</span>{' '}
+                    {childJob.attemptsMade}
+                  </p>
+                  {formatJobData[childJob.name] && (
+                    <div>{formatJobData[childJob.name](childJob.data)}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
@@ -108,7 +118,7 @@ function JobInfo({ data }) {
 
 const Job = ({ job }) => {
   const { data, error } = useSWR(
-    `/api/market-index/status?jobId=${job.jobId}`,
+    `/api/market-index/status?jobId=${job.jobId}&queueName=${job.queueName}`,
     fetcher,
     { refreshInterval: 1000 }
   )
