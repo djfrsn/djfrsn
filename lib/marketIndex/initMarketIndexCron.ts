@@ -38,7 +38,7 @@ async function initMarketIndexCron(options: {
             { timeframe, marketIndex },
             {
               ...defaultJobOptions,
-              repeat: { cron: '*/10 * * * *' },
+              repeat: { cron: QUEUE.cron.marketIndexes },
             }
           )
         )
