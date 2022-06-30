@@ -14,7 +14,9 @@ async function getJobData(
   switch (true) {
     case queueName === QUEUE.refresh.marketIndex:
       res = await getSp500RefreshFlow(jobId)
-      return { job: res.job, children: res.children }
+      return res?.job
+        ? { job: res.job, children: res.children }
+        : { message: `Job ${jobId} not found` }
     case queueName === QUEUE.refresh.marketIndexes:
       res = await refreshMarketIndexesQueue.getJob(jobId)
       return {
