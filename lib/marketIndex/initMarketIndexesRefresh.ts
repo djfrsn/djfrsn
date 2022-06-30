@@ -19,16 +19,12 @@ interface MarketIndexesRefresh {
 async function initMarketIndexesRefresh(): Promise<MarketIndexesRefresh> {
   let result: MarketIndexesRefresh = {}
   const marketIndexes = await prisma.marketIndex.findMany()
-  const jobs: Promise<QueueJob>[] = []
-
-  await prisma.job.deleteMany({
-    where: { queueName: QUEUE.refresh.marketIndexes },
-  })
+  const queueJobs: Promise<QueueJob>[] = []
 
   marketIndexes.forEach(marketIndex => {
     TIMEFRAMES.forEach(timeframe => {
       // create queue for each timeframe available
-      jobs.push(
+      queueJobs.push(
         refreshMarketIndexesQueue.add(
           `refresh-${timeframe}-${marketIndex.name}`,
           { timeframe, marketIndex },
@@ -41,19 +37,27 @@ async function initMarketIndexesRefresh(): Promise<MarketIndexesRefresh> {
     })
   })
 
-  const queueJobs = await Promise.all(jobs)
+  const queue = await Promise.all(queueJobs)
 
-  const data = queueJobs.map(job => ({
-    name: job.name,
-    queueName: QUEUE.refresh.marketIndexes,
-    jobId: job.id,
-  }))
+  const whereArgs = { queueName: QUEUE.refresh.marketIndexes }
 
-  await prisma.job.createMany({ data })
+  const [_, __, jobs] = await prisma.$transaction([
+    prisma.job.deleteMany({
+      where: whereArgs,
+    }),
+    prisma.job.createMany({
+      data: queue.map(job => ({
+        name: job.name,
+        queueName: QUEUE.refresh.marketIndexes,
+        jobId: job.id,
+      })),
+    }),
+    prisma.job.findMany({
+      where: whereArgs,
+    }),
+  ])
 
-  result.jobs = await prisma.job.findMany({
-    where: { queueName: QUEUE.refresh.marketIndexes },
-  })
+  result.jobs = jobs
 
   return result
 }
