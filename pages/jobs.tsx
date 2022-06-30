@@ -123,8 +123,13 @@ const Job = ({ job }) => {
     { refreshInterval: 1000 }
   )
 
-  if (error) return <div>failed to load</div>
-  if (!data) return <Loading />
+  if (error) return <div className="mt-10">Job failed to load</div>
+  if (!data)
+    return (
+      <div className="mt-10">
+        <Loading />
+      </div>
+    )
 
   return (
     <article className="mt-10 ml-2">

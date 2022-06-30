@@ -1,23 +1,27 @@
 import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
-import { RefreshMarketIndexJob } from 'lib/interfaces';
+import { MarketIndexCronJob } from 'lib/interfaces';
+import handleMarketIndexJobRequest from 'lib/marketIndex/handleMarketIndexJobRequest';
 
 /**
  * Description: Runs after all tickers for a given index have been updated(see: refreshTicker.ts)
  * @constructor
  */
 export default async function refreshMarketIndexCronProcessor(
-  job: Job<RefreshMarketIndexJob>
+  job: Job<MarketIndexCronJob>
 ) {
   console.log('start refresh market indexes cron', job.name)
 
   switch (true) {
     case QUEUE.refresh.marketIndexes === job.queueName:
-      // TODO: create worker to call handleMarketIndexJobRequest from data
-      // const { error, job } = await handleMarketIndexJobRequest(request.body)
-      console.log('init market index', job.data)
+      console.log('data', job.data)
+      const { error, job: dbJob } = await handleMarketIndexJobRequest({
+        marketIndexId: job.data.marketIndex.id,
+      })
+      console.log('init market index', dbJob)
+      console.log('err', error)
       await job.updateProgress(100)
-      break
+      return 'gig'
     default:
       console.log(
         `refreshMarketIndex method not found to process job: ${job.name}`

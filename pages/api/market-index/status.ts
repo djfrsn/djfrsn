@@ -12,8 +12,9 @@ async function getJobData(
   let res
 
   switch (true) {
-    case queueName === QUEUE.refresh.sp500:
-      return await getSp500RefreshFlow(jobId)
+    case queueName === QUEUE.refresh.marketIndex:
+      res = await getSp500RefreshFlow(jobId)
+      return { job: res.job, children: res.children }
     case queueName === QUEUE.refresh.marketIndexes:
       res = await refreshMarketIndexesQueue.getJob(jobId)
       return {
@@ -46,7 +47,7 @@ export default async function handler(
     if (validJobId && validQueueName) {
       const data = await getJobData(queueName, jobId)
 
-      if (data.job) {
+      if (data?.job) {
         const state = await data.job.getState()
         const dependencies = await data.job.getDependencies()
         const totalJobCount = getDependenciesCount(dependencies)

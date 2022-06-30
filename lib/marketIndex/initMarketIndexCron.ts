@@ -31,14 +31,14 @@ async function initMarketIndexCron(options: {
 
     marketIndexes.forEach(marketIndex => {
       TIMEFRAMES.forEach(timeframe => {
-        // create queue for each timeframe available
+        // create job for each timeframe available
         queueJobs.push(
           refreshMarketIndexesQueue.add(
             `refresh-${timeframe}-${marketIndex.name}`,
             { timeframe, marketIndex },
             {
               ...defaultJobOptions,
-              repeat: { cron: '*/10 * * * * *' },
+              repeat: { cron: '*/10 * * * *' },
             }
           )
         )

@@ -33,7 +33,7 @@ export default async function refreshMarketIndexTickerProcessor(
       const query =
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
           ? `timeseries=${dayDiff}`
-          : 'from=2020-03-12&to=2022-6-21'
+          : ''
       // const query =
       //   dayDiff > 1000
       //     ? `timeseries=${dayDiff}`
