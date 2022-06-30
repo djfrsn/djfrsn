@@ -58,14 +58,16 @@ function JobInfo({ data }) {
     ? data.message.split('/')
     : null
 
+  console.log('render')
+
   return (
     <div>
       <p>
         <span className="text-iced-200">State</span> {data.state}
       </p>
       <p className="text-xs">
-        <span className="text-iced-200">Created</span>{' '}
-        {(() => createdAt.fromNow())()} - {createdAt.format('M-D h:ma')}
+        <span className="text-iced-200">Created</span> {createdAt.fromNow()} -{' '}
+        {createdAt.format('M-D h:mma')}
       </p>
       <p>
         <span className="text-maxYellow-100">
@@ -143,7 +145,7 @@ const Job = ({ job }) => {
       {data ? (
         <div>
           {data.state ? (
-            <JobInfo data={data} />
+            <JobInfo data={data} key={data.timestamp} />
           ) : (
             <span className="text-crayolaRed-100">{data.message}</span>
           )}

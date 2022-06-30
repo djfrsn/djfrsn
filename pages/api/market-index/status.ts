@@ -3,6 +3,7 @@ import cronstrue from 'cronstrue';
 import { QUEUE } from 'lib/const';
 import { getSp500RefreshFlow, refreshMarketIndexesQueue } from 'lib/db/queue';
 import { getDependenciesCount } from 'lib/utils/bullmq';
+import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 async function getJobData(
@@ -56,6 +57,7 @@ export default async function handler(
         const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
         // BUG: job.children doesn't return all children
         result = {
+          timestamp: moment().valueOf(),
           state,
           message: data.message
             ? data.message
