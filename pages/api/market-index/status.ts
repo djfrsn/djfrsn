@@ -18,7 +18,9 @@ async function getJobData(
       res = await refreshMarketIndexesQueue.getJob(jobId)
       return {
         job: res,
-        message: `Scheduled: ${cronstrue.toString(res?.opts.repeat.cron)}`,
+        message: res?.opts
+          ? `Scheduled: ${cronstrue.toString(res.opts.repeat.cron)}`
+          : `Job ${jobId} not found`,
       }
   }
 }
@@ -44,12 +46,11 @@ export default async function handler(
     if (validJobId && validQueueName) {
       const data = await getJobData(queueName, jobId)
 
-      if (data) {
+      if (data.job) {
         const state = await data.job.getState()
         const dependencies = await data.job.getDependencies()
         const totalJobCount = getDependenciesCount(dependencies)
         const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
-
         // BUG: job.children doesn't return all children
         result = {
           state,
