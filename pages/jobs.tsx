@@ -58,8 +58,6 @@ function JobInfo({ data }) {
     ? data.message.split('/')
     : null
 
-  console.log('render')
-
   return (
     <div>
       <p>
