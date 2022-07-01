@@ -1,7 +1,10 @@
-export async function getServerSideProps(context) {
+import { createClient } from 'prismicio';
+
+export async function getServerSideProps() {
+  const client = createClient()
   const [page, global] = await Promise.all([
-    context.client.getSingle('homepage'),
-    context.client.getSingle('global'),
+    client.getSingle('homepage'),
+    client.getSingle('global'),
   ])
 
   return {
