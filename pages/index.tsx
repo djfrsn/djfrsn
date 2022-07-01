@@ -1,6 +1,6 @@
 import { createClient } from 'prismicio';
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const client = createClient()
   const [page, global] = await Promise.all([
     client.getSingle('homepage'),
