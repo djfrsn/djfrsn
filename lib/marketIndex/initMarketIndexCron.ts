@@ -27,6 +27,7 @@ async function initMarketIndexCron(options: {
 
   if (validKey(options.access_key)) {
     const marketIndexes = await prisma.marketIndex.findMany()
+
     const queueJobs: Promise<QueueJob>[] = []
 
     marketIndexes.forEach(marketIndex => {

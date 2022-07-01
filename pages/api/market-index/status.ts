@@ -55,7 +55,7 @@ export default async function handler(
         const dependencies = await data.job.getDependencies()
         const totalJobCount = getDependenciesCount(dependencies)
         const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
-        // BUG: job.children doesn't return all children
+        // BUG: job.children doesn't return all children at the end of job processing
         result = {
           timestamp: moment().valueOf(),
           state,
