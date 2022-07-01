@@ -47,13 +47,13 @@ export default async function refreshMarketIndexTickerProcessor(
       if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
       else onComplete.push(job.updateProgress(100))
 
-      let progress = Math.floor(
-        job.data.progressIncrement + Number(parent.job.progress)
-      )
+      let progress = job.data.progressIncrement + Number(parent.job.progress)
 
       await Promise.all([
         ...onComplete,
-        parent.job.updateProgress(progress > 100 ? 100 : progress),
+        parent.job.updateProgress(
+          progress > 99.9 ? 100 : Number(progress.toFixed(2))
+        ),
       ])
       break
     default:
