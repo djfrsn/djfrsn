@@ -3,6 +3,7 @@ import cronstrue from 'cronstrue';
 import { QUEUE } from 'lib/const';
 import { getSp500RefreshFlow, refreshMarketIndexesQueue } from 'lib/db/queue';
 import { getDependenciesCount } from 'lib/utils/bullmq';
+import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 async function getJobData(
@@ -12,13 +13,18 @@ async function getJobData(
   let res
 
   switch (true) {
-    case queueName === QUEUE.refresh.sp500:
-      return await getSp500RefreshFlow(jobId)
+    case queueName === QUEUE.refresh.marketIndex:
+      res = await getSp500RefreshFlow(jobId)
+      return res?.job
+        ? { job: res.job, children: res.children }
+        : { message: `Job ${jobId} not found` }
     case queueName === QUEUE.refresh.marketIndexes:
       res = await refreshMarketIndexesQueue.getJob(jobId)
       return {
         job: res,
-        message: `Scheduled: ${cronstrue.toString(res.opts.repeat.cron)}`,
+        message: res?.opts
+          ? `Scheduled: ${cronstrue.toString(res.opts.repeat.cron)}`
+          : `Job ${jobId} not found`,
       }
   }
 }
@@ -44,14 +50,14 @@ export default async function handler(
     if (validJobId && validQueueName) {
       const data = await getJobData(queueName, jobId)
 
-      if (data) {
+      if (data?.job) {
         const state = await data.job.getState()
         const dependencies = await data.job.getDependencies()
         const totalJobCount = getDependenciesCount(dependencies)
         const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
-
-        // BUG: job.children doesn't return all children
+        // BUG: job.children doesn't return all children at the end of job processing
         result = {
+          timestamp: moment().valueOf(),
           state,
           message: data.message
             ? data.message

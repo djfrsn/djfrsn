@@ -9,61 +9,71 @@ interface MarketIndexesRefresh {
   jobs?: Job[]
 }
 
+function validKey(key: string) {
+  return key === process.env.ACCESS_KEY
+}
+
 /**
  * Description: Create a repeatable job to refresh data for each market index on all timeframes
  * NOTE: Preference would be to add the repeat option to each individual marketIndex flow, but BullMQ flows don't support repeat the option
+ * IMPORTANT: Bull is smart enough not to add the same repeatable job if the repeat options are the same.
  * @constructor
  * @see {@link https://docs.bullmq.io/guide/jobs/repeatable}
  */
-async function initMarketIndexesRefresh(): Promise<MarketIndexesRefresh> {
+async function initMarketIndexCron(options: {
+  access_key: string
+}): Promise<MarketIndexesRefresh> {
   let result: MarketIndexesRefresh = {}
-  // if prisma.job exist with this queueName...return job and message we have scheduled
-  const refreshJob = await prisma.job.findFirst({
-    where: { queueName: QUEUE.refresh.marketIndexes },
-  })
-  if (!refreshJob) {
+
+  if (validKey(options.access_key)) {
     const marketIndexes = await prisma.marketIndex.findMany()
-    // get all market indexes and schedule job for each market based on timeframe
-    const jobs: Promise<QueueJob>[] = []
+
+    const queueJobs: Promise<QueueJob>[] = []
+
     marketIndexes.forEach(marketIndex => {
       TIMEFRAMES.forEach(timeframe => {
-        // create queue for each timeframe available, pass marketIndexes and timeframe as data
-        jobs.push(
+        // create job for each timeframe available
+        queueJobs.push(
           refreshMarketIndexesQueue.add(
             `refresh-${timeframe}-${marketIndex.name}`,
             { timeframe, marketIndex },
             {
               ...defaultJobOptions,
-              repeat: { cron: '*/10 * * * * *' },
+              repeat: { cron: QUEUE.cron.marketIndexes },
             }
           )
         )
       })
     })
-    // return results of each job created as jobs
-    const queueJobs = await Promise.all(jobs)
 
-    const data = queueJobs.map(job => ({
-      name: job.name,
-      queueName: QUEUE.refresh.marketIndexes,
-      jobId: job.id,
-    }))
+    const queue = await Promise.all(queueJobs)
 
-    await prisma.job.createMany({ data })
+    const whereArgs = { queueName: QUEUE.refresh.marketIndexes }
 
-    result.jobs = await prisma.job.findMany({
-      where: { queueName: QUEUE.refresh.marketIndexes },
-    })
+    const [_, __, jobs] = await prisma.$transaction([
+      prisma.job.deleteMany({
+        where: whereArgs,
+      }),
+      prisma.job.createMany({
+        data: queue.map(job => ({
+          name: job.name,
+          queueName: QUEUE.refresh.marketIndexes,
+          jobId: job.id,
+        })),
+      }),
+      prisma.job.findMany({
+        where: whereArgs,
+      }),
+    ])
 
-    // await prisma.createMany
+    result.jobs = jobs
   } else {
     result.error = {
-      message: 'MarketIndexesRefresh is already initialized',
-      data: refreshJob,
+      message: 'Invalid access_key',
     }
   }
 
   return result
 }
 
-export default initMarketIndexesRefresh
+export default initMarketIndexCron

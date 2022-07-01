@@ -30,9 +30,8 @@ async function createSP500RefreshJob(
     tickerList.length,
     'tickers'
   )
-  const progressIncrement = Number((100 / tickerListChunks.length).toFixed(2))
 
-  console.log('progressIncrement', progressIncrement)
+  const progressIncrement = Number((100 / tickerListChunks.length).toFixed(2))
 
   const result = await sp500RefreshFlow.add({
     name,
@@ -64,16 +63,21 @@ async function createSP500RefreshJob(
     }),
   })
 
+  let job
+  const jobExist = prisma.job.findFirst({ where: { name } })
   const jobData = {
     name,
     jobId: result.job.id,
     queueName,
   }
-  const job = await prisma.job.upsert({
-    where: { modelId: marketIndex.id },
-    create: jobData,
-    update: jobData,
-  })
+
+  if (jobExist) {
+    job = prisma.job.update({ where: { name }, data: jobData })
+  } else {
+    job = await prisma.job.create({
+      data: jobData,
+    })
+  }
 
   return job
 }

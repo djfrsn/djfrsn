@@ -46,8 +46,8 @@ model Job {
   updatedAt DateTime @updatedAt @default(now())
   modelId   Int? @unique
   modelName String?
-  jobId     String?
-  name      String?
+  jobId     String? @unique
+  name      String? @unique
   queueName String?
 }
 

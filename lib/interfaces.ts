@@ -15,6 +15,15 @@ export interface IndexJob {
   job?: Job
 }
 
+export interface MarketIndexCronJob {
+  timeframe: string
+  marketIndex: MarketIndex
+}
+export interface RefreshMarketIndexJob {
+  id: number
+  name: string
+}
+
 export interface RefreshMarketIndexJob {
   id: number
   name: string

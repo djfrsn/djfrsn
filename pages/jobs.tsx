@@ -1,5 +1,6 @@
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
+import ProgressBar from 'components/ProgressBar';
 import { request } from 'graphql-request';
 import gql from 'graphql-tag';
 import { QUEUE } from 'lib/const';
@@ -50,8 +51,17 @@ const formatJobData = {
   },
 }
 
+function JobInfoTime({ date }: { date: string }) {
+  const mDate = moment(date)
+  return (
+    <p className="text-xs">
+      <span className="text-iced-200">Created</span> {mDate.fromNow()} -{' '}
+      {mDate.format('M-D h:mma')}
+    </p>
+  )
+}
+
 function JobInfo({ data }) {
-  const createdAt = moment(data.job.createdAt)
   const children = data.job?.children
   const hasChildren = children?.length > 0
   const messageParts = data.message.includes('/')
@@ -63,10 +73,7 @@ function JobInfo({ data }) {
       <p>
         <span className="text-iced-200">State</span> {data.state}
       </p>
-      <p className="text-xs">
-        <span className="text-iced-200">Created</span>{' '}
-        {(() => createdAt.fromNow())()} - {createdAt.format('M-D h:ma')}
-      </p>
+      <JobInfoTime date={data.date} key={data.timestamp} />
       <p>
         <span className="text-maxYellow-100">
           {messageParts ? messageParts[0] : data.message}
@@ -79,7 +86,13 @@ function JobInfo({ data }) {
         )}
       </p>
       <div className="text-xs">
-        <p>Progress: {data.job.progress}%</p>
+        <div className="flex">
+          Progress:{' '}
+          <ProgressBar
+            className="ml-2 w-1/4 mb-1"
+            progress={data.job.progress}
+          />
+        </div>
         <p>Attempts: {data.job.attemptsMade}</p>
       </div>
       <div className="mt-6">
@@ -96,8 +109,10 @@ function JobInfo({ data }) {
                 <div key={childJob.id} className="mb-2 text-xs">
                   <p className="text-iced-neon">{childJob.name}</p>
                   <p>
-                    <span className="text-iced-200">Progress</span>{' '}
-                    {childJob.progress}%
+                    <ProgressBar
+                      className=" mb-1"
+                      progress={childJob.progress}
+                    />
                   </p>
                   <p>
                     <span className="text-iced-200">Attempts</span>{' '}
@@ -123,8 +138,13 @@ const Job = ({ job }) => {
     { refreshInterval: 1000 }
   )
 
-  if (error) return <div>failed to load</div>
-  if (!data) return <Loading />
+  if (error) return <div className="mt-10">Job failed to load</div>
+  if (!data)
+    return (
+      <div className="mt-10">
+        <Loading />
+      </div>
+    )
 
   return (
     <article className="mt-10 ml-2">

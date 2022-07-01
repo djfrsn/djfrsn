@@ -37,7 +37,7 @@ export default async function createSP500Tickers(
       const updateTickerList = []
       const createTickerList = tickerList.filter(ticker => {
         const existingTicker = existingTickersDict[ticker.symbol]
-        const shouldUpdate = existingTicker.marketIndexId !== marketIndexId
+        const shouldUpdate = existingTicker?.marketIndexId !== marketIndexId
 
         if (existingTicker && shouldUpdate) {
           updateTickerList.push(ticker)

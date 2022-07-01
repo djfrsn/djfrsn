@@ -78,7 +78,6 @@ export default async function createSp500TickerInfo(
     if (tickerPriceData.length) {
       res = await prisma.tickerInfo.createMany({
         data: tickerPriceData,
-        skipDuplicates: true,
       })
     }
 

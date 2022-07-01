@@ -20,11 +20,6 @@ export default async function refreshMarketIndexProcessor(
           where: { id: job.data.id },
           data: { lastRefreshed: getMostRecentBusinessDay().toISOString() },
         }),
-        // prisma.tickerInfo.deleteMany(),
-        // prisma.job.update({
-        //   where: { modelId: job.data.id },
-        //   data: { jobId: null },
-        // }),
       ])
       await job.updateProgress(100)
       break

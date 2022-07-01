@@ -1,7 +1,7 @@
 import getJob from 'lib/db/getJob';
 import prisma from 'lib/db/prisma';
 import { IndexJob } from 'lib/interfaces';
-import initMarketIndexFlow from 'lib/marketIndex/initMarketIndexFlow';
+import createMarketIndexJob from 'lib/marketIndex/createMarketIndexJob';
 
 interface handleMarketIndexJobRequestOptions {
   marketIndexId: number | string
@@ -14,10 +14,15 @@ async function handleMarketIndexJobRequest(
   let result: IndexJob = {}
 
   if (marketIndexId) {
-    await prisma.job.update({
-      where: { modelId: Number(marketIndexId) },
-      data: { jobId: null },
-    })
+    const prevJobWhereArgs = { modelId: Number(marketIndexId) }
+    const previousJob = await prisma.job.findFirst({ where: prevJobWhereArgs })
+    // remove the previous job before we create the next
+    if (previousJob)
+      await prisma.job.update({
+        where: prevJobWhereArgs,
+        data: { jobId: null },
+      })
+
     const marketIndex = await prisma.marketIndex.findFirst({
       where: { id: Number(marketIndexId) },
     })
@@ -26,7 +31,7 @@ async function handleMarketIndexJobRequest(
       result = await getJob({ modelId: marketIndex.id })
 
       if (!result.job || !result.job?.jobId) {
-        result = await initMarketIndexFlow(marketIndex)
+        result = await createMarketIndexJob(marketIndex)
       }
     } else {
       result.error = {
