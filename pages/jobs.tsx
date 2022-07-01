@@ -88,10 +88,7 @@ function JobInfo({ data }) {
       <div className="text-xs">
         <div className="flex">
           Progress:{' '}
-          <ProgressBar
-            className="ml-2 w-1/4 mb-1"
-            progress={data.job.progress}
-          />
+          <ProgressBar className="ml-2 w-1/4 mb-1" value={data.job.progress} />
         </div>
         <p>Attempts: {data.job.attemptsMade}</p>
       </div>
@@ -109,10 +106,7 @@ function JobInfo({ data }) {
                 <div key={childJob.id} className="mb-2 text-xs">
                   <p className="text-iced-neon">{childJob.name}</p>
                   <p>
-                    <ProgressBar
-                      className=" mb-1"
-                      progress={childJob.progress}
-                    />
+                    <ProgressBar className=" mb-1" value={childJob.progress} />
                   </p>
                   <p>
                     <span className="text-iced-200">Attempts</span>{' '}
