@@ -30,10 +30,11 @@ export default async function refreshMarketIndexTickerProcessor(
       const dayDiff = momentBusiness(mostRecentBusinessDay).businessDiff(
         lastRefreshed
       )
-      const query =
-        dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
-          ? `timeseries=${dayDiff}`
-          : ''
+      const query = 'timeseries=1'
+      // const query =
+      //   dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
+      //     ? `timeseries=${dayDiff}`
+      //     : ''
       // const query =
       //   dayDiff > 1000
       //     ? `timeseries=${dayDiff}`
@@ -44,8 +45,9 @@ export default async function refreshMarketIndexTickerProcessor(
       console.log('should refresh', shouldRefresh)
       const onComplete = []
 
-      if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
-      else onComplete.push(job.updateProgress(100))
+      await createSP500TickerInfo(job.data, { query, job })
+      // if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
+      // else onComplete.push(job.updateProgress(100))
 
       let progress = job.data.progressIncrement + Number(parent.job.progress)
 
