@@ -7,13 +7,18 @@ export async function getStaticProps() {
     client.getSingle('global'),
   ])
 
+  console.log('PATH', {
+    destination: `/${page.data.redirectPath.uid}`,
+    permanent: false,
+  })
+
   return {
     props: {
       page,
       global,
       redirect: {
         destination: `/${page.data.redirectPath.uid}`,
-        fallback: true,
+        permanent: false,
       },
     },
   }
