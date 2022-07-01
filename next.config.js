@@ -15,7 +15,7 @@ const moduleExports = {
         new TerserPlugin({
           terserOptions: {
             compress: {
-              drop_console: true,
+              // drop_console: true,
             },
           },
         }),
@@ -23,6 +23,15 @@ const moduleExports = {
     }
 
     return config
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/sp500',
+        permanent: false,
+      },
+    ]
   },
 }
 
