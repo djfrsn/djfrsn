@@ -21,7 +21,6 @@ export default async function refreshMarketIndexCronProcessor(
       console.log('init market index', dbJob)
       console.log('err', error)
       await job.updateProgress(100)
-      return 'gig'
     default:
       console.log(
         `refreshMarketIndex method not found to process job: ${job.name}`
