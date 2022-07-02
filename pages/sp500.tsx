@@ -6,6 +6,7 @@ import Layout from 'components/Layout';
 import MarketIndex from 'components/MarketIndex';
 import gql from 'graphql-tag';
 import { MARKET_INDEX } from 'lib/const';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -67,7 +68,14 @@ const sp500Page = ({ page, global }) => {
         {data?.marketIndex && (
           <>
             <div className="flex flex-row">
-              <h1>{data.marketIndex.displayName}</h1>
+              <h1
+                className="tooltip"
+                data-tip={`Last refreshed: ${moment(
+                  data.marketIndex.date
+                ).fromNow()}`}
+              >
+                {data.marketIndex.displayName}
+              </h1>
               <span
                 className={classnames('ml-1', {
                   hidden: !days,
