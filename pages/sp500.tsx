@@ -71,7 +71,7 @@ const sp500Page = ({ page, global }) => {
               <h1
                 className="tooltip"
                 data-tip={`Last refreshed: ${moment(
-                  data.marketIndex.date
+                  data.marketIndex.lastRefreshed
                 ).fromNow()}`}
               >
                 {data.marketIndex.displayName}
