@@ -23,7 +23,8 @@
     "publish": "npm publish --access public",
     "log": "heroku logs -a blockwizards",
     "log:tail": "heroku logs -a blockwizards  --tail",
-    "workers": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
+    "workers": "node dist/lib/workers/index.js",
+    "workers:dev": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
     "bull-board": "npm run ts-node ts-node lib/bull-board"
   },
   "nodemonConfig": {
@@ -73,7 +74,8 @@
     "react-icons": "^4.3.1",
     "react-markdown": "^8.0.2",
     "swr": "^1.3.0",
-    "terser-webpack-plugin": "^5.3.3"
+    "terser-webpack-plugin": "^5.3.3",
+    "throng": "^5.0.0"
   },
   "devDependencies": {
     "@bull-board/express": "^4.0.0",

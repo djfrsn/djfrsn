@@ -1,2 +1,2 @@
-web: node server.js
-worker: node worker.js
+web: npm start
+worker: npm run workers
