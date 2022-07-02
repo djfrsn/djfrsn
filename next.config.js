@@ -24,6 +24,15 @@ const moduleExports = {
 
     return config
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/sp500',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 module.exports = withBundleAnalyzer(moduleExports)
