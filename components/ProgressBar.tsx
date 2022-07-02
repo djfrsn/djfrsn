@@ -5,7 +5,7 @@ export default function ProgressBar({
   progress,
 }: {
   className: string
-  progress: number
+  progress: number | string
 }) {
   return (
     <div className={classnames('flex flex-col w-full', className)}>

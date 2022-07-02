@@ -108,12 +108,7 @@ function JobInfo({ data }) {
               {children.map(childJob => (
                 <div key={childJob.id} className="mb-2 text-xs">
                   <p className="text-iced-neon">{childJob.name}</p>
-                  <p>
-                    <ProgressBar
-                      className=" mb-1"
-                      progress={childJob.progress}
-                    />
-                  </p>
+                  <ProgressBar className=" mb-1" progress={childJob.progress} />
                   <p>
                     <span className="text-iced-200">Attempts</span>{' '}
                     {childJob.attemptsMade}
