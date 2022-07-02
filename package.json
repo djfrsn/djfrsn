@@ -70,7 +70,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.3.1",
     "react-markdown": "^8.0.2",
-    "swr": "^1.3.0"
+    "swr": "^1.3.0",
+    "terser-webpack-plugin": "^5.3.3"
   },
   "devDependencies": {
     "@bull-board/express": "^4.0.0",
@@ -87,7 +88,6 @@
     "prisma": "^3.15.2",
     "slice-machine-ui": "^0.3.8",
     "tailwindcss": "^3.0.24",
-    "terser-webpack-plugin": "^5.3.3",
     "ts-node": "10.7.0",
     "tsconfig-paths": "^4.0.0",
     "typescript": "4.6.4"
