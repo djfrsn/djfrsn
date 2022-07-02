@@ -1,10 +1,8 @@
 import './global.css';
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Global, MantineProvider } from '@mantine/core';
 import { PrismicPreview } from '@prismicio/next';
 import { PrismicProvider } from '@prismicio/react';
-import theme, { fonts, globalStyles } from 'mantine.theme';
 import Link from 'next/link';
 
 import { linkResolver, repositoryName } from '../prismicio';
@@ -13,6 +11,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   uri: '/api',
 })
+
 function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
@@ -25,11 +24,7 @@ function MyApp({ Component, pageProps }) {
         )}
       >
         <PrismicPreview repositoryName={repositoryName}>
-          <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-            <Global styles={globalStyles} />
-            <Global styles={fonts} />
-            <Component {...pageProps} />{' '}
-          </MantineProvider>
+          <Component {...pageProps} />
         </PrismicPreview>
       </PrismicProvider>
     </ApolloProvider>
