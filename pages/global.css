@@ -2,55 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Terminator font: https://www.fontspace.com/terminator-cyr-font-f756 */
-/* Incosolata font: https://fonts.google.com/specimen/Inconsolata?query=incon#standard-styles */
-
-@font-face {
-  font-family: 'Terminator';
-  src: url('/fonts/terminator-webfont.woff2') format('woff2'),
-    url('/fonts/terminator-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-html {
-  @apply bg-gradient-to-t from-wash-200 to-wash-300 bg-no-repeat bg-fixed h-full font-body;
-}
-
-body {
-  @apply h-full;
-}
-
 body,
 body > div {
   @apply flex w-full m-0;
 }
 body > div {
   @apply flex w-full h-auto m-0;
-}
-
-h1 {
-  @apply text-3xl;
-}
-
-h2 {
-  @apply text-2xl;
-}
-
-h3 {
-  @apply text-xl;
-}
-
-h4 {
-  @apply text-lg;
-}
-
-h5 {
-  @apply text-base;
-}
-
-h6 {
-  @apply text-sm;
 }
 
 h1,

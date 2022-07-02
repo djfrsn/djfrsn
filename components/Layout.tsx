@@ -54,6 +54,10 @@ export default function Layout({
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0a131e" />
         <meta name="msapplication-TileColor" content="#2b5797" />
         <meta name="theme-color" content="#ffffff" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <div className="relative container mx-auto px-6 py-8">
         <ModalContext.Provider value={{ modalOpen }}>

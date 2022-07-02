@@ -2,17 +2,17 @@ import classnames from 'classnames';
 
 export default function ProgressBar({
   className,
-  progress,
+  value,
 }: {
   className: string
-  progress: number | string
+  value: number | string
 }) {
   return (
     <div className={classnames('flex flex-col w-full', className)}>
-      <span className="text-xxs">{progress}%</span>
+      <span className="text-xxs">{value}%</span>
       <div
         className="transition-all duration-300 rounded-sm bg-gradient-to-r from-iced-100 to-ash-100 h-1 max-w-full"
-        style={{ width: `${progress}%` }}
+        style={{ width: `${value}%` }}
       />
     </div>
   )
