@@ -35,9 +35,7 @@
   "dependencies": {
     "@apollo/client": "3.6.4",
     "@bull-board/ui": "^4.0.0",
-    "@mantine/core": "^4.2.11",
     "@mantine/hooks": "^4.2.11",
-    "@mantine/next": "^4.2.11",
     "@next/bundle-analyzer": "^12.1.6",
     "@prisma/client": "^3.15.2",
     "@prismicio/client": "^6.4.3",
