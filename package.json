@@ -23,6 +23,8 @@
     "ts-node": "ts-node -r dotenv/config",
     "slicemachine": "start-slicemachine",
     "log": "heroku logs -a blockwizards",
+    "log:workers:pm2": "pm2 log trinity",
+    "log:workers:tail": "heroku logs -a blockwizards --source app --dyno worker --tail",
     "log:tail": "heroku logs -a blockwizards --tail",
     "workers": "pm2 start --name trinity dist/lib/workers/index.js",
     "workers:dev": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
