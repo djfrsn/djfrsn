@@ -8,6 +8,8 @@ import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
 import { createWorker } from './worker.factory';
 
 const start = () => {
+  console.info('Starting workers...')
+
   const {
     worker: refreshMarketIndexCronWorker,
     scheduler: refreshMarketIndexCronWorkerScheduler,
@@ -27,7 +29,7 @@ const start = () => {
     5
   )
   const onShutdown = async () => {
-    console.info('SIGTERM signal received: closing queues')
+    console.info('SIGTERM signal received: closing workers')
 
     await refreshMarketIndexCronWorker.close()
     await refreshMarketIndexCronWorkerScheduler.close()

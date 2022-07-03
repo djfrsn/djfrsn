@@ -6,9 +6,10 @@
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
     "dev": "NODE_OPTIONS='--no-experimental-fetch' next",
-    "build": "npm run setup && next build",
-    "build:workers": "NODE_ENV=production webpack",
+    "build": "npm run setup && next build && npm run build:workers",
+    "build:workers": "npm run clean && NODE_ENV=production webpack",
     "build:dev": "npm run setup:dev && next build",
+    "clean": "rm -rf dist",
     "start": "next start",
     "setup": "npm run generate && npm run migrate:prisma",
     "setup:dev": "npm run generate && npm run migrate:prisma:dev",
@@ -97,7 +98,8 @@
     "ts-node": "10.7.0",
     "tsconfig-paths": "^4.0.0",
     "typescript": "4.6.4",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "prisma": {
     "seed": "npm run ts-node prisma/seed.ts"

@@ -7,3 +7,4 @@ prisma/dev.db-journal
 generated/
 pm-bw.todo
 .env
+dist
