@@ -1,11 +1,11 @@
 {
   "name": "@trinityresearch/app",
   "version": "0.1.4",
-  "description": "Build new apps quickly",
+  "description": "TBD",
   "main": "lib/index.ts",
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "dev": "NODE_OPTIONS='--no-experimental-fetch' next",
+    "dev": "NODE_OPTIONS='--no-experimental-fetch' next & npm run workers:dev",
     "build": "npm run setup && next build && npm run build:workers",
     "build:workers": "npm run clean && NODE_ENV=production webpack",
     "build:dev": "npm run setup:dev && next build",
@@ -22,10 +22,9 @@
     "studio": "npx prisma studio",
     "ts-node": "ts-node -r dotenv/config",
     "slicemachine": "start-slicemachine",
-    "publish": "npm publish --access public",
     "log": "heroku logs -a blockwizards",
     "log:tail": "heroku logs -a blockwizards  --tail",
-    "workers": "node dist/lib/workers/index.js",
+    "workers": "pm2 start --name trinity dist/lib/workers/index.js",
     "workers:dev": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
     "bull-board": "npm run ts-node ts-node lib/bull-board"
   },
@@ -70,14 +69,14 @@
     "nexus": "1.3.0",
     "npm": "^8.13.1",
     "p-queue": "^6.6.2",
+    "pm2": "^5.2.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.3.1",
     "react-markdown": "^8.0.2",
     "swr": "^1.3.0",
-    "terser-webpack-plugin": "^5.3.3",
-    "throng": "^5.0.0"
+    "terser-webpack-plugin": "^5.3.3"
   },
   "devDependencies": {
     "@bull-board/express": "^4.0.0",

@@ -1,6 +1,5 @@
 import { QUEUE } from 'lib/const';
 import gracefulShutdown from 'lib/utils/gracefulShutdown';
-import throng from 'throng';
 
 import marketIndexCronProcessor from './marketIndex/cron';
 import refreshMarketIndexProcessor from './marketIndex/refresh';
@@ -28,6 +27,7 @@ const start = () => {
     refreshMarketIndexTickerProcessor,
     5
   )
+
   const onShutdown = async () => {
     console.info('SIGTERM signal received: closing workers')
 
@@ -46,6 +46,10 @@ const start = () => {
   gracefulShutdown(() => {
     process.removeAllListeners('SIGTERM')
   })
+
+  console.info('Workers startup complete')
 }
 
-throng({ worker: start, count: 1 })
+start()
+
+export default start
