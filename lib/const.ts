@@ -17,7 +17,7 @@ export const TIMEFRAMES = Object.keys(MARKET_INTERVAL)
 
 export const QUEUE = {
   refresh: {
-    sp500: 'refresh-sp500',
+    sp500: 'sp500',
     sp500TickerInfo: 'refresh-sp500-ticker-info',
     marketIndexes: 'refresh-market-indexes',
     marketIndex: 'refresh-market-index',
