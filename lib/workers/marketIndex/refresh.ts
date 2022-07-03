@@ -15,12 +15,18 @@ export default async function refreshMarketIndexProcessor(
 
   switch (true) {
     case QUEUE.refresh.sp500 === job.name:
-      await Promise.all([
-        prisma.marketIndex.update({
-          where: { id: job.data.id },
-          data: { lastRefreshed: moment().utc().toISOString() },
-        }),
-      ])
+      console.log('job.data', job.data)
+      const marketIndex = await prisma.marketIndex.findFirst({
+        where: { id: job.data.id },
+      })
+      if (marketIndex) {
+        await Promise.all([
+          prisma.marketIndex.update({
+            where: { id: job.data.id },
+            data: { lastRefreshed: moment().utc().toISOString() },
+          }),
+        ])
+      }
       await job.updateProgress(100)
       break
     default:
