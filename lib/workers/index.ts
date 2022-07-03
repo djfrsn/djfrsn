@@ -6,40 +6,50 @@ import refreshMarketIndexProcessor from './marketIndex/refresh';
 import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
 import { createWorker } from './worker.factory';
 
-const {
-  worker: refreshMarketIndexCronWorker,
-  scheduler: refreshMarketIndexCronWorkerScheduler,
-} = createWorker(QUEUE.refresh.marketIndexes, marketIndexCronProcessor)
+const start = () => {
+  console.info('Starting workers...')
 
-const {
-  worker: refreshMarketIndexWorker,
-  scheduler: refreshMarketIndexWorkerScheduler,
-} = createWorker(QUEUE.refresh.marketIndex, refreshMarketIndexProcessor)
+  const {
+    worker: refreshMarketIndexCronWorker,
+    scheduler: refreshMarketIndexCronWorkerScheduler,
+  } = createWorker(QUEUE.refresh.marketIndexes, marketIndexCronProcessor)
 
-const {
-  worker: refreshMarketIndexTickerWorker,
-  scheduler: refreshMarketIndexTickerWorkerScheduler,
-} = createWorker(
-  QUEUE.refresh.marketIndexTicker,
-  refreshMarketIndexTickerProcessor,
-  5
-)
+  const {
+    worker: refreshMarketIndexWorker,
+    scheduler: refreshMarketIndexWorkerScheduler,
+  } = createWorker(QUEUE.refresh.marketIndex, refreshMarketIndexProcessor)
 
-const onShutdown = async () => {
-  console.info('SIGTERM signal received: closing queues')
+  const {
+    worker: refreshMarketIndexTickerWorker,
+    scheduler: refreshMarketIndexTickerWorkerScheduler,
+  } = createWorker(
+    QUEUE.refresh.marketIndexTicker,
+    refreshMarketIndexTickerProcessor,
+    5
+  )
 
-  await refreshMarketIndexCronWorker.close()
-  await refreshMarketIndexCronWorkerScheduler.close()
-  await refreshMarketIndexWorker.close()
-  await refreshMarketIndexWorkerScheduler.close()
-  await refreshMarketIndexTickerWorker.close()
-  await refreshMarketIndexTickerWorkerScheduler.close()
+  const onShutdown = async () => {
+    console.info('SIGTERM signal received: closing workers')
 
-  console.info('All closed')
+    await refreshMarketIndexCronWorker.close()
+    await refreshMarketIndexCronWorkerScheduler.close()
+    await refreshMarketIndexWorker.close()
+    await refreshMarketIndexWorkerScheduler.close()
+    await refreshMarketIndexTickerWorker.close()
+    await refreshMarketIndexTickerWorkerScheduler.close()
+
+    console.info('All closed')
+  }
+
+  process.on('SIGTERM', onShutdown)
+
+  gracefulShutdown(() => {
+    process.removeAllListeners('SIGTERM')
+  })
+
+  console.info('Workers startup complete')
 }
 
-process.on('SIGTERM', onShutdown)
+start()
 
-gracefulShutdown(() => {
-  process.removeAllListeners('SIGTERM')
-})
+export default start

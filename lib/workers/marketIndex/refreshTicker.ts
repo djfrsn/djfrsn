@@ -23,18 +23,18 @@ export default async function refreshMarketIndexTickerProcessor(
         where: { name: MARKET_INDEX.sp500 },
       })
       const mostRecentBusinessDay = getMostRecentBusinessDay()
-      const lastRefreshed = normalizeDate(marketIndex.lastRefreshed)
+      const lastRefreshed =
+        marketIndex.lastRefreshed && normalizeDate(marketIndex.lastRefreshed)
       // is marketIndex.lastRefreshedDate before today?
       const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
       // get num of days passed since lastRefreshed
       const dayDiff = momentBusiness(mostRecentBusinessDay).businessDiff(
         lastRefreshed
       )
-      const query = 'timeseries=1'
-      // const query =
-      //   dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
-      //     ? `timeseries=${dayDiff}`
-      //     : ''
+      const query =
+        dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
+          ? `timeseries=${dayDiff}`
+          : ''
       // const query =
       //   dayDiff > 1000
       //     ? `timeseries=${dayDiff}`

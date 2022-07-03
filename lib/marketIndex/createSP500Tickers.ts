@@ -9,7 +9,7 @@ import moment from 'moment';
 const fmpApi = new FMPApi()
 
 /**
- * Description: Fetch and store list of S&P 500 tickers, only update the db for tickers were missing
+ * Description: Fetch and store list of S&P 500 tickers
  * @constructor
  */
 export default async function createSP500Tickers(
@@ -24,8 +24,9 @@ export default async function createSP500Tickers(
     const tickerList = await fmpApi.marketIndex.sp500()
 
     if (arrayHasItems(tickerList)) {
+      const symbolList = tickerList.map(ticker => ticker.symbol)
       const existingTickers = await prisma.ticker.findMany({
-        where: { symbol: { in: tickerList.map(ticker => ticker.symbol) } },
+        where: { symbol: { in: symbolList } },
       })
       const existingTickersDict = existingTickers.reduce(
         (a, existingTicker) => ({
@@ -45,7 +46,13 @@ export default async function createSP500Tickers(
 
         return !existingTicker
       })
-      const transactions = []
+      const transactions = [
+        // Remove existing candidates
+        prisma.ticker.updateMany({
+          where: { marketIndexId: marketIndexId },
+          data: { marketIndexId: null },
+        }),
+      ]
 
       console.log('Creating %s tickers', createTickerList.length)
       console.log('Updating %s tickers', updateTickerList.length)

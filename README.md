@@ -69,12 +69,6 @@ The data from the seed file [`prisma/seed.ts`](./prisma/seed.ts) will be used to
 npm run dev
 ```
 
-In another terminal:
-
-```
-npm run workers
-```
-
 Visit [`http://localhost:3000/`](http://localhost:3000/) in your browser to see the app running.
 
 <br />
@@ -158,6 +152,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
+- [DaisyUI](https://daisyui.com/)
 - [Apollo Client](https://www.apollographql.com/docs/react/)
 - [Prismic Templating](https://prismic.io/docs/technologies/template-content-nextjs#intro-to-templating)
 - [React Markdown](https://www.npmjs.com/package/react-markdown)
@@ -172,6 +167,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [PostgreSQL](https://www.postgresql.org/)
 - [Redis](https://redis.io/)
 - [BullMQ](https://docs.bullmq.io/)
+- [throng](https://www.npmjs.com/package/throng)
 - [p-queue](https://www.npmjs.com/package/p-queue)
 - [got](https://www.npmjs.com/package/got)
 

@@ -73,7 +73,7 @@ function JobInfo({ data }) {
       <p>
         <span className="text-iced-200">State</span> {data.state}
       </p>
-      <JobInfoTime date={data.date} key={data.timestamp} />
+      <JobInfoTime date={data.job.createdAt} key={data.timestamp} />
       <p>
         <span className="text-maxYellow-100">
           {messageParts ? messageParts[0] : data.message}
