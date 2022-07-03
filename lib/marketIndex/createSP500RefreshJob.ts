@@ -64,7 +64,7 @@ async function createSP500RefreshJob(
   })
 
   let job
-  const jobExist = prisma.job.findFirst({ where: { name } })
+  const jobExist = await prisma.job.findFirst({ where: { name } })
   const jobData = {
     name,
     jobId: result.job.id,
@@ -72,7 +72,7 @@ async function createSP500RefreshJob(
   }
 
   if (jobExist) {
-    job = prisma.job.update({ where: { name }, data: jobData })
+    job = await prisma.job.update({ where: { name }, data: jobData })
   } else {
     job = await prisma.job.create({
       data: jobData,
