@@ -36,6 +36,7 @@ export async function getStaticProps({ previewData }) {
 
 const sp500Page = ({ page, global }) => {
   const routerQuery = useRouter().query
+  // REFACTOR: create a function that takes in the router query and returns the limits to clean this up
   const indexLimit = Number(process.env.NEXT_PUBLIC_INDEX_LIMIT)
   const limitQuery = routerQuery.limit ? Number(routerQuery.limit) : indexLimit
   const timeSeriesLimitQuery = routerQuery.days
