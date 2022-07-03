@@ -3,7 +3,7 @@ import { ApolloServer } from 'apollo-server-micro';
 import { DateTimeResolver } from 'graphql-scalars';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
-import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, nullable, objectType, stringArg } from 'nexus';
+import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
 import path from 'path';
 
 import context from './context';
@@ -16,34 +16,6 @@ const User = objectType({
     t.int('id')
     t.string('name')
     t.string('email')
-    t.list.field('posts', {
-      type: 'Post',
-      resolve: (parent, __, ctx) =>
-        ctx.prisma.user
-          .findUnique({
-            where: { id: Number(parent.id) },
-          })
-          .posts(),
-    })
-  },
-})
-
-const Post = objectType({
-  name: 'Post',
-  definition(t) {
-    t.int('id')
-    t.string('title')
-    t.nullable.string('content')
-    t.boolean('published')
-    t.nullable.field('author', {
-      type: 'User',
-      resolve: (parent, __, ctx) =>
-        ctx.prisma.post
-          .findUnique({
-            where: { id: Number(parent.id) },
-          })
-          .author(),
-    })
   },
 })
 
@@ -159,18 +131,6 @@ const TickerInfo = objectType({
 const Query = objectType({
   name: 'Query',
   definition(t) {
-    t.field('post', {
-      type: 'Post',
-      args: {
-        postId: nonNull(stringArg()),
-      },
-      resolve: (_, args, ctx) => {
-        return ctx.prisma.post.findUnique({
-          where: { id: Number(args.postId) },
-        })
-      },
-    })
-
     t.list.field('contracts', {
       type: 'Contract',
       resolve: (_, args, ctx) => {
@@ -219,41 +179,6 @@ const Query = objectType({
         return ctx.prisma.ticker.findMany(options)
       },
     })
-
-    t.list.field('feed', {
-      type: 'Post',
-      resolve: (_parent, _args, ctx) => {
-        return ctx.prisma.post.findMany({
-          where: { published: true },
-        })
-      },
-    })
-
-    t.list.field('drafts', {
-      type: 'Post',
-      resolve: (_parent, _args, ctx) => {
-        return ctx.prisma.post.findMany({
-          where: { published: false },
-        })
-      },
-    })
-
-    t.list.field('filterPosts', {
-      type: 'Post',
-      args: {
-        searchString: nullable(stringArg()),
-      },
-      resolve: (_, { searchString }, ctx) => {
-        return ctx.prisma.post.findMany({
-          where: {
-            OR: [
-              { title: { contains: searchString } },
-              { content: { contains: searchString } },
-            ],
-          },
-        })
-      },
-    })
   },
 })
 
@@ -275,52 +200,6 @@ const Mutation = objectType({
         })
       },
     })
-
-    t.nullable.field('deletePost', {
-      type: 'Post',
-      args: {
-        postId: stringArg(),
-      },
-      resolve: (_, { postId }, ctx) => {
-        return ctx.prisma.post.delete({
-          where: { id: Number(postId) },
-        })
-      },
-    })
-
-    t.field('createDraft', {
-      type: 'Post',
-      args: {
-        title: nonNull(stringArg()),
-        content: stringArg(),
-        authorEmail: stringArg(),
-      },
-      resolve: (_, { title, content, authorEmail }, ctx) => {
-        return ctx.prisma.post.create({
-          data: {
-            title,
-            content,
-            published: false,
-            author: {
-              connect: { email: authorEmail },
-            },
-          },
-        })
-      },
-    })
-
-    t.nullable.field('publish', {
-      type: 'Post',
-      args: {
-        postId: stringArg(),
-      },
-      resolve: (_, { postId }, ctx) => {
-        return ctx.prisma.post.update({
-          where: { id: Number(postId) },
-          data: { published: true },
-        })
-      },
-    })
   },
 })
 
@@ -329,7 +208,6 @@ export const schema = makeSchema({
     Query,
     Mutation,
     GQLDate,
-    Post,
     User,
     Job,
     Contract,
