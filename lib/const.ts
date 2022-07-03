@@ -24,7 +24,7 @@ export const QUEUE = {
     marketIndexTicker: 'refresh-market-index-ticker-info',
   },
   cron: {
-    marketIndexes: '0/15 * * * *',
+    marketIndexes: '0/30 * * * *',
     // marketIndexes: '30 7-16 * * *',
   },
 }
