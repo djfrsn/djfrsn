@@ -23,7 +23,7 @@
     "ts-node": "ts-node -r dotenv/config",
     "slicemachine": "start-slicemachine",
     "log": "heroku logs -a blockwizards",
-    "log:tail": "heroku logs -a blockwizards  --tail",
+    "log:tail": "heroku logs -a blockwizards --tail",
     "workers": "pm2 start --name trinity dist/lib/workers/index.js",
     "workers:dev": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
     "bull-board": "npm run ts-node ts-node lib/bull-board"
