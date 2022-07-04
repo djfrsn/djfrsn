@@ -4,6 +4,7 @@ import prisma from 'lib/db/prisma';
 import { getSp500RefreshFlow } from 'lib/db/queue';
 import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
+import { getDependenciesCount } from 'lib/utils/bullmq';
 import { getMostRecentBusinessDay, isLatestBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
 
 let parent: JobNode | null
@@ -49,7 +50,12 @@ export default async function refreshMarketIndexTickerProcessor(
       // if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
       // else onComplete.push(job.updateProgress(100))
 
-      let progress = job.data.progressIncrement + Number(parent.job.progress)
+      await job.updateProgress(100)
+
+      const dependencies = await parent.job.getDependencies()
+      const totalJobCount = getDependenciesCount(dependencies)
+      const progressIncrement = Number((100 / totalJobCount).toFixed(2))
+      let progress = progressIncrement + Number(parent.job.progress)
 
       await Promise.all([
         ...onComplete,
