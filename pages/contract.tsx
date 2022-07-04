@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client';
 import Layout from 'components/Layout';
 import LoadingIndicator from 'components/Loading';
 import gql from 'graphql-tag';
-import Link from 'next/link';
 
 import { createClient } from '../prismicio';
 
@@ -27,17 +26,6 @@ export async function getStaticProps({ previewData }) {
     props: { page, global },
   }
 }
-
-const Post = ({ post }) => (
-  <article className="mt-12">
-    <Link href="/post/[id]" as={`/post/${post.id}`}>
-      <a className="link">
-        <h2>{post.title}</h2>
-      </a>
-    </Link>
-    <small>By {post.author ? post.author.name : 'Unknown Author'}</small>
-  </article>
-)
 
 const Contract = ({ page, global }) => {
   const { loading, error, data } = useQuery(ContractsQuery, {

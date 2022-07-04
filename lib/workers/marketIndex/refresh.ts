@@ -2,7 +2,7 @@ import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { RefreshMarketIndexJob } from 'lib/interfaces';
-import moment from 'moment';
+import { getPreviousBusinessDay } from 'lib/utils/dates';
 
 /**
  * Description: Runs after all tickers for a given index have been updated(see: refreshTicker.ts)
@@ -23,7 +23,7 @@ export default async function refreshMarketIndexProcessor(
         await Promise.all([
           prisma.marketIndex.update({
             where: { id: job.data.id },
-            data: { lastRefreshed: moment().utc().toISOString() },
+            data: { lastRefreshed: getPreviousBusinessDay().toISOString() },
           }),
         ])
       }

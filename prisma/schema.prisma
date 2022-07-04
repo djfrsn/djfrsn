@@ -11,17 +11,8 @@ model User {
   email String  @unique
   id    Int     @default(autoincrement()) @id
   name  String?
-  posts Post[]
 }
 
-model Post {
-  authorId  Int?
-  content   String?
-  id        Int     @default(autoincrement()) @id
-  published Boolean @default(false)
-  title     String
-  author    User?   @relation(fields: [authorId], references: [id])
-}
 
 model Contract {
   id              String @default(cuid()) @id

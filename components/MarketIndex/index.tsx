@@ -10,12 +10,12 @@ const MarketIndexTickersQuery = gql`
     $marketIndexId: Int
     $limit: Int
     $timeSeriesLimit: Int
-    $bypassLimit: Boolean
+    $bypassTimeSeriesLimit: Boolean
   ) {
     marketIndexTickers(marketIndexId: $marketIndexId, limit: $limit) {
       id
       symbol
-      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassLimit) {
+      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
         id
         date
         tickerId
@@ -28,7 +28,7 @@ const MarketIndexTickersQuery = gql`
 const MarketIndex = ({
   marketIndexId,
   limit,
-  bypassLimit,
+  bypassTimeSeriesLimit,
   timeSeriesLimit,
   setNumOfDays,
 }) => {
@@ -42,7 +42,7 @@ const MarketIndex = ({
     data: { marketIndexTickers: Ticker[] }
   } = useQuery(MarketIndexTickersQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { marketIndexId, limit, bypassLimit, timeSeriesLimit },
+    variables: { marketIndexId, limit, bypassTimeSeriesLimit, timeSeriesLimit },
   })
   const marketIndexTickers = data?.marketIndexTickers || []
 

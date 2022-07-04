@@ -36,17 +36,21 @@ export async function getStaticProps({ previewData }) {
 
 const sp500Page = ({ page, global }) => {
   const routerQuery = useRouter().query
-  const limitQuery = routerQuery.limit
+  // REFACTOR: create a function that takes in the router query and returns the limits to clean this up
+  const indexLimit = Number(process.env.NEXT_PUBLIC_INDEX_LIMIT)
+  const limitQuery = routerQuery.limit ? Number(routerQuery.limit) : indexLimit
   const timeSeriesLimitQuery = routerQuery.days
-  const limit = Number(limitQuery)
-  const bypassLimit = limit <= Number(process.env.NEXT_PUBLIC_FEED_BYPASS_LIMIT)
-  let timeSeriesLimit = Number(timeSeriesLimitQuery)
+  const limit = limitQuery > indexLimit ? indexLimit : limitQuery
+  const bypassTimeSeriesLimit =
+    limit <= Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_BYPASS_LIMIT)
+  let timeSeriesLimit = timeSeriesLimitQuery
+    ? Number(timeSeriesLimitQuery)
+    : Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT_DEFAULT)
   timeSeriesLimit =
-    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT) &&
-    !bypassLimit
-      ? Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
+    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT) &&
+    !bypassTimeSeriesLimit
+      ? Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT)
       : timeSeriesLimit
-
   const {
     loading,
     error,
@@ -88,7 +92,7 @@ const sp500Page = ({ page, global }) => {
             <MarketIndex
               marketIndexId={data.marketIndex.id}
               limit={limit}
-              bypassLimit={bypassLimit}
+              bypassTimeSeriesLimit={bypassTimeSeriesLimit}
               timeSeriesLimit={timeSeriesLimit}
               setNumOfDays={setNumOfDays}
             />
