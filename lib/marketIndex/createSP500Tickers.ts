@@ -3,8 +3,7 @@ import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import arrayHasItems from 'lib/utils/arrayHasItems';
-import { isSameDay } from 'lib/utils/dates';
-import moment from 'moment';
+import { isLatestBusinessDay } from 'lib/utils/dates';
 
 const fmpApi = new FMPApi()
 
@@ -18,7 +17,7 @@ export default async function createSP500Tickers(
   const { marketIndex } = options
   const marketIndexId = marketIndex.id
   const tickerUpdateData = { marketIndexId: marketIndex.id }
-  const tickerListRefreshed = isSameDay(moment(marketIndex.lastRefreshed))
+  const tickerListRefreshed = !isLatestBusinessDay(marketIndex.lastRefreshed)
 
   if (!tickerListRefreshed) {
     const tickerList = await fmpApi.marketIndex.sp500()
