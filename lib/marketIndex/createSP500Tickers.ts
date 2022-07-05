@@ -21,7 +21,7 @@ export default async function createSP500Tickers(
 
   console.log('createSP500Tickers => shouldRefresh', shouldRefresh)
 
-  if (true) {
+  if (shouldRefresh) {
     const tickerList = await fmpApi.marketIndex.sp500()
 
     if (arrayHasItems(tickerList)) {
@@ -48,6 +48,7 @@ export default async function createSP500Tickers(
         return !existingTicker
       })
 
+      // Remove existing tickers marked as SP500
       await prisma.ticker.updateMany({
         where: { marketIndexId: marketIndexId },
         data: { marketIndexId: null },
