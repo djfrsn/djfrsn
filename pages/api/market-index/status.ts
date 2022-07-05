@@ -15,9 +15,11 @@ async function getJobData(
   switch (true) {
     case queueName === QUEUE.refresh.marketIndex:
       res = await getSp500RefreshFlow(jobId)
-      const dependencies = await res.job.getDependencies()
-      const totalJobCount = getDependenciesCount(dependencies)
-      const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
+      const dependencies = await res?.job.getDependencies()
+      const totalJobCount = dependencies
+        ? getDependenciesCount(dependencies)
+        : 0
+      const jobsWaitingCount = totalJobCount - dependencies?.unprocessed.length
       return res?.job
         ? {
             job: res.job,
