@@ -15,8 +15,18 @@ async function getJobData(
   switch (true) {
     case queueName === QUEUE.refresh.marketIndex:
       res = await getSp500RefreshFlow(jobId)
+      const dependencies = await res.job.getDependencies()
+      const totalJobCount = getDependenciesCount(dependencies)
+      const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
       return res?.job
-        ? { job: res.job, children: res.children }
+        ? {
+            job: res.job,
+            children: res.children,
+            message:
+              totalJobCount > 0
+                ? `${jobsWaitingCount}/${totalJobCount} jobs have been processed.`
+                : '0 Jobs in queue',
+          }
         : { message: `Job ${jobId} not found` }
     case queueName === QUEUE.refresh.marketIndexes:
       res = await refreshMarketIndexesQueue.getJob(jobId)
@@ -52,16 +62,12 @@ export default async function handler(
 
       if (data?.job) {
         const state = await data.job.getState()
-        const dependencies = await data.job.getDependencies()
-        const totalJobCount = getDependenciesCount(dependencies)
-        const jobsWaitingCount = totalJobCount - dependencies.unprocessed.length
         // BUG: job.children doesn't return all children at the end of job processing
+        console.log('data?.children', data)
         result = {
           timestamp: moment().valueOf(),
           state,
-          message: data.message
-            ? data.message
-            : `${jobsWaitingCount}/${totalJobCount} jobs have been processed.`,
+          message: data.message,
           job: {
             id: data.job.id,
             name: data.job.name,
