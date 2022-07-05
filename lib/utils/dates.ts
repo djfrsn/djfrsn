@@ -1,12 +1,9 @@
-import { Moment } from 'moment';
-import momentBusinessDays from 'moment-business-days';
+import momentBusiness from 'moment-business-days';
 import moment from 'moment-timezone';
 
 moment.tz.setDefault('America/New_York')
 
-export const momentBusiness = momentBusinessDays
-
-export { moment }
+export { moment, momentBusiness }
 
 export function today(): moment.Moment {
   return normalizeDate(moment())
@@ -21,12 +18,12 @@ export function normalizeDate(
 }
 
 export function getPreviousBusinessDay(): moment.Moment {
-  return normalizeDate(momentBusinessDays()).prevBusinessDay()
+  return normalizeDate(momentBusiness()).prevBusinessDay()
 }
 
 export function getMostRecentBusinessDay(): moment.Moment {
   const _today = today()
-  return momentBusinessDays(_today).isBusinessDay()
+  return momentBusiness(_today).isBusinessDay()
     ? _today
     : getPreviousBusinessDay()
 }
@@ -59,14 +56,14 @@ export function shouldRefreshMarket(): boolean {
   return moment().isAfter(getMarketRefreshCutoffTime())
 }
 
-export function isSameDay(date: Moment | Date): boolean {
+export function isSameDay(date: moment.Moment | Date): boolean {
   if (!date) return false
   if (!moment.isMoment(date)) date = moment(date)
 
   return date.isSame(today(), 'day')
 }
 
-export function isLatestBusinessDay(date: Moment | Date): boolean {
+export function isLatestBusinessDay(date: moment.Moment | Date): boolean {
   if (!date) return false
   if (!moment.isMoment(date)) date = moment(date)
 
