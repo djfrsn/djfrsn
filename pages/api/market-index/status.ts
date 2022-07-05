@@ -63,7 +63,6 @@ export default async function handler(
       if (data?.job) {
         const state = await data.job.getState()
         // BUG: job.children doesn't return all children at the end of job processing
-        console.log('data?.children', data)
         result = {
           timestamp: moment().valueOf(),
           state,
