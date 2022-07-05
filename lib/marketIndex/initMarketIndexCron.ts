@@ -18,7 +18,7 @@ function validKey(key: string) {
  * NOTE: Preference would be to add the repeat option to each individual marketIndex flow, but BullMQ flows don't support repeat the option
  * IMPORTANT: Bull is smart enough not to add the same repeatable job if the repeat options are the same.
  * @constructor
- * @see {@link https://docs.bullmq.io/guide/jobs/repeatable}
+ * @see {@link docs.bullmq.io/guide/jobs/repeatable}
  */
 async function initMarketIndexCron(options: {
   access_key: string
