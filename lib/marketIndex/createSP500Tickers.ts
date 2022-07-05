@@ -49,31 +49,40 @@ export default async function createSP500Tickers(
       })
 
       // Remove existing tickers marked as SP500
-      await prisma.ticker.updateMany({
-        where: { marketIndexId: marketIndexId },
-        data: { marketIndexId: null },
-      })
+      if (createTickerList.length + updateTickerList.length === 504)
+        await prisma.ticker.updateMany({
+          where: { marketIndexId: marketIndexId },
+          data: { marketIndexId: null },
+        })
 
+      console.log('symbolList %s count', symbolList.length)
+      console.log('Existing %s tickers', existingTickers.length)
       console.log('Creating %s tickers', createTickerList.length)
       console.log('Updating %s tickers', updateTickerList.length)
 
       if (createTickerList.length) {
         await prisma.ticker.createMany({
           data: createTickerList.map(ticker => ({
-            ...ticker,
-            ...tickerUpdateData,
+            name: ticker.name,
+            symbol: ticker.symbol,
+            sector: ticker.sector,
+            subSector: ticker.subSector,
+            headQuarter: ticker.headQuarter,
+            dateFirstAdded: ticker.dateFirstAdded,
+            cik: ticker.cik,
+            founded: ticker.founded,
+            marketIndexId: tickerUpdateData.marketIndexId,
           })),
         })
       }
 
       if (updateTickerList.length) {
-        const updates = await prisma.ticker.updateMany({
+        await prisma.ticker.updateMany({
           where: {
             symbol: { in: updateTickerList.map(ticker => ticker.symbol) },
           },
-          data: tickerUpdateData,
+          data: { marketIndexId: tickerUpdateData.marketIndexId },
         })
-        console.log('tickerListUpdates', updates)
       }
     }
   }
