@@ -5,7 +5,7 @@ import { getSp500RefreshFlow } from 'lib/db/queue';
 import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
 import { getDependenciesCount } from 'lib/utils/bullmq';
-import { getMostRecentBusinessDay, isLatestBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
+import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
 
 let parent: JobNode | null
 
@@ -27,7 +27,7 @@ export default async function refreshMarketIndexTickerProcessor(
       const lastRefreshed =
         marketIndex.lastRefreshed && normalizeDate(marketIndex.lastRefreshed)
       // is marketIndex.lastRefreshedDate before today?
-      const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
+      // const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
       // get num of days passed since lastRefreshed
       const dayDiff = momentBusiness(mostRecentBusinessDay).businessDiff(
         lastRefreshed
@@ -40,10 +40,7 @@ export default async function refreshMarketIndexTickerProcessor(
       //   dayDiff > 1000
       //     ? `timeseries=${dayDiff}`
       //     : 'from=2020-03-12&to=2022-6-21'
-      console.log('number of days passed', dayDiff)
-      console.log('lastRefreshed', lastRefreshed.toISOString())
-      console.log('mostRecentBusinessDay', mostRecentBusinessDay.toISOString())
-      console.log('should refresh', shouldRefresh)
+      // console.log('should refresh', shouldRefresh)
       const onComplete = []
 
       await createSP500TickerInfo(job.data, { query, job })
