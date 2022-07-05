@@ -33,7 +33,8 @@
     "ignore": [
       ".next/*",
       "./slices/"
-    ]
+    ],
+    "delay": 500
   },
   "dependencies": {
     "@apollo/client": "3.6.4",
@@ -67,6 +68,8 @@
     "micro-cors": "0.1.1",
     "moment": "^2.29.3",
     "moment-business-days": "^1.2.0",
+    "moment-timezone": "^0.5.34",
+    "moment-timezone-data-webpack-plugin": "^1.5.0",
     "nexus": "1.3.0",
     "npm": "^8.13.1",
     "p-queue": "^6.6.2",
