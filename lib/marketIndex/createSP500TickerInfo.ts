@@ -14,10 +14,6 @@ export default async function createSp500TickerInfo(
   { tickers, symbolDict, marketInterval }: RefreshMarketIndexTickerJob,
   options: CreateSp500TickerOptions
 ): Promise<{ ticker: { count: number }; tickerInfo: { count: number } }> {
-  console.log(
-    'Creating sp500 ticker info for:',
-    tickers.map(ticker => ticker.symbol).join(',')
-  )
   let res = { count: 0 }
   const [tickerPrices, existingTickerInfo] = await Promise.all([
     fmpApi.core.dailyHistoricalPrice(tickers, options.query),
@@ -60,13 +56,6 @@ export default async function createSp500TickerInfo(
       )
 
       if (historicalTickerPrices.length) {
-        console.log(
-          'Updating',
-          historicalTickerPrices.length,
-          'out of',
-          ticker.historical.length,
-          'tickers'
-        )
         allTickers = allTickers.concat(historicalTickerPrices)
       }
 

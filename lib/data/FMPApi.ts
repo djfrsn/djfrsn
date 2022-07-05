@@ -49,21 +49,16 @@ class FMPApi {
             : tickers
 
         if (Array.isArray(tickersList)) {
-          console.log('fetching', tickers.length, ' tickers')
-
           for (const ticker of tickersList) {
             const arg = Array.isArray(ticker)
               ? ticker.map(item => item.symbol).join(',')
               : ticker
 
-            console.log('fetch', arg)
             const apiUrl = `historical-price-full/${arg}?serietype=line${
               query ? `&${query}` : ''
             }`
 
             let data: any = await fetch(getApiUrl(apiUrl))
-
-            console.log('fetch %s complete', arg)
 
             if (data?.historicalStockList) {
               res.push(...data.historicalStockList)
