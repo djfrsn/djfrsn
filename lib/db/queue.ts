@@ -1,7 +1,6 @@
 import { FlowProducer, Queue } from 'bullmq';
 import { QUEUE } from 'lib/const';
-
-import connection from './redis';
+import connection from 'lib/db/redis';
 
 /**
  * @see {@link https://docs.bullmq.io/}

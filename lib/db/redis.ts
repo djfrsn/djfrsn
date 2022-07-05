@@ -20,4 +20,15 @@ const connection: IORedis = new IORedis({
   ...redisOptions,
 })
 
+export const flushall = () =>
+  new Promise((resolve, reject) => {
+    try {
+      connection.flushall('ASYNC', () => {
+        resolve(true)
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+
 export default connection

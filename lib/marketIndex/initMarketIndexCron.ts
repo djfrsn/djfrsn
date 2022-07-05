@@ -3,22 +3,19 @@ import { Job as QueueJob } from 'bullmq';
 import { QUEUE, TIMEFRAMES } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { defaultJobOptions, refreshMarketIndexesQueue } from 'lib/db/queue';
+import validKey from 'lib/utils/validKey';
 
 interface MarketIndexesRefresh {
   error?: { message: string; data?: Job }
   jobs?: Job[]
 }
 
-function validKey(key: string) {
-  return key === process.env.ACCESS_KEY
-}
-
 /**
  * Description: Create a repeatable job to refresh data for each market index on all timeframes
  * NOTE: Preference would be to add the repeat option to each individual marketIndex flow, but BullMQ flows don't support repeat the option
  * IMPORTANT: Bull is smart enough not to add the same repeatable job if the repeat options are the same.
+ * @see {@link https://docs.bullmq.io/guide/jobs/repeatable}
  * @constructor
- * @see {@link docs.bullmq.io/guide/jobs/repeatable}
  */
 async function initMarketIndexCron(options: {
   access_key: string
