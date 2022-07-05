@@ -11,7 +11,7 @@
     "build:dev": "npm run setup:dev && next build",
     "clean": "rm -rf dist",
     "start": "next start",
-    "setup": "npm run generate && npm run migrate:prisma",
+    "setup": "prisma seed && npm run generate && npm run migrate:prisma",
     "setup:dev": "npm run generate && npm run migrate:prisma:dev",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
@@ -28,6 +28,9 @@
     "workers": "pm2 start --name trinity dist/lib/workers/index.js",
     "workers:dev": "nodemon --ext ts --exec 'npm run ts-node lib/workers'",
     "bull-board": "npm run ts-node ts-node lib/bull-board"
+  },
+  "prisma": {
+    "seed": "npm run ts-node prisma/seed.ts"
   },
   "nodemonConfig": {
     "ignore": [
@@ -103,9 +106,6 @@
     "typescript": "4.6.4",
     "webpack-cli": "^4.10.0",
     "webpack-node-externals": "^3.0.0"
-  },
-  "prisma": {
-    "seed": "npm run ts-node prisma/seed.ts"
   },
   "cacheDirectories": [
     ".next/cache"
