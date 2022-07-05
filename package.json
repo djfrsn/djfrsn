@@ -7,7 +7,7 @@
     "analyze": "ANALYZE=true npm run build",
     "dev": "NODE_OPTIONS='--no-experimental-fetch' next & npm run workers:dev",
     "build": "npm run setup && next build && npm run build:workers",
-    "build:workers": "npm run clean && NODE_ENV=production webpack",
+    "build:workers": "npm run clean && webpack",
     "build:dev": "npm run setup:dev && next build",
     "clean": "rm -rf dist",
     "start": "next start",
