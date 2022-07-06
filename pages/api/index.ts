@@ -1,5 +1,6 @@
 import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { Prisma } from '@prisma/client';
+import { ApolloServerPluginCacheControl } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
@@ -250,7 +251,10 @@ const apolloServer = new ApolloServer({
   schema,
   context,
   cache: new InMemoryLRUCache(),
-  plugins: [responseCachePlugin()],
+  plugins: [
+    responseCachePlugin(),
+    ApolloServerPluginCacheControl({ defaultMaxAge: 60 * 15 }),
+  ],
 })
 
 let apolloServerHandler: NextApiHandler
