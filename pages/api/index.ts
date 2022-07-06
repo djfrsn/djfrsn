@@ -1,5 +1,7 @@
+import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { Prisma } from '@prisma/client';
 import { ApolloServer } from 'apollo-server-micro';
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
@@ -233,7 +235,12 @@ export const config = {
   },
 }
 
-const apolloServer = new ApolloServer({ schema, context, cache: 'bounded' })
+const apolloServer = new ApolloServer({
+  schema,
+  context,
+  cache: new InMemoryLRUCache(),
+  plugins: [responseCachePlugin()],
+})
 
 let apolloServerHandler: NextApiHandler
 
