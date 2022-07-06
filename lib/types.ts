@@ -23,4 +23,4 @@ export type GlobalType = {
   navigation: NavigationItemType[]
 }
 
-export type InitMarketIndexFlow = Promise<IndexJob>
+export type CreateMarketIndexJob = Promise<IndexJob>

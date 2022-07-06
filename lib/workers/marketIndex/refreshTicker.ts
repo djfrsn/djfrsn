@@ -26,8 +26,6 @@ export default async function refreshMarketIndexTickerProcessor(
       const mostRecentBusinessDay = getMostRecentBusinessDay()
       const lastRefreshed =
         marketIndex.lastRefreshed && normalizeDate(marketIndex.lastRefreshed)
-      // is marketIndex.lastRefreshedDate before today?
-      // const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
       // get num of days passed since lastRefreshed
       const dayDiff = lastRefreshed
         ? momentBusiness(mostRecentBusinessDay).businessDiff(lastRefreshed)
@@ -36,16 +34,9 @@ export default async function refreshMarketIndexTickerProcessor(
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
           ? `timeseries=${dayDiff}`
           : ''
-      // const query =
-      //   dayDiff > 1000
-      //     ? `timeseries=${dayDiff}`
-      //     : 'from=2020-03-12&to=2022-6-21'
-      // console.log('should refresh', shouldRefresh)
       const onComplete = []
 
       await createSP500TickerInfo(job.data, { query, job })
-      // if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
-      // else onComplete.push(job.updateProgress(100))
 
       await job.updateProgress(100)
 

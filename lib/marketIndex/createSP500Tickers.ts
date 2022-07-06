@@ -3,7 +3,7 @@ import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import arrayHasItems from 'lib/utils/arrayHasItems';
-import { shouldRefreshMarket } from 'lib/utils/dates';
+import { beforeMarketCloseTime, withinMarketRefreshWindow } from 'lib/utils/dates';
 
 const fmpApi = new FMPApi()
 
@@ -17,8 +17,18 @@ export default async function createSP500Tickers(
   const { marketIndex } = options
   const marketIndexId = marketIndex.id
   const tickerUpdateData = { marketIndexId: marketIndex.id }
-  const shouldRefresh = shouldRefreshMarket()
+  const shouldRefresh =
+    beforeMarketCloseTime(marketIndex.lastRefreshed) &&
+    withinMarketRefreshWindow()
 
+  console.log(
+    'createSP500Tickers => beforeMarketCloseTime',
+    beforeMarketCloseTime(marketIndex.lastRefreshed)
+  )
+  console.log(
+    'createSP500Tickers => withinMarketRefreshWindow',
+    withinMarketRefreshWindow()
+  )
   console.log('createSP500Tickers => shouldRefresh', shouldRefresh)
 
   if (shouldRefresh) {

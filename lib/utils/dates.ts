@@ -5,6 +5,8 @@ moment.tz.setDefault('America/New_York')
 
 export { moment, momentBusiness }
 
+type _Date = moment.Moment | Date
+
 export function startOfToday(): moment.Moment {
   return normalizeDate(moment())
 }
@@ -39,31 +41,34 @@ export function getMarketCloseTime(): moment.Moment {
 }
 
 /**
- * Add buffer to US stock market close to allow FMP to add new data to DB
+ * Return true if current time is after 5pm EST
  * @constructor
  */
-export function getMarketRefreshCutoffTime(): moment.Moment {
-  const marketCloseTime = getMarketCloseTime()
+export function withinMarketRefreshWindow(): boolean {
+  const marketCloseTime = getMarketCloseTime().add({ hour: 1 })
 
-  return marketCloseTime.add({ hour: 1 })
+  return moment().isAfter(marketCloseTime)
 }
 
 /**
- * Refresh market after 5pm EST
+ * Return true if given time is before the market close time
  * @constructor
  */
-export function shouldRefreshMarket(): boolean {
-  return moment().isAfter(getMarketRefreshCutoffTime())
+export function beforeMarketCloseTime(date: _Date): boolean {
+  if (!date) return false
+  if (!moment.isMoment(date)) date = moment(date)
+
+  return date.isBefore(getMarketCloseTime())
 }
 
-export function isSameDay(date: moment.Moment | Date): boolean {
+export function isSameDay(date: _Date): boolean {
   if (!date) return false
   if (!moment.isMoment(date)) date = moment(date)
 
   return date.isSame(startOfToday(), 'day')
 }
 
-export function isLatestBusinessDay(date: moment.Moment | Date): boolean {
+export function isLatestBusinessDay(date: _Date): boolean {
   if (!date) return false
   if (!moment.isMoment(date)) date = moment(date)
 
