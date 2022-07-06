@@ -17,7 +17,7 @@ export default async function handler(
       await deleteKeysByPattern('bull:')
       return response.status(200).send(true)
     }
-    return response.status(200).send(true)
+    return response.status(200).send(false)
   } else {
     return response.status(405).send({ message: 'Method not allowed' })
   }
