@@ -20,4 +20,38 @@ const connection: IORedis = new IORedis({
   ...redisOptions,
 })
 
+export const flushall = () =>
+  new Promise((resolve, reject) => {
+    try {
+      connection.obliterate('ASYNC', () => {
+        resolve(true)
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+
+export const deleteKeysByPattern = (pattern: string) => {
+  return new Promise((resolve, reject) => {
+    const stream = connection.scanStream({
+      match: pattern,
+    })
+    stream.on('data', (keys: string[]) => {
+      if (keys.length) {
+        const pipeline = connection.pipeline()
+        keys.forEach(key => {
+          pipeline.del(key)
+        })
+        pipeline.exec()
+      }
+    })
+    stream.on('end', () => {
+      resolve(null)
+    })
+    stream.on('error', e => {
+      reject(e)
+    })
+  })
+}
+
 export default connection

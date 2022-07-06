@@ -3,7 +3,7 @@ import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import arrayHasItems from 'lib/utils/arrayHasItems';
-import { isLatestBusinessDay } from 'lib/utils/dates';
+import { beforeMarketCloseTime, withinMarketRefreshWindow } from 'lib/utils/dates';
 
 const fmpApi = new FMPApi()
 
@@ -17,9 +17,21 @@ export default async function createSP500Tickers(
   const { marketIndex } = options
   const marketIndexId = marketIndex.id
   const tickerUpdateData = { marketIndexId: marketIndex.id }
-  const tickerListRefreshed = !isLatestBusinessDay(marketIndex.lastRefreshed)
+  const shouldRefresh =
+    beforeMarketCloseTime(marketIndex.lastRefreshed) &&
+    withinMarketRefreshWindow()
 
-  if (!tickerListRefreshed) {
+  console.log(
+    'createSP500Tickers => beforeMarketCloseTime',
+    beforeMarketCloseTime(marketIndex.lastRefreshed)
+  )
+  console.log(
+    'createSP500Tickers => withinMarketRefreshWindow',
+    withinMarketRefreshWindow()
+  )
+  console.log('createSP500Tickers => shouldRefresh', shouldRefresh)
+
+  if (shouldRefresh) {
     const tickerList = await fmpApi.marketIndex.sp500()
 
     if (arrayHasItems(tickerList)) {
@@ -45,40 +57,43 @@ export default async function createSP500Tickers(
 
         return !existingTicker
       })
-      const transactions = [
-        // Remove existing candidates
-        prisma.ticker.updateMany({
+
+      // Remove existing tickers marked as SP500
+      if (createTickerList.length + updateTickerList.length === 504)
+        await prisma.ticker.updateMany({
           where: { marketIndexId: marketIndexId },
           data: { marketIndexId: null },
-        }),
-      ]
+        })
 
+      console.log('symbolList %s count', symbolList.length)
+      console.log('Existing %s tickers', existingTickers.length)
       console.log('Creating %s tickers', createTickerList.length)
       console.log('Updating %s tickers', updateTickerList.length)
 
       if (createTickerList.length) {
-        transactions.push(
-          prisma.ticker.createMany({
-            data: createTickerList.map(ticker => ({
-              ...ticker,
-              ...tickerUpdateData,
-            })),
-          })
-        )
+        await prisma.ticker.createMany({
+          data: createTickerList.map(ticker => ({
+            name: ticker.name,
+            symbol: ticker.symbol,
+            sector: ticker.sector,
+            subSector: ticker.subSector,
+            headQuarter: ticker.headQuarter,
+            dateFirstAdded: ticker.dateFirstAdded,
+            cik: ticker.cik,
+            founded: ticker.founded,
+            marketIndexId: tickerUpdateData.marketIndexId,
+          })),
+        })
       }
 
       if (updateTickerList.length) {
-        transactions.push(
-          prisma.ticker.updateMany({
-            where: {
-              symbol: { in: updateTickerList.map(ticker => ticker.symbol) },
-            },
-            data: tickerUpdateData,
-          })
-        )
+        await prisma.ticker.updateMany({
+          where: {
+            symbol: { in: updateTickerList.map(ticker => ticker.symbol) },
+          },
+          data: { marketIndexId: tickerUpdateData.marketIndexId },
+        })
       }
-
-      await prisma.$transaction(transactions)
     }
   }
 

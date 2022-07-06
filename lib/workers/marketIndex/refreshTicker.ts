@@ -4,7 +4,8 @@ import prisma from 'lib/db/prisma';
 import { getSp500RefreshFlow } from 'lib/db/queue';
 import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
-import { getMostRecentBusinessDay, isLatestBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
+import { getDependenciesCount } from 'lib/utils/bullmq';
+import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
 
 let parent: JobNode | null
 
@@ -25,31 +26,24 @@ export default async function refreshMarketIndexTickerProcessor(
       const mostRecentBusinessDay = getMostRecentBusinessDay()
       const lastRefreshed =
         marketIndex.lastRefreshed && normalizeDate(marketIndex.lastRefreshed)
-      // is marketIndex.lastRefreshedDate before today?
-      const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
       // get num of days passed since lastRefreshed
-      const dayDiff = momentBusiness(mostRecentBusinessDay).businessDiff(
-        lastRefreshed
-      )
+      const dayDiff = lastRefreshed
+        ? momentBusiness(mostRecentBusinessDay).businessDiff(lastRefreshed)
+        : null
       const query =
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
           ? `timeseries=${dayDiff}`
           : ''
-      // const query =
-      //   dayDiff > 1000
-      //     ? `timeseries=${dayDiff}`
-      //     : 'from=2020-03-12&to=2022-6-21'
-      console.log('number of days passed', dayDiff)
-      console.log('lastRefreshed', lastRefreshed.toISOString())
-      console.log('mostRecentBusinessDay', mostRecentBusinessDay.toISOString())
-      console.log('should refresh', shouldRefresh)
       const onComplete = []
 
       await createSP500TickerInfo(job.data, { query, job })
-      // if (shouldRefresh) await createSP500TickerInfo(job.data, { query, job })
-      // else onComplete.push(job.updateProgress(100))
 
-      let progress = job.data.progressIncrement + Number(parent.job.progress)
+      await job.updateProgress(100)
+
+      const dependencies = await parent.job.getDependencies()
+      const totalJobCount = getDependenciesCount(dependencies)
+      const progressIncrement = Number((100 / totalJobCount).toFixed(2))
+      let progress = progressIncrement + Number(parent.job.progress)
 
       await Promise.all([
         ...onComplete,

@@ -33,9 +33,7 @@ class AlphaVantageApi {
       ) => {
         let res = []
         if (Array.isArray(symbols)) {
-          console.log('fetching', symbols.length, ' symbols')
           for (const symbol of symbols) {
-            console.log('fetch', symbol)
             const data = await this.fetchTimeSeriesDaily(symbol, outputsize)
             res.push(data)
           }

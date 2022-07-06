@@ -25,7 +25,7 @@ const start = () => {
   } = createWorker(
     QUEUE.refresh.marketIndexTicker,
     refreshMarketIndexTickerProcessor,
-    10
+    5
   )
 
   const onShutdown = async () => {

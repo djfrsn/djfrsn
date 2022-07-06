@@ -1,4 +1,5 @@
 const TerserPlugin = require('terser-webpack-plugin')
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -21,6 +22,12 @@ const moduleExports = {
         }),
       ],
     }
+
+    config.plugins.push(
+      new MomentTimezoneDataPlugin({
+        matchZones: /^America/,
+      })
+    )
 
     return config
   },

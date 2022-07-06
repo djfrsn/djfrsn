@@ -30,7 +30,7 @@ async function handleMarketIndexJobRequest(
     if (marketIndex) {
       result = await getJob({ modelId: marketIndex.id })
 
-      if (!result.job || !result.job?.jobId) {
+      if (!result.job?.jobId) {
         result = await createMarketIndexJob(marketIndex)
       }
     } else {

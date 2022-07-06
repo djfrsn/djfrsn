@@ -3,6 +3,7 @@ const nodeExternals = require('webpack-node-externals')
 const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './lib/workers/index.ts',
   module: {
     rules: [

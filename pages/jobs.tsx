@@ -86,10 +86,15 @@ function JobInfo({ data }) {
         )}
       </p>
       <div className="text-xs">
-        <div className="flex">
-          Progress:{' '}
-          <ProgressBar className="ml-2 w-1/4 mb-1" value={data.job.progress} />
-        </div>
+        {data.job.progress > 0 && (
+          <div className="flex">
+            Progress:{' '}
+            <ProgressBar
+              className="ml-2 w-1/4 mb-1"
+              value={data.job.progress}
+            />
+          </div>
+        )}
         <p>Attempts: {data.job.attemptsMade}</p>
       </div>
       <div className="mt-6">
