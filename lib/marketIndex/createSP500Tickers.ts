@@ -58,17 +58,17 @@ export default async function createSP500Tickers(
         return !existingTicker
       })
 
+      console.log('symbolList %s count', symbolList.length)
+      console.log('Existing %s tickers', existingTickers.length)
+      console.log('Creating %s tickers', createTickerList.length)
+      console.log('Updating %s tickers', updateTickerList.length)
+
       // Remove existing tickers marked as SP500
       if (createTickerList.length + updateTickerList.length === 504)
         await prisma.ticker.updateMany({
           where: { marketIndexId: marketIndexId },
           data: { marketIndexId: null },
         })
-
-      console.log('symbolList %s count', symbolList.length)
-      console.log('Existing %s tickers', existingTickers.length)
-      console.log('Creating %s tickers', createTickerList.length)
-      console.log('Updating %s tickers', updateTickerList.length)
 
       if (createTickerList.length) {
         await prisma.ticker.createMany({
