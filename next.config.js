@@ -33,11 +33,11 @@ const moduleExports = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/sp500',
-        permanent: false,
-      },
+      // {
+      //   source: '/',
+      //   destination: '/market',
+      //   permanent: false,
+      // },
     ]
   },
 }

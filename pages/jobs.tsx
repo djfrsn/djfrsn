@@ -4,7 +4,7 @@ import ProgressBar from 'components/ProgressBar';
 import { request } from 'graphql-request';
 import gql from 'graphql-tag';
 import { QUEUE } from 'lib/const';
-import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
+import { RefreshMarketTickerJob } from 'lib/interfaces';
 import moment from 'moment';
 import fetch from 'node-fetch';
 import useSWR from 'swr';
@@ -39,7 +39,7 @@ export async function getStaticProps({ previewData }) {
 }
 
 const formatJobData = {
-  [QUEUE.refresh.sp500TickerInfo]: (data: RefreshMarketIndexTickerJob) => {
+  [QUEUE.refresh.sp500TickerInfo]: (data: RefreshMarketTickerJob) => {
     return (
       <div>
         <p className="text-iced-100">Tickers</p>
@@ -130,7 +130,7 @@ function JobInfo({ data }) {
 
 const Job = ({ job }) => {
   const { data, error } = useSWR(
-    `/api/market-index/status?jobId=${job.jobId}&queueName=${job.queueName}`,
+    `/api/market/status?jobId=${job.jobId}&queueName=${job.queueName}`,
     fetcher,
     { refreshInterval: 1000 }
   )

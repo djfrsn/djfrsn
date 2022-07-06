@@ -1,12 +1,10 @@
-import { Job, MarketIndex, MarketInterval, TickerInfo } from '@prisma/client';
+import { Job, MarketIndex, MarketInterval, Ticker as _Ticker, TickerInfo } from '@prisma/client';
 
 export interface TickerListInfo {
   id: string
   lastRefreshed: Date
 }
-export interface Ticker {
-  id: number
-  symbol: string
+export interface Ticker extends _Ticker {
   timeSeries: TickerInfo[]
 }
 
@@ -19,25 +17,21 @@ export interface MarketIndexCronJob {
   timeframe: string
   marketIndex: MarketIndex
 }
-export interface RefreshMarketIndexJob {
-  id: number
-  name: string
-}
-
-export interface RefreshMarketIndexJob {
-  id: number
-  name: string
-}
 
 export interface TickerData {
   symbol: string
   tickerId: string
 }
-export interface RefreshMarketIndexTickerJob {
+
+export interface RefreshMarketJob {
+  id: number
+  name: string
+}
+
+export interface RefreshMarketTickerJob {
   tickers: TickerData[]
   symbolDict: { [name: string]: { tickerId: string } }
   marketInterval: MarketInterval
-  progressIncrement: number
 }
 
 export interface CreateSp500TickerOptions {

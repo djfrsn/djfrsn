@@ -13,7 +13,7 @@ function LogoText({ title }: { title: string }) {
 }
 
 function Logo({
-  alt = '',
+  alt = 'Logo',
   className = '',
   src,
 }: {
@@ -21,7 +21,9 @@ function Logo({
   className?: string
   src: string
 }) {
-  return <img className={className} src={src} alt={alt} />
+  return (
+    <img className={className} src={src} alt={alt} height="59px" width="59px" />
+  )
 }
 
 export { LogoText, Logo }

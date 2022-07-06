@@ -1,5 +1,8 @@
+import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { Prisma } from '@prisma/client';
+import { ApolloServerPluginCacheControl } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-micro';
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
@@ -9,6 +12,8 @@ import path from 'path';
 import context from './context';
 
 export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
+
+const largeDatasetCacheHint = { maxAge: 43200 }
 
 const User = objectType({
   name: 'User',
@@ -60,7 +65,8 @@ const MarketIndex = objectType({
     t.field('lastRefreshed', { type: 'DateTime' })
     t.list.field('ticker', {
       type: 'Ticker',
-      resolve: async (parent, __, ctx) => {
+      resolve: async (parent, __, ctx, info) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         return ctx.prisma.ticker.findMany({
           where: { marketIndexId: Number(parent.id) },
         })
@@ -74,13 +80,24 @@ const Ticker = objectType({
   definition(t) {
     t.string('id')
     t.string('symbol')
+    t.string('name')
+    t.string('sector')
+    t.string('subSector')
+    t.string('headQuarter')
+    t.string('founded')
     t.list.field('timeSeries', {
       type: 'TickerInfo',
       args: {
         limit: intArg(),
         bypassLimit: booleanArg(),
       },
-      resolve: (parent, args: { limit: number; bypassLimit: boolean }, ctx) => {
+      resolve: (
+        parent,
+        args: { limit: number; bypassLimit: boolean },
+        ctx,
+        info
+      ) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
         const takeLimit = Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
 
@@ -117,13 +134,15 @@ const TickerInfo = objectType({
     t.nullable.string('tickerId')
     t.nullable.field('ticker', {
       type: 'Ticker',
-      resolve: (parent, __, ctx) =>
-        ctx.prisma.ticker
+      resolve: (parent, __, ctx, info) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        return ctx.prisma.ticker
           .findUnique({
             where: { id: Number(parent.id) },
           })
           .timeSeries()
-          .then(),
+          .then()
+      },
     })
   },
 })
@@ -150,7 +169,7 @@ const Query = objectType({
         name: stringArg(),
       },
       type: 'MarketIndex',
-      resolve: async (_, args: { name: string }, ctx) => {
+      resolve: async (_, args: { name: string }, ctx, info) => {
         return ctx.prisma.marketIndex.findFirst({
           where: { name: args.name },
         })
@@ -166,8 +185,10 @@ const Query = objectType({
       resolve: async (
         _,
         args: { marketIndexId: number; limit: number },
-        ctx
+        ctx,
+        info
       ) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const options: {
           take?: Prisma.UserFindManyArgs['take']
           where?: { marketIndexId: number }
@@ -228,7 +249,15 @@ export const config = {
   },
 }
 
-const apolloServer = new ApolloServer({ schema, context, cache: 'bounded' })
+const apolloServer = new ApolloServer({
+  schema,
+  context,
+  cache: new InMemoryLRUCache(),
+  plugins: [
+    responseCachePlugin(),
+    ApolloServerPluginCacheControl({ defaultMaxAge: 60 * 15 }),
+  ],
+})
 
 let apolloServerHandler: NextApiHandler
 

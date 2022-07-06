@@ -6,7 +6,8 @@ import Layout from 'components/Layout';
 import MarketIndex from 'components/MarketIndex';
 import gql from 'graphql-tag';
 import { MARKET_INDEX } from 'lib/const';
-import moment from 'moment';
+import { format, moment, momentBusiness } from 'lib/utils/dates';
+import { getMarketPageOptions } from 'lib/utils/pages';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -17,6 +18,7 @@ const MarketIndexQuery = gql`
     marketIndex(name: $name) {
       id
       displayName
+      lastRefreshed
     }
   }
 `
@@ -25,6 +27,7 @@ export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData })
 
   const [page, global] = await Promise.all([
+    // FIXME: 'MARKET_INDEX.sp500' should come from the router query
     client.getSingle(MARKET_INDEX.sp500),
     client.getSingle('global'),
   ])
@@ -34,23 +37,10 @@ export async function getStaticProps({ previewData }) {
   }
 }
 
-const sp500Page = ({ page, global }) => {
+const MarketPage = ({ page, global }) => {
   const routerQuery = useRouter().query
-  // REFACTOR: create a function that takes in the router query and returns the limits to clean this up
-  const indexLimit = Number(process.env.NEXT_PUBLIC_INDEX_LIMIT)
-  const limitQuery = routerQuery.limit ? Number(routerQuery.limit) : indexLimit
-  const timeSeriesLimitQuery = routerQuery.days
-  const limit = limitQuery > indexLimit ? indexLimit : limitQuery
-  const bypassTimeSeriesLimit =
-    limit <= Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_BYPASS_LIMIT)
-  let timeSeriesLimit = timeSeriesLimitQuery
-    ? Number(timeSeriesLimitQuery)
-    : Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT_DEFAULT)
-  timeSeriesLimit =
-    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT) &&
-    !bypassTimeSeriesLimit
-      ? Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT)
-      : timeSeriesLimit
+  const { marketName, limit, timeSeriesLimit, bypassTimeSeriesLimit } =
+    getMarketPageOptions(routerQuery)
   const {
     loading,
     error,
@@ -61,7 +51,7 @@ const sp500Page = ({ page, global }) => {
     data: { marketIndex: MarketIndexType }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { name: MARKET_INDEX.sp500 },
+    variables: { name: marketName },
   })
   const [numOfDays, setNumOfDays] = useState(null)
   const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
@@ -69,11 +59,11 @@ const sp500Page = ({ page, global }) => {
   return (
     <Container loading={loading} error={error}>
       <Layout data={{ page: page.data, global: global.data }}>
-        {data?.marketIndex && (
+        {data?.marketIndex ? (
           <>
-            <div className="flex flex-row">
+            <div className="flex flex-row cursor-default">
               <h1
-                className="tooltip"
+                className="text-iced-200 tooltip tooltip-info"
                 data-tip={`Last refreshed: ${moment(
                   data.marketIndex.lastRefreshed
                 ).fromNow()}`}
@@ -81,10 +71,15 @@ const sp500Page = ({ page, global }) => {
                 {data.marketIndex.displayName}
               </h1>
               <span
-                className={classnames('ml-1', {
+                className={classnames('ml-1 tooltip tooltip-info', {
                   hidden: !days,
                   ['animate-fadeIn']: days > 0,
                 })}
+                data-tip={`${momentBusiness()
+                  .businessSubtract(days)
+                  .format(format.standard)} - ${momentBusiness().format(
+                  format.standard
+                )}`}
               >
                 {days}D
               </span>
@@ -97,10 +92,14 @@ const sp500Page = ({ page, global }) => {
               setNumOfDays={setNumOfDays}
             />
           </>
+        ) : (
+          <div className="text-crayolaRed-100">
+            Market "{marketName}" not found.
+          </div>
         )}
       </Layout>
     </Container>
   )
 }
 
-export default sp500Page
+export default MarketPage

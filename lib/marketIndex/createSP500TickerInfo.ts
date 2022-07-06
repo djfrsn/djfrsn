@@ -1,6 +1,6 @@
 import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
-import { CreateSp500TickerOptions, RefreshMarketIndexTickerJob } from 'lib/interfaces';
+import { CreateSp500TickerOptions, RefreshMarketTickerJob } from 'lib/interfaces';
 import arrayHasItems from 'lib/utils/arrayHasItems';
 import { normalizeDate } from 'lib/utils/dates';
 
@@ -11,7 +11,7 @@ const fmpApi = new FMPApi()
  * @constructor
  */
 export default async function createSp500TickerInfo(
-  { tickers, symbolDict, marketInterval }: RefreshMarketIndexTickerJob,
+  { tickers, symbolDict, marketInterval }: RefreshMarketTickerJob,
   options: CreateSp500TickerOptions
 ): Promise<{ ticker: { count: number }; tickerInfo: { count: number } }> {
   let res = { count: 0 }

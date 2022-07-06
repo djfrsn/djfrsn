@@ -1,11 +1,12 @@
-import { deleteKeysByPattern } from 'lib/db/redis';
+import prisma from 'lib/db/prisma';
 import initMarketIndexCron from 'lib/marketIndex/initMarketIndexCron';
 import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/market-index/jobs
-// curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/market-index/jobs
-// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"x\"}" https://blockwizards.herokuapp.com/api/market-index/jobs
+// curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/market/jobs
+// curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/market/jobs
+
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/market/jobs
 
 /**
  * Description: Schedule a repeatable job to update market indexes and related ticker info data
@@ -24,11 +25,8 @@ export default async function handler(
     return error
       ? response.status(405).send(error)
       : response.status(200).send(jobs)
-  } else if (request.method === 'DELETE') {
-    if (validKey(request.body.access_key)) {
-      await deleteKeysByPattern('bull:')
-      return response.status(200).send(true)
-    }
+  } else if (request.method === 'DELETE' && validKey(request.body.access_key)) {
+    await prisma.tickerInfo.deleteMany()
     return response.status(200).send(true)
   } else {
     return response.status(405).send({ message: 'Method not allowed' })

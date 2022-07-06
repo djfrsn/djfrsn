@@ -2,15 +2,19 @@ import { Job, JobNode } from 'bullmq';
 import { MARKET_INDEX, QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { getSp500RefreshFlow } from 'lib/db/queue';
-import { RefreshMarketIndexTickerJob } from 'lib/interfaces';
+import { RefreshMarketTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
 import { getDependenciesCount } from 'lib/utils/bullmq';
 import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/dates';
 
 let parent: JobNode | null
 
-export default async function refreshMarketIndexTickerProcessor(
-  job: Job<RefreshMarketIndexTickerJob>
+/**
+ * Description: Run job to fetch and store data for a list of tickers like FCX,GOOG,MMM
+ * @constructor
+ */
+export default async function refreshMarketTickerProcessor(
+  job: Job<RefreshMarketTickerJob>
 ) {
   console.log('start refresh ticker job', job.name)
 
@@ -48,7 +52,7 @@ export default async function refreshMarketIndexTickerProcessor(
       await Promise.all([
         ...onComplete,
         parent.job.updateProgress(
-          progress > 99.9 ? 100 : Number(progress.toFixed(2))
+          progressIncrement > 100 ? 100 : Number(progress.toFixed(2))
         ),
       ])
       break

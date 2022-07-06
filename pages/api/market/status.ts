@@ -41,8 +41,8 @@ async function getJobData(
   }
 }
 
-// curl http://localhost:3000/api/market-index/status?jobId=2
-// curl https://blockwizards.herokuapp.com/api/market-index/status?jobId=2
+// curl http://localhost:3000/api/market/status?jobId=2
+// curl https://blockwizards.herokuapp.com/api/market/status?jobId=2
 
 /**
  * Description: Return list of jobs in Redis + BullMQ

@@ -31,6 +31,9 @@ async function createSP500RefreshJob(
     'tickers'
   )
 
+  if (!tickerListChunks.length)
+    throw new Error('createSP500RefreshJob Error: unable to get tickerList')
+
   const result = await sp500RefreshFlow.add({
     name,
     queueName,

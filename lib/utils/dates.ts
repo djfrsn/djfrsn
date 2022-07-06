@@ -14,7 +14,8 @@ export function startOfToday(): moment.Moment {
 export function normalizeDate(
   date: moment.Moment | Date | string
 ): moment.Moment {
-  const zero = val => val.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+  const zero = (val: moment.Moment) =>
+    val.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
 
   return moment.isMoment(date) ? zero(date) : zero(moment(date))
 }
@@ -73,4 +74,8 @@ export function isLatestBusinessDay(date: _Date): boolean {
   if (!moment.isMoment(date)) date = moment(date)
 
   return date.isSame(getMostRecentBusinessDay(), 'day')
+}
+
+export const format = {
+  standard: 'M/D/Y',
 }
