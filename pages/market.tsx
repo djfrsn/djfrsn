@@ -6,8 +6,8 @@ import Layout from 'components/Layout';
 import MarketIndex from 'components/MarketIndex';
 import gql from 'graphql-tag';
 import { MARKET_INDEX } from 'lib/const';
+import { format, moment, momentBusiness } from 'lib/utils/dates';
 import { getMarketPageOptions } from 'lib/utils/pages';
-import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -61,7 +61,7 @@ const MarketPage = ({ page, global }) => {
       <Layout data={{ page: page.data, global: global.data }}>
         {data?.marketIndex ? (
           <>
-            <div className="flex flex-row">
+            <div className="flex flex-row cursor-default">
               <h1
                 className="text-iced-200 tooltip tooltip-info"
                 data-tip={`Last refreshed: ${moment(
@@ -71,10 +71,15 @@ const MarketPage = ({ page, global }) => {
                 {data.marketIndex.displayName}
               </h1>
               <span
-                className={classnames('ml-1', {
+                className={classnames('ml-1 tooltip tooltip-info', {
                   hidden: !days,
                   ['animate-fadeIn']: days > 0,
                 })}
+                data-tip={`${momentBusiness()
+                  .businessSubtract(days)
+                  .format(format.standard)} - ${momentBusiness().format(
+                  format.standard
+                )}`}
               >
                 {days}D
               </span>

@@ -74,3 +74,7 @@ export function isLatestBusinessDay(date: _Date): boolean {
 
   return date.isSame(getMostRecentBusinessDay(), 'day')
 }
+
+export const format = {
+  standard: 'M/D/Y',
+}
