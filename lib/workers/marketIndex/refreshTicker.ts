@@ -9,6 +9,10 @@ import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/uti
 
 let parent: JobNode | null
 
+/**
+ * Description: Run job to fetch and store data for a list of tickers like FCX,GOOG,MMM
+ * @constructor
+ */
 export default async function refreshMarketIndexTickerProcessor(
   job: Job<RefreshMarketIndexTickerJob>
 ) {

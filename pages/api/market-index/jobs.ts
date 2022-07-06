@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 // curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/market-index/jobs
 // curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/market-index/jobs
-// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"x\"}" https://blockwizards.herokuapp.com/api/market-index/jobs
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/market-index/jobs
 
 /**
  * Description: Schedule a repeatable job to update market indexes and related ticker info data
