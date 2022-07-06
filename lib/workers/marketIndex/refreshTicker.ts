@@ -29,9 +29,9 @@ export default async function refreshMarketIndexTickerProcessor(
       // is marketIndex.lastRefreshedDate before today?
       // const shouldRefresh = !isLatestBusinessDay(lastRefreshed)
       // get num of days passed since lastRefreshed
-      const dayDiff = momentBusiness(mostRecentBusinessDay).businessDiff(
-        lastRefreshed
-      )
+      const dayDiff = lastRefreshed
+        ? momentBusiness(mostRecentBusinessDay).businessDiff(lastRefreshed)
+        : null
       const query =
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
           ? `timeseries=${dayDiff}`
