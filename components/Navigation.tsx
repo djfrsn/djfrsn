@@ -31,6 +31,8 @@ export default function Navigation({
 }: {
   navigation: GlobalType['navigation']
 }) {
+  if (!navigation?.length) return null
+
   return (
     <nav className="text-ash-100 hidden md:block">
       <ul className={styles.navigationList}>
