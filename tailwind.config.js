@@ -84,7 +84,7 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        mytheme: {
+        tron: {
           primary: '#6419E6',
           secondary: '#D926A9',
           accent: '#1FB2A6',
