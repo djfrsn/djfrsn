@@ -18,6 +18,7 @@ const MarketIndexQuery = gql`
     marketIndex(name: $name) {
       id
       displayName
+      lastRefreshed
     }
   }
 `
