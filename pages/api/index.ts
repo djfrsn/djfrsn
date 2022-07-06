@@ -74,6 +74,11 @@ const Ticker = objectType({
   definition(t) {
     t.string('id')
     t.string('symbol')
+    t.string('name')
+    t.string('sector')
+    t.string('subSector')
+    t.string('headQuarter')
+    t.string('founded')
     t.list.field('timeSeries', {
       type: 'TickerInfo',
       args: {

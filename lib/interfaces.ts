@@ -1,12 +1,10 @@
-import { Job, MarketIndex, MarketInterval, TickerInfo } from '@prisma/client';
+import { Job, MarketIndex, MarketInterval, Ticker as _Ticker, TickerInfo } from '@prisma/client';
 
 export interface TickerListInfo {
   id: string
   lastRefreshed: Date
 }
-export interface Ticker {
-  id: number
-  symbol: string
+export interface Ticker extends _Ticker {
   timeSeries: TickerInfo[]
 }
 
