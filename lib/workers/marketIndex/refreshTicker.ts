@@ -46,12 +46,14 @@ export default async function refreshMarketTickerProcessor(
 
       const dependencies = await parent.job.getDependencies()
       const totalJobCount = getDependenciesCount(dependencies)
-      const progressIncrement = Number((95 / totalJobCount).toFixed(2))
+      const progressIncrement = Number((100 / totalJobCount).toFixed(2))
       let progress = progressIncrement + Number(parent.job.progress)
 
       await Promise.all([
         ...onComplete,
-        parent.job.updateProgress(Number(progress.toFixed(2))),
+        parent.job.updateProgress(
+          progressIncrement > 100 ? 100 : Number(progress.toFixed(2))
+        ),
       ])
       break
     default:
