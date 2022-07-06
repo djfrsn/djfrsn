@@ -13,7 +13,7 @@ function LogoText({ title }: { title: string }) {
 }
 
 function Logo({
-  alt = '',
+  alt = 'Logo',
   className = '',
   src,
 }: {
