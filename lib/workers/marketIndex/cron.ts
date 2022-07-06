@@ -10,7 +10,7 @@ import handleMarketIndexJobRequest from 'lib/marketIndex/handleMarketIndexJobReq
 export default async function refreshMarketIndexCronProcessor(
   job: Job<MarketIndexCronJob>
 ) {
-  console.log('start refresh market indexes cron', job.name)
+  console.log('start refresh market index cron', job.name)
 
   switch (true) {
     case QUEUE.refresh.marketIndexes === job.queueName:
