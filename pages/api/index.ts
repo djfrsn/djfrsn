@@ -87,7 +87,13 @@ const Ticker = objectType({
         limit: intArg(),
         bypassLimit: booleanArg(),
       },
-      resolve: (parent, args: { limit: number; bypassLimit: boolean }, ctx) => {
+      resolve: (
+        parent,
+        args: { limit: number; bypassLimit: boolean },
+        ctx,
+        info
+      ) => {
+        info.cacheControl.setCacheHint({ maxAge: 3600 })
         const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
         const takeLimit = Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
 
@@ -124,13 +130,15 @@ const TickerInfo = objectType({
     t.nullable.string('tickerId')
     t.nullable.field('ticker', {
       type: 'Ticker',
-      resolve: (parent, __, ctx) =>
-        ctx.prisma.ticker
+      resolve: (parent, __, ctx, info) => {
+        info.cacheControl.setCacheHint({ maxAge: 3600 })
+        return ctx.prisma.ticker
           .findUnique({
             where: { id: Number(parent.id) },
           })
           .timeSeries()
-          .then(),
+          .then()
+      },
     })
   },
 })
@@ -157,7 +165,8 @@ const Query = objectType({
         name: stringArg(),
       },
       type: 'MarketIndex',
-      resolve: async (_, args: { name: string }, ctx) => {
+      resolve: async (_, args: { name: string }, ctx, info) => {
+        info.cacheControl.setCacheHint({ maxAge: 3600 })
         return ctx.prisma.marketIndex.findFirst({
           where: { name: args.name },
         })
@@ -173,8 +182,10 @@ const Query = objectType({
       resolve: async (
         _,
         args: { marketIndexId: number; limit: number },
-        ctx
+        ctx,
+        info
       ) => {
+        info.cacheControl.setCacheHint({ maxAge: 3600 })
         const options: {
           take?: Prisma.UserFindManyArgs['take']
           where?: { marketIndexId: number }
