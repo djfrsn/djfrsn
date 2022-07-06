@@ -13,6 +13,8 @@ import context from './context';
 
 export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
 
+const largeDatasetCacheHint = { maxAge: 43200 }
+
 const User = objectType({
   name: 'User',
   definition(t) {
@@ -63,7 +65,8 @@ const MarketIndex = objectType({
     t.field('lastRefreshed', { type: 'DateTime' })
     t.list.field('ticker', {
       type: 'Ticker',
-      resolve: async (parent, __, ctx) => {
+      resolve: async (parent, __, ctx, info) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         return ctx.prisma.ticker.findMany({
           where: { marketIndexId: Number(parent.id) },
         })
@@ -94,7 +97,7 @@ const Ticker = objectType({
         ctx,
         info
       ) => {
-        info.cacheControl.setCacheHint({ maxAge: 3600 })
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
         const takeLimit = Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
 
@@ -132,7 +135,7 @@ const TickerInfo = objectType({
     t.nullable.field('ticker', {
       type: 'Ticker',
       resolve: (parent, __, ctx, info) => {
-        info.cacheControl.setCacheHint({ maxAge: 3600 })
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         return ctx.prisma.ticker
           .findUnique({
             where: { id: Number(parent.id) },
@@ -167,7 +170,6 @@ const Query = objectType({
       },
       type: 'MarketIndex',
       resolve: async (_, args: { name: string }, ctx, info) => {
-        info.cacheControl.setCacheHint({ maxAge: 3600 })
         return ctx.prisma.marketIndex.findFirst({
           where: { name: args.name },
         })
@@ -186,7 +188,7 @@ const Query = objectType({
         ctx,
         info
       ) => {
-        info.cacheControl.setCacheHint({ maxAge: 3600 })
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const options: {
           take?: Prisma.UserFindManyArgs['take']
           where?: { marketIndexId: number }
