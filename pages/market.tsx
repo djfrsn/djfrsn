@@ -63,7 +63,7 @@ const MarketPage = ({ page, global }) => {
           <>
             <div className="flex flex-row">
               <h1
-                className="tooltip"
+                className="text-iced-200 tooltip tooltip-info"
                 data-tip={`Last refreshed: ${moment(
                   data.marketIndex.lastRefreshed
                 ).fromNow()}`}
