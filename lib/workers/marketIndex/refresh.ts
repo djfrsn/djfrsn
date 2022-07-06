@@ -1,15 +1,15 @@
 import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
-import { RefreshMarketIndexJob } from 'lib/interfaces';
+import { RefreshMarketJob } from 'lib/interfaces';
 import { moment } from 'lib/utils/dates';
 
 /**
  * Description: Runs after all tickers for a given index have been updated(see: refreshTicker.ts)
  * @constructor
  */
-export default async function refreshMarketIndexProcessor(
-  job: Job<RefreshMarketIndexJob>
+export default async function refreshMarketProcessor(
+  job: Job<RefreshMarketJob>
 ) {
   console.log('start refresh market index job', job.name)
 
@@ -19,6 +19,8 @@ export default async function refreshMarketIndexProcessor(
       const marketIndex = await prisma.marketIndex.findFirst({
         where: { id: job.data.id },
       })
+
+      await job.updateProgress(97)
 
       if (marketIndex) {
         await prisma.marketIndex.update({

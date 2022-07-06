@@ -19,25 +19,21 @@ export interface MarketIndexCronJob {
   timeframe: string
   marketIndex: MarketIndex
 }
-export interface RefreshMarketIndexJob {
-  id: number
-  name: string
-}
-
-export interface RefreshMarketIndexJob {
-  id: number
-  name: string
-}
 
 export interface TickerData {
   symbol: string
   tickerId: string
 }
-export interface RefreshMarketIndexTickerJob {
+
+export interface RefreshMarketJob {
+  id: number
+  name: string
+}
+
+export interface RefreshMarketTickerJob {
   tickers: TickerData[]
   symbolDict: { [name: string]: { tickerId: string } }
   marketInterval: MarketInterval
-  progressIncrement: number
 }
 
 export interface CreateSp500TickerOptions {
