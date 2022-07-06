@@ -159,7 +159,8 @@ const Query = objectType({
 
     t.list.field('jobs', {
       type: 'Job',
-      resolve: (_, args, ctx) => {
+      resolve: (_, args, ctx, info) => {
+        info.cacheControl.setCacheHint({ maxAge: 0 })
         return ctx.prisma.job.findMany()
       },
     })
