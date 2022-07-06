@@ -130,7 +130,7 @@ function JobInfo({ data }) {
 
 const Job = ({ job }) => {
   const { data, error } = useSWR(
-    `/api/market-index/status?jobId=${job.jobId}&queueName=${job.queueName}`,
+    `/api/market/status?jobId=${job.jobId}&queueName=${job.queueName}`,
     fetcher,
     { refreshInterval: 1000 }
   )

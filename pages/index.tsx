@@ -1,5 +1,5 @@
-const Homepage = () => {
-  return null
-}
+import MarketPage, { getStaticProps } from './market';
 
-export default Homepage
+export { getStaticProps }
+
+export default MarketPage
