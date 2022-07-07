@@ -12,7 +12,7 @@
     "build:dev": "npm run setup:dev && next build",
     "clean": "rm -rf dist",
     "start": "next start",
-    "setup": "npm run generate && npm run migrate:prisma",
+    "setup": "npm run generate && npm run migrate:prisma && prisma db seed",
     "setup:dev": "npm run generate && npm run migrate:prisma:dev",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
