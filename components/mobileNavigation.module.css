@@ -1,5 +1,5 @@
 .mobileNavigation {
-  @apply text-ash-100 flex items-center mb-2 md:mb-0 2xl:hidden;
+  @apply text-ash-500 flex items-center mb-2 md:mb-0 2xl:hidden;
 }
 
 .menuButton {

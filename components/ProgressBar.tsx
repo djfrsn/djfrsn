@@ -11,7 +11,7 @@ export default function ProgressBar({
     <div className={classnames('flex flex-col w-full', className)}>
       <span className="text-xxs">{value}%</span>
       <div
-        className="transition-all duration-300 rounded-sm bg-gradient-to-r from-iced-100 to-ash-100 h-1 max-w-full"
+        className="transition-all duration-300 rounded-sm bg-gradient-to-r from-iced-100 to-ash-500 h-1 max-w-full"
         style={{ width: `${value}%` }}
       />
     </div>

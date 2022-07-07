@@ -34,7 +34,7 @@ export default function Navigation({
   if (!navigation?.length) return null
 
   return (
-    <nav className="text-ash-100 hidden md:block">
+    <nav className="text-ash-500 hidden md:block">
       <ul className={styles.navigationList}>
         <NavigationItems items={navigation} />
       </ul>

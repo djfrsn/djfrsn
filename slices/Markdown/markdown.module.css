@@ -41,6 +41,6 @@
   }
 
   a {
-    @apply underline text-iced-neon;
+    @apply underline text-icedNeon-500;
   }
 }

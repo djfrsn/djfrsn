@@ -15,10 +15,11 @@ import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
 
 export default function Layout({
+  className = '',
   data,
   children,
 }: {
-  attributes?: { [name: string]: string }
+  className?: string
   data: { page: PageType; global: GlobalType }
   children?: React.ReactNode
 }) {
@@ -61,7 +62,12 @@ export default function Layout({
         <meta name="msapplication-TileColor" content="#2b5797" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <div className="relative container mx-auto px-6 py-8">
+      <div
+        className={classnames(
+          'relative container mx-auto px-6 py-8',
+          className
+        )}
+      >
         <ModalContext.Provider value={{ modalOpen }}>
           <MobileNavigation
             title={data.global.title}

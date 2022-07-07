@@ -58,10 +58,10 @@ class Modal extends Component<{
     return ReactDOM.createPortal(
       <div
         ref={this.modalContentRef}
-        className="p-4 m-6 rounded-sm bg-wash-200 z-50 relative top-28"
+        className="p-4 m-6 rounded-sm bg-wash-800 z-50 relative top-28"
       >
         <FaTimes
-          className="cursor-pointer text-ash-100 text-3xl absolute top-4 right-4"
+          className="cursor-pointer text-ash-500 text-3xl absolute top-4 right-4"
           onClick={() => this.props.toggleModal(false)}
         />
         {this.props.children}

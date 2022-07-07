@@ -1,5 +1,5 @@
 .utilBarContainer {
-  @apply flex items-center text-xs uppercase border-t border-b border-iced-fade;
+  @apply flex items-center text-xs uppercase border-t border-b border-iced-800;
 }
 
 .util-bar-header {

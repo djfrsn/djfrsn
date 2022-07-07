@@ -1,38 +1,20 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const color = require('color')
+const generateColors = require('./lib/utils/generateColors')
 
-const ash = color('#E7ECEF')
-const iced = color('#afd6f3')
-const wash = color('#274C77')
-const crayolaRed = color('#F9564F')
-
-const colors = {
-  ash: {
-    100: ash.hex(),
-    200: ash.darken(0.5).hex(),
-  },
-  wash: {
-    100: wash.hex(),
-    200: wash.darken(0.5).hex(),
-    300: wash.darken(0.75).hex(),
-  },
-  crayolaRed: {
-    500: crayolaRed.hex(),
-    600: crayolaRed.darken(0.5).hex(),
-  },
-  maxYellow: {
-    100: '#F3C677',
-  },
-  iced: {
-    100: iced.hex(),
-    200: iced.lighten(0.05).string(),
-    neon: '#00e7ff',
-    fade: iced.fade(0.8).string(),
-  },
-  iron: {
-    100: '#8B8C89',
-  },
-}
+const colors = generateColors({
+  ash: '#E7ECEF',
+  darkElectricBlue: '#3E6680',
+  brightNavyBlue: '#027BCE',
+  aliceBlue: '#EBF2FA',
+  neutral: '#191D24',
+  wash: '#274C77',
+  crayolaRed: '#F9564F',
+  maxYellow: '#F3C677',
+  iron: '#8B8C89',
+  iced: '#afd6f3',
+  icedNeon: '#00e7ff',
+})
 
 module.exports = {
   content: [
@@ -98,11 +80,13 @@ module.exports = {
           error: '#F87272',
         },
         homeroom: {
-          primary: ash.hex(),
-          secondary: wash.lighten(0.5).hex(),
-          accent: '#1FB2A6',
-          neutral: '#191D24',
-          'base-100': '#2A303C',
+          primary: colors.brightNavyBlue['300'],
+          secondary: colors.darkElectricBlue['500'],
+          accent: colors.brightNavyBlue['500'],
+          neutral: colors.neutral['500'],
+          'base-100': colors.ash['500'],
+          'base-200': colors.ash['600'],
+          'base-300': colors.ash['700'],
           info: colors.iced['200'],
           success: '#36D399',
           warning: '#FBBD23',

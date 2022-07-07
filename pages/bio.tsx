@@ -17,7 +17,12 @@ export async function getStaticProps({ previewData }) {
 }
 
 function Bio(props) {
-  return <Layout data={{ page: props.page.data, global: props.global.data }} />
+  return (
+    <Layout
+      className="text-primary"
+      data={{ page: props.page.data, global: props.global.data }}
+    />
+  )
 }
 
 export default Bio
