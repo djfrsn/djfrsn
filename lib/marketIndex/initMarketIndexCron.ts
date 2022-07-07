@@ -2,7 +2,7 @@ import { Job } from '@prisma/client';
 import { Job as QueueJob } from 'bullmq';
 import { QUEUE, TIMEFRAMES } from 'lib/const';
 import prisma from 'lib/db/prisma';
-import { defaultJobOptions, refreshMarketIndexesQueue } from 'lib/db/queue';
+import { defaultJobOptions, refreshMarketsQueue } from 'lib/db/queue';
 import validKey from 'lib/utils/validKey';
 
 interface MarketIndexesRefresh {
@@ -31,7 +31,7 @@ async function initMarketIndexCron(options: {
       TIMEFRAMES.forEach(timeframe => {
         // create job for each timeframe available
         queueJobs.push(
-          refreshMarketIndexesQueue.add(
+          refreshMarketsQueue.add(
             `refresh-${timeframe}-${marketIndex.name}`,
             { timeframe, marketIndex },
             {

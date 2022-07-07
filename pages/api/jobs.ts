@@ -1,8 +1,9 @@
-import { deleteKeysByPattern } from 'lib/db/redis';
+import { refreshMarketQueue, refreshMarketsQueue } from 'lib/db/queue';
 import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/jobs
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/jobs
 
 /**
  * Description: CRUD access to jobs in Redis
@@ -14,10 +15,14 @@ export default async function handler(
 ) {
   if (request.method === 'DELETE') {
     if (validKey(request.body.access_key)) {
-      await deleteKeysByPattern('bull:')
+      await Promise.all([
+        refreshMarketsQueue.obliterate(),
+        refreshMarketQueue.obliterate(),
+      ])
       return response.status(200).send(true)
+    } else {
+      return response.status(200).send(false)
     }
-    return response.status(200).send(false)
   } else {
     return response.status(405).send({ message: 'Method not allowed' })
   }

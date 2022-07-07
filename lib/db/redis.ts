@@ -20,7 +20,7 @@ const connection: IORedis = new IORedis({
   ...redisOptions,
 })
 
-export const flushall = () =>
+export const obliterate = () =>
   new Promise((resolve, reject) => {
     try {
       connection.obliterate('ASYNC', () => {

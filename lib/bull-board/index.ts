@@ -2,12 +2,15 @@ import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import express from 'express';
-import { refreshMarketIndexesQueue } from 'lib/db/queue';
+import { refreshMarketQueue, refreshMarketsQueue } from 'lib/db/queue';
 
 const serverAdapter = new ExpressAdapter()
 
 createBullBoard({
-  queues: [new BullMQAdapter(refreshMarketIndexesQueue)],
+  queues: [
+    new BullMQAdapter(refreshMarketsQueue),
+    new BullMQAdapter(refreshMarketQueue),
+  ],
   serverAdapter: serverAdapter,
 })
 

@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["extendedIndexes"]
 }
 
 datasource db {
@@ -42,12 +43,6 @@ model Job {
   queueName String?
 }
 
-model TickerListInfo {
-  id            String @default(cuid()) @id
-  updatedAt     DateTime @updatedAt @default(now())
-  lastRefreshed DateTime
-}
-
 model MarketIndex {
   id   Int     @default(autoincrement()) @id
   name String
@@ -57,13 +52,13 @@ model MarketIndex {
 }
 
 model MarketInterval {
-  id   String @default(cuid()) @id
+  id   Int @default(autoincrement()) @id
   name String
   timeSeries TickerInfo[]
 }
 
 model Ticker {
-  id             String @default(cuid()) @id
+  id             Int @default(autoincrement()) @id
   updatedAt      DateTime @updatedAt @default(now())
   lastRefreshed  DateTime?
   symbol         String
@@ -75,21 +70,24 @@ model Ticker {
   cik            String
   founded        String
   marketIndexId  Int?
+  @@index([marketIndexId(ops: Int4MinMaxOps)], type: Brin)
   marketIndex    MarketIndex?   @relation(fields: [marketIndexId], references: [id])
   timeSeries     TickerInfo[]
 }
 
 model TickerInfo {
-  id            String @default(cuid()) @id
+  id            Int @default(autoincrement()) @id
   date          DateTime
+  @@index([date(ops: TimestampMinMaxOps)], type: Brin)
   updatedAt     DateTime @updatedAt @default(now())
-  intervalId    String?
+  intervalId    Int?
   interval      MarketInterval? @relation(fields: [intervalId], references: [id])
   open          String?
   close         String
   high          String?
   low           String?
   volume        String?
-  tickerId      String?
+  tickerId      Int?
+  @@index([tickerId(ops: Int4MinMaxOps)], type: Brin)
   ticker        Ticker? @relation(fields: [tickerId], references: [id])
 }
