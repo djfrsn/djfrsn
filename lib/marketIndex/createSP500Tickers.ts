@@ -31,7 +31,7 @@ export default async function createSP500Tickers(
   )
   console.log('createSP500Tickers => shouldRefresh', shouldRefresh)
 
-  if (shouldRefresh) {
+  if (shouldRefresh || process.env.FORCE_MARKET_TICKERS_REFRESH) {
     const tickerList = await fmpApi.marketIndex.sp500()
 
     if (arrayHasItems(tickerList)) {
