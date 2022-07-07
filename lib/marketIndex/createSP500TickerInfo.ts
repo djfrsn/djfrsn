@@ -3,6 +3,7 @@ import prisma from 'lib/db/prisma';
 import { CreateSp500TickerOptions, RefreshMarketTickerJob } from 'lib/interfaces';
 import arrayHasItems from 'lib/utils/arrayHasItems';
 import { normalizeDate } from 'lib/utils/dates';
+import moment from 'moment';
 
 const fmpApi = new FMPApi()
 
@@ -25,7 +26,7 @@ export default async function createSp500TickerInfo(
   const existingTickerInfoDict = existingTickerInfo.reduce(
     (a, existingTickerInfo) => ({
       ...a,
-      [normalizeDate(existingTickerInfo.date).toISOString()]: {
+      [normalizeDate(moment(existingTickerInfo.date)).toISOString()]: {
         ...existingTickerInfo,
       },
     }),
@@ -38,7 +39,7 @@ export default async function createSp500TickerInfo(
     const tickerPriceData = tickerPrices.reduce((allTickers, ticker) => {
       const historicalTickerPrices = ticker.historical.reduce(
         (historicalInfo, tick) => {
-          const date = normalizeDate(tick.date).toISOString()
+          const date = normalizeDate(moment(tick.date)).toISOString()
           const shouldUpdate = !existingTickerInfoDict[date]
 
           if (shouldUpdate) {
