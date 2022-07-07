@@ -13,7 +13,7 @@ import context from './context';
 
 export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
 
-const largeDatasetCacheHint = { maxAge: 43200 }
+const largeDatasetCacheHint = { maxAge: 3600 }
 
 const User = objectType({
   name: 'User',
