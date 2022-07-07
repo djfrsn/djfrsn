@@ -19,7 +19,8 @@
     "feed": {},
     "contract": {},
     "sp500": {},
-    "jobs": {}
+    "jobs": {},
+    "bio": {}
   },
   "slices": {
     "Course": {
@@ -120,11 +121,6 @@
             }
           }
         }
-      }
-    },
-    "PageContent": {
-      "default": {
-        "primary": {}
       }
     }
   }
