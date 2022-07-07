@@ -14,19 +14,16 @@ import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
 
 function setTheme(props: { pathname: string }): string {
+  const htmlTag = document.documentElement
   // HACK: this doesn't get ssr'd :(
   switch (props.pathname) {
     case '/':
     case '/bio':
-      document
-        .getElementsByTagName('html')[0]
-        .setAttribute('data-theme', 'homeroom')
-      return 'homeroom'
+      htmlTag.setAttribute('data-theme', 'homeroom')
+      break
     default:
-      document
-        .getElementsByTagName('html')[0]
-        .setAttribute('data-theme', 'tron')
-      return 'tron'
+      htmlTag.setAttribute('data-theme', 'tron')
+      break
   }
 }
 
