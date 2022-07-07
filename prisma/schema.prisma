@@ -63,7 +63,7 @@ model MarketInterval {
 }
 
 model Ticker {
-  id             String @default(cuid()) @id
+  id             Int @default(autoincrement()) @id
   updatedAt      DateTime @updatedAt @default(now())
   lastRefreshed  DateTime?
   symbol         String
@@ -80,7 +80,7 @@ model Ticker {
 }
 
 model TickerInfo {
-  id            String @default(cuid()) @id
+  id            Int @default(autoincrement()) @id
   date          DateTime
   updatedAt     DateTime @updatedAt @default(now())
   intervalId    String?
@@ -90,6 +90,6 @@ model TickerInfo {
   high          String?
   low           String?
   volume        String?
-  tickerId      String?
+  tickerId      Int?
   ticker        Ticker? @relation(fields: [tickerId], references: [id])
 }
