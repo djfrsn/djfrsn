@@ -5,13 +5,30 @@ import MobileNavigation from 'components/MobileNavigation';
 import { GlobalType, PageType } from 'lib/types';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { components } from 'slices';
 
 import ModalContext from './context/modal-context';
 import styles from './layout.module.css';
 import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
+
+function setTheme(props: { pathname: string }): string {
+  // HACK: this doesn't get ssr'd :(
+  switch (props.pathname) {
+    case '/':
+    case '/bio':
+      document
+        .getElementsByTagName('html')[0]
+        .setAttribute('data-theme', 'homeroom')
+      return 'homeroom'
+    default:
+      document
+        .getElementsByTagName('html')[0]
+        .setAttribute('data-theme', 'tron')
+      return 'tron'
+  }
+}
 
 export default function Layout({
   data,
@@ -28,6 +45,10 @@ export default function Layout({
   if (router.isFallback) {
     return <LoadingIndicator />
   }
+
+  useEffect(() => {
+    setTheme(router)
+  }, [router.pathname])
 
   return (
     <>

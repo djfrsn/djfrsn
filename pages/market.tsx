@@ -93,7 +93,7 @@ const MarketPage = ({ page, global }) => {
             />
           </>
         ) : (
-          <div className="text-crayolaRed-100">
+          <div className="text-crayolaRed-500">
             Market "{marketName}" not found.
           </div>
         )}

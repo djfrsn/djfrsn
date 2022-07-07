@@ -14,6 +14,9 @@
 }
 
 html {
+  &[data-theme='homeroom'] {
+    @apply bg-gradient-to-t from-ash-100 to-ash-200 bg-no-repeat bg-fixed h-full font-body;
+  }
   &[data-theme='tron'] {
     @apply bg-gradient-to-t from-wash-200 to-wash-300 bg-no-repeat bg-fixed h-full font-body;
   }
@@ -117,6 +120,6 @@ input[type='submit'] {
   }
 
   .errorText {
-    @apply m-4 text-crayolaRed-100;
+    @apply m-4 text-crayolaRed-500;
   }
 }

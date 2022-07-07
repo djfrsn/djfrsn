@@ -157,7 +157,7 @@ const Job = ({ job }) => {
           {data.state ? (
             <JobInfo data={data} />
           ) : (
-            <span className="text-crayolaRed-100">{data.message}</span>
+            <span className="text-crayolaRed-500">{data.message}</span>
           )}
         </div>
       ) : (

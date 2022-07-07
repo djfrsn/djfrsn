@@ -1,22 +1,24 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const color = require('color')
 
+const ash = color('#E7ECEF')
 const iced = color('#afd6f3')
 const wash = color('#274C77')
-const wash200 = wash.darken(0.5)
-const wash300 = wash.darken(0.75)
+const crayolaRed = color('#F9564F')
 
 const colors = {
   ash: {
-    100: '#E7ECEF',
+    100: ash.hex(),
+    200: ash.darken(0.5).hex(),
   },
   wash: {
     100: wash.hex(),
-    200: wash200.hex(),
-    300: wash300.hex(),
+    200: wash.darken(0.5).hex(),
+    300: wash.darken(0.75).hex(),
   },
   crayolaRed: {
-    100: '#F9564F',
+    500: crayolaRed.hex(),
+    600: crayolaRed.darken(0.5).hex(),
   },
   maxYellow: {
     100: '#F3C677',
@@ -96,8 +98,8 @@ module.exports = {
           error: '#F87272',
         },
         homeroom: {
-          primary: 'red',
-          secondary: '#D926A9',
+          primary: ash.hex(),
+          secondary: wash.lighten(0.5).hex(),
           accent: '#1FB2A6',
           neutral: '#191D24',
           'base-100': '#2A303C',
