@@ -1,6 +1,9 @@
 import { FlowProducer, Queue } from 'bullmq';
+import Events from 'events';
 import { QUEUE } from 'lib/const';
 import connection from 'lib/db/redis';
+
+Events.EventEmitter.defaultMaxListeners = 15
 
 /**
  * @see {@link https://docs.bullmq.io/}
