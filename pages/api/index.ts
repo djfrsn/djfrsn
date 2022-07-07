@@ -125,6 +125,7 @@ const TickerInfo = objectType({
   definition(t) {
     t.int('id')
     t.field('date', { type: 'DateTime' })
+    t.int('intervalId')
     t.string('interval')
     t.string('open')
     t.string('close')

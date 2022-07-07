@@ -51,7 +51,7 @@ model MarketIndex {
 }
 
 model MarketInterval {
-  id   String @default(cuid()) @id
+  id   Int @default(autoincrement()) @id
   name String
   timeSeries TickerInfo[]
 }
@@ -77,7 +77,7 @@ model TickerInfo {
   id            Int @default(autoincrement()) @id
   date          DateTime
   updatedAt     DateTime @updatedAt @default(now())
-  intervalId    String?
+  intervalId    Int?
   interval      MarketInterval? @relation(fields: [intervalId], references: [id])
   open          String?
   close         String
