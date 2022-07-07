@@ -65,7 +65,7 @@ export default function Layout({
         <ModalContext.Provider value={{ modalOpen }}>
           <MobileNavigation
             title={data.global.title}
-            logo={data.global.logo}
+            logo={data.page.showLogo === false ? null : data.global.logo}
             navigation={data.global.navigation}
             toggleModal={toggleModal}
             modalOpen={modalOpen}

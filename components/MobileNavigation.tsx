@@ -34,10 +34,12 @@ export default function MobileNavigation({
           </nav>
         </Modal>
       )}
-      <div className="flex items-center ml-auto">
-        <LogoText title={title} />
-        <Logo className="ml-4" src={logo.url} alt={logo.alt} />
-      </div>
+      {logo && (
+        <div className="flex items-center ml-auto">
+          <LogoText title={title} />
+          <Logo className="ml-4" src={logo.url} alt={logo.alt} />
+        </div>
+      )}
     </div>
   )
 }
