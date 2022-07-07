@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { Logo, LogoText } from 'components/Logo';
 import MobileNavigation from 'components/MobileNavigation';
 import { GlobalType, PageType } from 'lib/types';
+import theme from 'lib/utils/theme';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -12,20 +13,6 @@ import ModalContext from './context/modal-context';
 import styles from './layout.module.css';
 import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
-
-function setTheme(props: { pathname: string }) {
-  const htmlTag = document.documentElement
-  // HACK: this doesn't get ssr'd :(
-  switch (props.pathname) {
-    case '/':
-    case '/bio':
-      htmlTag.setAttribute('data-theme', 'homeroom')
-      break
-    default:
-      htmlTag.setAttribute('data-theme', 'tron')
-      break
-  }
-}
 
 export default function Layout({
   data,
@@ -44,7 +31,7 @@ export default function Layout({
   }
 
   useEffect(() => {
-    setTheme(router)
+    theme(router)
   }, [router.pathname])
 
   return (
