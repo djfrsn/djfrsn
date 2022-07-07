@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["extendedIndexes"]
 }
 
 datasource db {
@@ -69,6 +70,7 @@ model Ticker {
   cik            String
   founded        String
   marketIndexId  Int?
+  @@index([marketIndexId(ops: Int4BloomOps)], type: Brin)
   marketIndex    MarketIndex?   @relation(fields: [marketIndexId], references: [id])
   timeSeries     TickerInfo[]
 }
@@ -76,6 +78,7 @@ model Ticker {
 model TickerInfo {
   id            Int @default(autoincrement()) @id
   date          DateTime
+  @@index([date(ops: TimestampBloomOps)], type: Brin)
   updatedAt     DateTime @updatedAt @default(now())
   intervalId    Int?
   interval      MarketInterval? @relation(fields: [intervalId], references: [id])
@@ -85,5 +88,6 @@ model TickerInfo {
   low           String?
   volume        String?
   tickerId      Int?
+  @@index([tickerId(ops: Int4BloomOps)], type: Brin)
   ticker        Ticker? @relation(fields: [tickerId], references: [id])
 }
