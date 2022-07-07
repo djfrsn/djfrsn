@@ -3,6 +3,14 @@ import moment from 'moment-timezone';
 
 moment.tz.setDefault('America/New_York')
 
+var july4th = '07-04-2011'
+var laborDay = '09-05-2011'
+// FIXME: add all federal holidays to fix market page date range calc - https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/#url=Historical-Data
+moment.updateLocale('us', {
+  holidays: [july4th, laborDay],
+  holidayFormat: 'MM-DD-YYYY',
+})
+
 export { moment, momentBusiness }
 
 type _Date = moment.Moment | Date
