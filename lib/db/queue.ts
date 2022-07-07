@@ -17,10 +17,11 @@ export const options = {
   defaultJobOptions,
 }
 
-export const refreshMarketIndexesQueue = new Queue(
+export const refreshMarketsQueue = new Queue(
   QUEUE.refresh.marketIndexes,
   options
 )
+export const refreshMarketQueue = new Queue(QUEUE.refresh.marketIndex, options)
 // export const MarketIndexesRefreshQueueScheduler = () =>
 //   new QueueScheduler(QUEUE.refresh.marketIndexes, options)
 // export const MarketIndexQueueScheduler = () =>

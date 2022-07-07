@@ -1,7 +1,7 @@
 import { JobNode } from 'bullmq';
 import cronstrue from 'cronstrue';
 import { QUEUE } from 'lib/const';
-import { getSp500RefreshFlow, refreshMarketIndexesQueue } from 'lib/db/queue';
+import { getSp500RefreshFlow, refreshMarketsQueue } from 'lib/db/queue';
 import { getDependenciesCount } from 'lib/utils/bullmq';
 import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -20,6 +20,7 @@ async function getJobData(
         ? getDependenciesCount(dependencies)
         : 0
       const jobsWaitingCount = totalJobCount - dependencies?.unprocessed.length
+
       return res?.job
         ? {
             job: res.job,
@@ -31,7 +32,7 @@ async function getJobData(
           }
         : { message: `Job ${jobId} not found` }
     case queueName === QUEUE.refresh.marketIndexes:
-      res = await refreshMarketIndexesQueue.getJob(jobId)
+      res = await refreshMarketsQueue.getJob(jobId)
       return {
         job: res,
         message: res?.opts
