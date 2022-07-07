@@ -3,7 +3,7 @@ import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/jobs
-// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"x\"}" http://localhost:3000/api/jobs
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/jobs
 
 /**
  * Description: CRUD access to jobs in Redis

@@ -20,8 +20,6 @@ export default async function refreshMarketProcessor(
         where: { id: job.data.id },
       })
 
-      await job.updateProgress(97)
-
       if (marketIndex) {
         await prisma.marketIndex.update({
           where: { id: job.data.id },

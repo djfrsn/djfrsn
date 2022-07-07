@@ -5,7 +5,7 @@
   "main": "lib/index.ts",
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "node-options": "NODE_OPTIONS='--no-experimental-fetch --openssl-legacy-provider'",
+    "node-options": "NODE_OPTIONS='--no-experimental-fetch --openssl-legacy-provider --trace-warnings'",
     "dev": "npm run node-options next & npm run workers:dev",
     "build": "npm run setup && npm run node-options next build && npm run build:workers",
     "build:workers": "npm run clean && webpack",
