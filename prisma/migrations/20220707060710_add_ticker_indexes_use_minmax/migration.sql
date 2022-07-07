@@ -1,12 +1,3 @@
--- DropIndex
-DROP INDEX "Ticker_marketIndexId_idx";
-
--- DropIndex
-DROP INDEX "TickerInfo_date_idx";
-
--- DropIndex
-DROP INDEX "TickerInfo_tickerId_idx";
-
 -- CreateIndex
 CREATE INDEX "Ticker_marketIndexId_idx" ON "Ticker" USING BRIN ("marketIndexId" int4_minmax_ops);
 
