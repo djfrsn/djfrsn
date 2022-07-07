@@ -1,4 +1,4 @@
-import { refreshMarketsQueue, refreshTickerQueue } from 'lib/db/queue';
+import { refreshMarketQueue, refreshMarketsQueue } from 'lib/db/queue';
 import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -17,7 +17,7 @@ export default async function handler(
     if (validKey(request.body.access_key)) {
       await Promise.all([
         refreshMarketsQueue.obliterate(),
-        refreshTickerQueue.obliterate(),
+        refreshMarketQueue.obliterate(),
       ])
       return response.status(200).send(true)
     } else {
