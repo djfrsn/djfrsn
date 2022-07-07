@@ -78,7 +78,7 @@ const MarketIndex = objectType({
 const Ticker = objectType({
   name: 'Ticker',
   definition(t) {
-    t.string('id')
+    t.int('id')
     t.string('symbol')
     t.string('name')
     t.string('sector')
@@ -123,7 +123,7 @@ const Ticker = objectType({
 const TickerInfo = objectType({
   name: 'TickerInfo',
   definition(t) {
-    t.string('id')
+    t.int('id')
     t.field('date', { type: 'DateTime' })
     t.string('interval')
     t.string('open')

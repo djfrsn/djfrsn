@@ -42,12 +42,6 @@ model Job {
   queueName String?
 }
 
-model TickerListInfo {
-  id            String @default(cuid()) @id
-  updatedAt     DateTime @updatedAt @default(now())
-  lastRefreshed DateTime
-}
-
 model MarketIndex {
   id   Int     @default(autoincrement()) @id
   name String
