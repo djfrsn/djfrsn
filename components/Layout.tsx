@@ -13,7 +13,7 @@ import styles from './layout.module.css';
 import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
 
-function setTheme(props: { pathname: string }): string {
+function setTheme(props: { pathname: string }) {
   const htmlTag = document.documentElement
   // HACK: this doesn't get ssr'd :(
   switch (props.pathname) {
