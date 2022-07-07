@@ -17,6 +17,7 @@ export default function Layout({
   data,
   children,
 }: {
+  attributes?: { [name: string]: string }
   data: { page: PageType; global: GlobalType }
   children?: React.ReactNode
 }) {

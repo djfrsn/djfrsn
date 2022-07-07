@@ -1,5 +1,5 @@
-import MarketPage, { getStaticProps } from './market';
+import BioPage, { getStaticProps } from './bio';
 
 export { getStaticProps }
 
-export default MarketPage
+export default BioPage

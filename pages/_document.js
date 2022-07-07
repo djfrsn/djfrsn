@@ -15,9 +15,18 @@ if (process.env.NEXT_MANUAL_SIG_HANDLE) {
   })
 }
 
-export default function Document() {
+function getTheme(props) {
+  switch (props.__NEXT_DATA__.page) {
+    case '/':
+      return 'homeroom'
+    default:
+      return 'tron'
+  }
+}
+
+export default function Document(props) {
   return (
-    <Html data-theme="tron" lang="en">
+    <Html data-theme={getTheme(props)} lang="en">
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&display=swap"
