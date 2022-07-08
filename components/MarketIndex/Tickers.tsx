@@ -57,7 +57,7 @@ const Tickers = ({ data }: { data: Ticker[] }) => {
                         {symbol}
                       </a>
                     </h2>
-                    <div className="ml-2 cursor-default">
+                    <div className="ml-2 text-wash-50 cursor-default">
                       ${Number(timeSeries[0].close).toFixed(2)}
                     </div>
                   </div>

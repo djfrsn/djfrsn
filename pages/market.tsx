@@ -63,7 +63,7 @@ const MarketPage = ({ page, global }) => {
           <>
             <div className="flex flex-row cursor-default mt-10">
               <h1
-                className="text-iced-200 tooltip tooltip-info"
+                className="text-iced-300 tooltip tooltip-info"
                 data-tip={`Last refreshed: ${moment(
                   data.marketIndex.lastRefreshed
                 ).fromNow()}`}
@@ -71,10 +71,13 @@ const MarketPage = ({ page, global }) => {
                 {data.marketIndex.displayName}
               </h1>
               <span
-                className={classnames('ml-1 tooltip tooltip-info', {
-                  hidden: !days,
-                  ['animate-fadeIn']: days > 0,
-                })}
+                className={classnames(
+                  'ml-1 tooltip tooltip-info text-wash-50',
+                  {
+                    hidden: !days,
+                    ['animate-fadeIn']: days > 0,
+                  }
+                )}
                 data-tip={`${momentBusiness()
                   .businessSubtract(days)
                   .format(format.standard)} - ${momentBusiness().format(
