@@ -1,9 +1,5 @@
 .mobileNavigation {
-  @apply navbar px-6 pt-8 pb-0 md:mb-0 2xl:hidden;
-}
-
-.menuButton {
-  @apply cursor-pointer mr-6 text-2xl text-iced-100 md:hidden;
+  @apply navbar px-6 pt-8 pb-0 md:mb-0 lg:hidden;
 }
 
 .navItems {
