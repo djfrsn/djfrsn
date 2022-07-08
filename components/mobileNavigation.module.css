@@ -1,5 +1,5 @@
 .mobileNavigation {
-  @apply text-ash-500 flex items-center mb-2 md:mb-0 2xl:hidden;
+  @apply navbar px-6 pt-8 pb-0 md:mb-0 2xl:hidden;
 }
 
 .menuButton {
@@ -7,9 +7,11 @@
 }
 
 .navItems {
+  @apply mt-2 py-2 shadow bg-base-100 rounded-box w-52;
+
   ul {
     li {
-      @apply text-2xl my-8 list-none;
+      @apply text-2xl list-none;
 
       a {
         @apply no-underline;

@@ -81,7 +81,7 @@ module.exports = {
           accent: colors.maxYellow['500'],
           neutral: colors.neutral['500'],
           'base-content': colors.iced['400'],
-          'base-100': colors.wash['700'],
+          'base-100': colors.ultramarineBlue['700'],
           'base-200': colors.wash['800'],
           'base-300': colors.wash['900'],
           link: colors.iced['500'],

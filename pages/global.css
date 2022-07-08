@@ -68,18 +68,20 @@ ol {
 }
 
 ul {
-  li {
+  .list-style-custom {
     @apply flex;
 
-    &:before {
-      content: '\2022';
-      width: 1em;
-      @apply flex text-primary;
-    }
-
-    &:first-of-type {
+    &:not(.list-none) {
       &:before {
-        @apply hidden;
+        content: '\2022';
+        width: 1em;
+        @apply flex text-primary;
+      }
+
+      &:first-of-type {
+        &:before {
+          @apply hidden;
+        }
       }
     }
   }

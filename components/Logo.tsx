@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import Link from 'next/link';
 
 function LogoText({ title }: { title: string }) {
@@ -24,7 +25,9 @@ function Logo({
   return src ? (
     <img className={className} src={src} alt={alt} height="59px" width="59px" />
   ) : (
-    <div className="ml-2 text-secondary cursor-default">∆</div>
+    <div className={classnames(className, 'text-secondary cursor-default')}>
+      ∆
+    </div>
   )
 }
 

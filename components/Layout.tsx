@@ -24,7 +24,7 @@ export default function Layout({
   children?: React.ReactNode
 }) {
   const router = useRouter()
-  // TODO: use react context for modal state instead
+  // TODO: use daisy modal
   const [modalOpen, toggleModal] = useState(false)
 
   if (router.isFallback) {
@@ -62,12 +62,7 @@ export default function Layout({
         <meta name="msapplication-TileColor" content="#2b5797" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <div
-        className={classnames(
-          'relative container mx-auto px-6 py-8',
-          className
-        )}
-      >
+      <div className={classnames('relative w-full', className)}>
         <ModalContext.Provider value={{ modalOpen }}>
           <MobileNavigation
             title={data.global.title}
@@ -76,7 +71,7 @@ export default function Layout({
             toggleModal={toggleModal}
             modalOpen={modalOpen}
           />
-          <Navigation navigation={data.global.navigation} />
+          <Navigation navigation={data.global.navigation} listStyle />
           <main className={styles.mainContainer}>
             <div className={styles.mainColumn}>
               {children}

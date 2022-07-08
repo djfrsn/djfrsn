@@ -1,9 +1,7 @@
 .navigationList {
-  @apply flex pb-1;
+  @apply flex;
 
   li {
-    @apply ml-2;
-
     &:first-of-type {
       @apply list-none ml-0;
     }
