@@ -4,6 +4,7 @@ import { GlobalType, NavigationItemType } from 'lib/types';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { Logo, LogoText } from './Logo';
 import styles from './navigation.module.css';
 
 const NavigationItems = ({
@@ -49,17 +50,24 @@ const NavigationItems = ({
 export default function Navigation({
   navigation,
   listStyle,
+  global,
 }: {
   navigation: GlobalType['navigation']
   listStyle?: boolean
+  global: GlobalType
 }) {
   if (!navigation?.length) return null
 
   return (
-    <nav className="text-ash-500 hidden lg:block">
-      <ul className={styles.navigationList}>
+    <nav className="navbar container text-ash-500 hidden px-6 pt-8 pb-0 lg:flex">
+      <ul className={classnames('navbar-start', styles.navigationList)}>
         <NavigationItems items={navigation} listStyle={listStyle} />
       </ul>
+
+      <div className="navbar-end">
+        <LogoText title={global.title} />
+        <Logo className="ml-2" src={global.logo.url} alt={global.logo.alt} />
+      </div>
     </nav>
   )
 }

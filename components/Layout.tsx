@@ -1,6 +1,5 @@
 import { SliceZone } from '@prismicio/react';
 import classnames from 'classnames';
-import { Logo, LogoText } from 'components/Logo';
 import MobileNavigation from 'components/MobileNavigation';
 import { GlobalType, PageType } from 'lib/types';
 import theme from 'lib/utils/theme';
@@ -9,7 +8,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { components } from 'slices';
 
-import ModalContext from './context/modal-context';
 import styles from './layout.module.css';
 import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
@@ -24,8 +22,6 @@ export default function Layout({
   children?: React.ReactNode
 }) {
   const router = useRouter()
-  // TODO: use daisy modal
-  const [modalOpen, toggleModal] = useState(false)
 
   if (router.isFallback) {
     return <LoadingIndicator />
@@ -63,37 +59,25 @@ export default function Layout({
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <div className={classnames('relative w-full', className)}>
-        <ModalContext.Provider value={{ modalOpen }}>
-          <MobileNavigation
-            title={data.global.title}
-            logo={data.page.showLogo === false ? null : data.global.logo}
-            navigation={data.global.navigation}
-            toggleModal={toggleModal}
-            modalOpen={modalOpen}
-          />
-          <Navigation navigation={data.global.navigation} listStyle />
-          <main className={styles.mainContainer}>
-            <div className={styles.mainColumn}>
-              {children}
-              <SliceZone
-                slices={data.page.slices || []}
-                components={components}
-              />
-            </div>
-            <div className={styles.sideColumn}>
-              <div className="ml-auto">
-                <LogoText title={data.global.title} />
-              </div>
-              <div className="flex items-center mt-auto mb-8 ml-auto">
-                <Logo src={data.global.logo.url} alt={data.global.logo.alt} />
-              </div>
-            </div>
-          </main>
-          <div
-            id="modal-root"
-            className={classnames('modal', { active: modalOpen })}
-          ></div>
-        </ModalContext.Provider>
+        <MobileNavigation
+          title={data.global.title}
+          logo={data.page.showLogo === false ? null : data.global.logo}
+          navigation={data.global.navigation}
+        />
+        <Navigation
+          navigation={data.global.navigation}
+          global={data.global}
+          listStyle
+        />
+        <main className={styles.mainContainer}>
+          <div className={styles.mainColumn}>
+            {children}
+            <SliceZone
+              slices={data.page.slices || []}
+              components={components}
+            />
+          </div>
+        </main>
       </div>
     </>
   )

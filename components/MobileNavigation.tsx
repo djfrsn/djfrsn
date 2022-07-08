@@ -10,14 +10,10 @@ export default function MobileNavigation({
   title,
   logo,
   navigation,
-  modalOpen,
-  toggleModal,
 }: {
   title: GlobalType['title']
   logo: GlobalType['logo']
   navigation: GlobalType['navigation']
-  modalOpen: boolean
-  toggleModal: Dispatch<SetStateAction<boolean>>
 }) {
   return (
     <div className={styles.mobileNavigation}>

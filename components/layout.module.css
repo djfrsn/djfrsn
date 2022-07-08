@@ -3,9 +3,5 @@
 }
 
 .mainColumn {
-  @apply col-span-12 2xl:col-span-10;
-}
-
-.sideColumn {
-  @apply hidden h-full 2xl:flex col-span-2 flex-1 flex-col;
+  @apply col-span-12;
 }
