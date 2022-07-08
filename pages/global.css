@@ -9,7 +9,7 @@ html {
     @apply bg-gradient-to-t from-ash-300 to-ash-500 bg-no-repeat bg-fixed h-full font-body;
   }
 
-  &[data-theme='tron'] {
+  &[data-theme='explorer'] {
     @apply bg-gradient-to-t to-ultramarineBlue-900 from-wash-800 bg-no-repeat bg-fixed h-full font-body;
   }
 }
