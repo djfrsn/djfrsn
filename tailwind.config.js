@@ -77,8 +77,8 @@ module.exports = {
       {
         tron: {
           primary: colors.ash['500'],
-          secondary: colors.maxYellow['500'],
-          accent: colors.icedNeon['500'],
+          secondary: colors.icedNeon['500'],
+          accent: colors.maxYellow['500'],
           neutral: colors.neutral['500'],
           'base-content': colors.wash['300'],
           'base-100': colors.wash['500'],
@@ -94,8 +94,8 @@ module.exports = {
         },
         homeroom: {
           primary: colors.blackCoffee['500'],
-          secondary: colors.brightNavyBlue['500'],
-          accent: colors.ultramarineBlue['500'],
+          secondary: colors.ultramarineBlue['500'],
+          accent: colors.flame['500'],
           neutral: colors.neutral['500'],
           'base-content': colors.darkElectricBlue['500'],
           'base-100': colors.ash['500'],

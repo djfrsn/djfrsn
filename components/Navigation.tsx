@@ -1,3 +1,4 @@
+import { SITE_PATHS } from 'lib/const';
 import { GlobalType, NavigationItemType } from 'lib/types';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,7 +16,14 @@ const NavigationItems = ({ items }: { items: NavigationItemType[] }) => {
         return (
           <li key={key}>
             <Link href={linkPath}>
-              <a className="link" data-active={router.asPath === linkPath}>
+              <a
+                className="link select-none"
+                data-active={
+                  router.asPath === '/'
+                    ? SITE_PATHS.root.includes(linkPath)
+                    : router.asPath === linkPath
+                }
+              >
                 {title}
               </a>
             </Link>

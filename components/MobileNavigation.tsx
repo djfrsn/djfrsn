@@ -35,13 +35,9 @@ export default function MobileNavigation({
         </Modal>
       )}
       {logo && (
-        <div className="flex items-center ml-auto">
+        <div className="flex items-center ml-auto select-none">
           <LogoText title={title} />
-          {logo.url ? (
-            <Logo className="ml-2" src={logo.url} alt={logo.alt} />
-          ) : (
-            <div className="ml-2 text-secondary">∆</div>
-          )}
+          <Logo className="ml-2" src={logo.url} alt={logo.alt} />
         </div>
       )}
     </div>
