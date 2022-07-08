@@ -57,13 +57,13 @@ TODO: get wildcard selectors working
 .inner-shell-stream,
 .inner-shell-keyboard,
 .inner-shell-txt {
-  @apply rounded-sm border mx-1 p-0 border-iced-fade;
+  @apply rounded-sm border mx-1 p-0 border-iced-800;
 }
 
 .headerContainer {
-  @apply flex flex-wrap text-sm md:text-base items-center px-2 uppercase select-none border-b border-iced-fade;
+  @apply flex flex-wrap text-sm md:text-base items-center px-2 uppercase select-none border-b border-iced-800;
 
   em {
-    @apply ml-auto text-xxs not-italic text-iced-neon;
+    @apply ml-auto text-xxs not-italic text-icedNeon-500;
   }
 }

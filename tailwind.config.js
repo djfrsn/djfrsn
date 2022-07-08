@@ -1,36 +1,27 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const color = require('color')
+const generateColors = require('./lib/utils/generateColors')
 
-const iced = color('#afd6f3')
-const wash = color('#274C77')
-const wash200 = wash.darken(0.5)
-const wash300 = wash.darken(0.75)
-
-const colors = {
-  ash: {
-    100: '#E7ECEF',
-  },
-  wash: {
-    100: wash.hex(),
-    200: wash200.hex(),
-    300: wash300.hex(),
-  },
-  crayolaRed: {
-    100: '#F9564F',
-  },
-  maxYellow: {
-    100: '#F3C677',
-  },
-  iced: {
-    100: iced.hex(),
-    200: iced.lighten(0.05).string(),
-    neon: '#00e7ff',
-    fade: iced.fade(0.8).string(),
-  },
-  iron: {
-    100: '#8B8C89',
-  },
-}
+const colors = generateColors({
+  ash: '#E7ECEF',
+  ultramarineBlue: '#2667FF',
+  darkElectricBlue: '#3E6680',
+  brightNavyBlue: '#027BCE',
+  aliceBlue: '#EBF2FA',
+  neutral: '#191D24',
+  wash: '#274C77',
+  crayolaRed: '#F9564F',
+  maxYellow: '#F3C677',
+  iron: '#8B8C89',
+  iced: '#afd6f3',
+  icedNeon: '#00e7ff',
+  budGreen: '#5FAD56',
+  maizeCrayola: '#F2C14E',
+  coral: '#F78154',
+  spanishBlue: '#016FB9',
+  flame: '#EC4E20',
+  blackCoffee: '#362C28',
+})
 
 module.exports = {
   content: [
@@ -59,7 +50,7 @@ module.exports = {
     },
     fontFamily: {
       body: ['Inconsolata', 'monospace'],
-      logo: ['Terminator', 'Open Sans'],
+      logo: ['Open Sans'],
     },
     colors,
     extend: {
@@ -85,15 +76,35 @@ module.exports = {
     themes: [
       {
         tron: {
-          primary: '#6419E6',
-          secondary: '#D926A9',
-          accent: '#1FB2A6',
-          neutral: '#191D24',
-          'base-100': '#2A303C',
+          primary: colors.ash['500'],
+          secondary: colors.maxYellow['500'],
+          accent: colors.icedNeon['500'],
+          neutral: colors.neutral['500'],
+          'base-content': colors.wash['300'],
+          'base-100': colors.wash['500'],
+          'base-200': colors.wash['600'],
+          'base-300': colors.wash['700'],
+          link: colors.iced['500'],
+          linkHover: colors.iced['900'],
+          linkActive: colors.icedNeon['900'],
           info: colors.iced['200'],
-          success: '#36D399',
-          warning: '#FBBD23',
-          error: '#F87272',
+          success: colors.budGreen['500'],
+          warning: colors.maizeCrayola['500'],
+          error: colors.coral['500'],
+        },
+        homeroom: {
+          primary: colors.blackCoffee['500'],
+          secondary: colors.brightNavyBlue['500'],
+          accent: colors.ultramarineBlue['500'],
+          neutral: colors.neutral['500'],
+          'base-content': colors.darkElectricBlue['500'],
+          'base-100': colors.ash['500'],
+          'base-200': colors.ash['600'],
+          'base-300': colors.ash['700'],
+          info: colors.iced['200'],
+          success: colors.budGreen['500'],
+          warning: colors.maizeCrayola['500'],
+          error: colors.coral['500'],
         },
       },
     ],

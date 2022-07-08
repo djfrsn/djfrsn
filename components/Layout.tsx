@@ -3,9 +3,10 @@ import classnames from 'classnames';
 import { Logo, LogoText } from 'components/Logo';
 import MobileNavigation from 'components/MobileNavigation';
 import { GlobalType, PageType } from 'lib/types';
+import theme from 'lib/utils/theme';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { components } from 'slices';
 
 import ModalContext from './context/modal-context';
@@ -14,9 +15,11 @@ import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
 
 export default function Layout({
+  className = '',
   data,
   children,
 }: {
+  className?: string
   data: { page: PageType; global: GlobalType }
   children?: React.ReactNode
 }) {
@@ -27,6 +30,10 @@ export default function Layout({
   if (router.isFallback) {
     return <LoadingIndicator />
   }
+
+  useEffect(() => {
+    theme(router)
+  }, [router.pathname])
 
   return (
     <>
@@ -55,11 +62,16 @@ export default function Layout({
         <meta name="msapplication-TileColor" content="#2b5797" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <div className="relative container mx-auto px-6 py-8">
+      <div
+        className={classnames(
+          'relative container mx-auto px-6 py-8',
+          className
+        )}
+      >
         <ModalContext.Provider value={{ modalOpen }}>
           <MobileNavigation
             title={data.global.title}
-            logo={data.global.logo}
+            logo={data.page.showLogo === false ? null : data.global.logo}
             navigation={data.global.navigation}
             toggleModal={toggleModal}
             modalOpen={modalOpen}

@@ -36,7 +36,7 @@
   }
 
   div:nth-child(2) {
-    @apply w-6 h-2 ml-2 border border-iced-fade;
+    @apply w-6 h-2 ml-2 border border-iced-800;
   }
 
   div:last-of-type {

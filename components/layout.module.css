@@ -3,7 +3,7 @@
 }
 
 .mainColumn {
-  @apply col-span-12 2xl:col-span-10 text-ash-100;
+  @apply col-span-12 2xl:col-span-10;
 }
 
 .sideColumn {

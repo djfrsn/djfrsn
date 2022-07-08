@@ -102,14 +102,14 @@ function JobInfo({ data }) {
           <>
             <span className="text-iced-100 mb-1 block">
               Children
-              <span className="text-ash-100 text-xxs">
+              <span className="text-ash-500 text-xxs">
                 ({data.job.children.length})
               </span>
             </span>
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {children.map(childJob => (
                 <div key={childJob.id} className="mb-2 text-xs">
-                  <p className="text-iced-neon">{childJob.name}</p>
+                  <p className="text-icedNeon-500">{childJob.name}</p>
                   <ProgressBar className=" mb-1" value={childJob.progress} />
                   <p>
                     <span className="text-iced-200">Attempts</span>{' '}
@@ -157,7 +157,7 @@ const Job = ({ job }) => {
           {data.state ? (
             <JobInfo data={data} />
           ) : (
-            <span className="text-crayolaRed-100">{data.message}</span>
+            <span className="text-crayolaRed-500">{data.message}</span>
           )}
         </div>
       ) : (

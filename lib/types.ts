@@ -5,6 +5,7 @@ import { IndexJob } from './interfaces';
 export type PageType = {
   title: string
   description: string
+  showLogo?: boolean
   slices?: SliceLike[]
 }
 

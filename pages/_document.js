@@ -1,4 +1,5 @@
 import gracefulShutdown from 'lib/utils/gracefulShutdown';
+import theme from 'lib/utils/theme';
 import { Head, Html, Main, NextScript } from 'next/document';
 
 if (process.env.NEXT_MANUAL_SIG_HANDLE) {
@@ -15,9 +16,9 @@ if (process.env.NEXT_MANUAL_SIG_HANDLE) {
   })
 }
 
-export default function Document() {
+export default function Document(props) {
   return (
-    <Html data-theme="tron" lang="en">
+    <Html data-theme={theme(props)} lang="en">
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&display=swap"

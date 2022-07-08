@@ -30,7 +30,7 @@ const Tickers = ({ data }: { data: Ticker[] }) => {
                 return (
                   <div
                     key={id}
-                    className="flex flex-col items-center justify-content text-crayolaRed-100 text-center"
+                    className="flex flex-col items-center justify-content text-crayolaRed-500 text-center"
                   >
                     <div className="tooltip tooltip-info" data-tip={symbolTip}>
                       {symbol}
@@ -81,7 +81,7 @@ const Tickers = ({ data }: { data: Ticker[] }) => {
             }
           )
         ) : (
-          <div className="text-crayolaRed-100">Tickers Unavailable</div>
+          <div className="text-crayolaRed-500">Tickers Unavailable</div>
         )}
       </div>
     </div>

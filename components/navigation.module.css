@@ -3,6 +3,7 @@
 
   li {
     @apply ml-2;
+
     &:first-of-type {
       @apply list-none ml-0;
     }
