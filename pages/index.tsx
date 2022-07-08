@@ -1,5 +1,5 @@
-import BioPage, { getStaticProps } from './bio';
+import AboutPage, { getStaticProps } from './about';
 
 export { getStaticProps }
 
-export default BioPage
+export default AboutPage

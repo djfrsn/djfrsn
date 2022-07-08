@@ -16,7 +16,7 @@ export async function getStaticProps({ previewData }) {
   }
 }
 
-function Bio(props) {
+function About(props) {
   return (
     <Layout
       className="text-primary"
@@ -25,4 +25,4 @@ function Bio(props) {
   )
 }
 
-export default Bio
+export default About
