@@ -59,7 +59,7 @@ export default function Navigation({
   if (!navigation?.length) return null
 
   return (
-    <nav className="navbar container text-ash-500 hidden px-6 pt-8 pb-0 lg:flex">
+    <nav className="navbar container mx-auto text-ash-500 hidden px-6 pt-8 pb-0 lg:flex">
       <ul className={classnames('navbar-start', styles.navigationList)}>
         <NavigationItems items={navigation} listStyle={listStyle} />
       </ul>
