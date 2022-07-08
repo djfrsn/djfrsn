@@ -61,7 +61,7 @@ const MarketPage = ({ page, global }) => {
       <Layout data={{ page: page.data, global: global.data }}>
         {data?.marketIndex ? (
           <>
-            <div className="flex flex-row cursor-default">
+            <div className="flex flex-row cursor-default mt-10">
               <h1
                 className="text-iced-200 tooltip tooltip-info"
                 data-tip={`Last refreshed: ${moment(

@@ -2,24 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Terminator font: https://www.fontspace.com/terminator-cyr-font-f756 */
 /* Incosolata font: https://fonts.google.com/specimen/Inconsolata?query=incon#standard-styles */
-
-@font-face {
-  font-family: 'Terminator';
-  src: url('/fonts/terminator-webfont.woff2') format('woff2'),
-    url('/fonts/terminator-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
 
 html {
   &[data-theme='homeroom'] {
-    @apply bg-gradient-to-t from-ash-50 to-ash-300 bg-no-repeat bg-fixed h-full font-body;
+    @apply bg-gradient-to-t from-ash-300 to-ash-500 bg-no-repeat bg-fixed h-full font-body;
   }
 
   &[data-theme='tron'] {
-    @apply bg-gradient-to-t from-wash-500 to-wash-900 bg-no-repeat bg-fixed h-full font-body;
+    @apply bg-gradient-to-t to-ultramarineBlue-900 from-wash-800 bg-no-repeat bg-fixed h-full font-body;
   }
 }
 
@@ -78,7 +69,19 @@ ol {
 
 ul {
   li {
-    @apply list-disc list-inside;
+    @apply flex;
+
+    &:before {
+      content: '\2022';
+      width: 1em;
+      @apply flex text-primary;
+    }
+
+    &:first-of-type {
+      &:before {
+        @apply hidden;
+      }
+    }
   }
 }
 
@@ -97,14 +100,14 @@ input[type='submit'] {
 
 @layer components {
   .link {
-    @apply text-icedNeon-500 underline transition-colors;
+    @apply text-accent underline transition-colors;
 
     &:hover {
-      @apply text-iced-100;
+      @apply text-secondary;
     }
 
     &[data-active='true'] {
-      @apply text-iced-200;
+      @apply text-secondary;
     }
   }
 
