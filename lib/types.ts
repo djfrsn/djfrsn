@@ -1,4 +1,4 @@
-import { PrismicImageProps, PrismicLinkProps, SliceLike } from '@prismicio/react';
+import { PrismicImageProps, SliceLike } from '@prismicio/react';
 
 import { IndexJob } from './interfaces';
 
@@ -11,7 +11,7 @@ export type PageType = {
 
 export type FooterType = {
   links: {
-    link: PrismicLinkProps['field']
+    link: { url: string }
     linkTitle: string
     linkImage: PrismicImageProps['field']
   }[]
