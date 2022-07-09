@@ -15,6 +15,7 @@ function Profile({ content }) {
         </div>
         <div className={styles.profileImageContainer}>
           <Image
+            className={styles.profileImage}
             alt={profilePhoto.alt}
             src={profilePhoto.url}
             height={120}

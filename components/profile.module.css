@@ -19,5 +19,9 @@
   @apply basis-1/2;
 }
 
+.profileImage {
+  @apply w-[100px] h-[100px] rounded-[50%] overflow-hidden;
+}
+
 .profileDescription {
 }

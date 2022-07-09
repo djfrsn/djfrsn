@@ -11,7 +11,7 @@ export type PageType = {
 
 export type FooterType = {
   links: {
-    link: PrismicLinkProps
+    link: PrismicLinkProps['field']
     linkTitle: string
     linkImage: PrismicImageProps['field']
   }[]
