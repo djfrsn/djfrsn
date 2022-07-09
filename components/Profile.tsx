@@ -1,5 +1,5 @@
 import { PrismicRichText } from '@prismicio/react';
-import Image from 'next/Image';
+import Image from 'next/image';
 
 import styles from './profile.module.css';
 
