@@ -93,11 +93,11 @@ module.exports = {
           error: colors.coral['500'],
         },
         homeroom: {
-          primary: colors.blackCoffee['500'],
+          primary: colors.darkElectricBlue['500'],
           secondary: colors.ultramarineBlue['500'],
           accent: colors.flame['500'],
           neutral: colors.neutral['500'],
-          'base-content': colors.darkElectricBlue['500'],
+          'base-content': colors.blackCoffee['500'],
           'base-100': colors.ash['500'],
           'base-200': colors.ash['600'],
           'base-300': colors.ash['700'],
