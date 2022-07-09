@@ -35,6 +35,68 @@
           "placeholder_false": "false"
         }
       },
+      "name": {
+        "type": "Text",
+        "config": {
+          "label": "Name",
+          "placeholder": ""
+        }
+      },
+      "jobTitle": {
+        "type": "Text",
+        "config": {
+          "label": "Job Title",
+          "placeholder": ""
+        }
+      },
+      "profilePhoto": {
+        "type": "Image",
+        "config": {
+          "label": "Profile Photo",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "profileDescription": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Profile Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "footerLinks": {
+        "type": "Group",
+        "config": {
+          "label": "Footer Links",
+          "fields": {
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Link",
+                "placeholder": "",
+                "select": null
+              }
+            },
+            "linkTitle": {
+              "type": "Text",
+              "config": {
+                "label": "Link Title",
+                "placeholder": ""
+              }
+            },
+            "linkImage": {
+              "type": "Image",
+              "config": {
+                "label": "Link Image",
+                "constraint": {},
+                "thumbnails": []
+              }
+            }
+          }
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",

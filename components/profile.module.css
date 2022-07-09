@@ -1,0 +1,23 @@
+.titleContainer {
+  @apply flex flex-col basis-1/2 md:basis-2/5;
+
+  h1,
+  h2 {
+    @apply leading-7;
+  }
+
+  h2 {
+    @apply text-base;
+  }
+}
+
+.profileHeader {
+  @apply flex flex-col sm:flex-row;
+}
+
+.profileImageContainer {
+  @apply basis-1/2;
+}
+
+.profileDescription {
+}

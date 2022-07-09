@@ -1,13 +1,14 @@
 import { SliceZone } from '@prismicio/react';
 import classnames from 'classnames';
 import MobileNavigation from 'components/MobileNavigation';
-import { GlobalType, PageType } from 'lib/types';
+import { FooterType, GlobalType, PageType } from 'lib/types';
 import theme from 'lib/utils/theme';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { components } from 'slices';
 
+import Footer from './Footer';
 import styles from './layout.module.css';
 import LoadingIndicator from './Loading';
 import Navigation from './Navigation';
@@ -18,7 +19,7 @@ export default function Layout({
   children,
 }: {
   className?: string
-  data: { page: PageType; global: GlobalType }
+  data: { page: PageType; global: GlobalType; footer?: FooterType }
   children?: React.ReactNode
 }) {
   const router = useRouter()
@@ -77,6 +78,7 @@ export default function Layout({
               components={components}
             />
           </div>
+          {data.footer && <Footer data={data.footer} />}
         </main>
       </div>
     </>

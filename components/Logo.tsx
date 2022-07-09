@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import Image from 'next/image';
 import Link from 'next/link';
 
 function LogoText({ title }: { title: string }) {
@@ -23,7 +24,7 @@ function Logo({
   src: string
 }) {
   return src ? (
-    <img className={className} src={src} alt={alt} height="59px" width="59px" />
+    <Image className={className} src={src} alt={alt} height={59} width={59} />
   ) : (
     <div className={classnames(className, 'text-secondary cursor-default')}>
       ∆
