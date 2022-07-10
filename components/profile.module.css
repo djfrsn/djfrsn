@@ -1,0 +1,33 @@
+.header {
+  @apply flex;
+}
+
+.profileImageContainer {
+  shape-outside: ellipse();
+  @apply flex;
+}
+
+.titleContainer {
+  @apply flex flex-col items-center justify-center pl-4;
+
+  h1,
+  h2 {
+    @apply leading-7;
+  }
+
+  h1 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h2 {
+    @apply text-base text-secondary font-bold;
+  }
+}
+
+.profileImage {
+  @apply w-[100px] h-[100px] rounded-[50%] overflow-hidden;
+}
+
+.description {
+  @apply mt-10;
+}

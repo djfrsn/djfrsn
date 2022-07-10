@@ -6,6 +6,7 @@ const colors = generateColors({
   ash: '#E7ECEF',
   ultramarineBlue: '#2667FF',
   darkElectricBlue: '#3E6680',
+  raisinBlack: '#332E3C',
   brightNavyBlue: '#027BCE',
   aliceBlue: '#EBF2FA',
   neutral: '#191D24',
@@ -49,8 +50,8 @@ module.exports = {
       '7xl': '5rem',
     },
     fontFamily: {
-      body: ['Inconsolata', 'monospace'],
-      logo: ['Open Sans'],
+      sans: ['Inconsolata', 'monospace'],
+      serif: ['Lora', 'serif'],
     },
     colors,
     extend: {
@@ -75,15 +76,15 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        tron: {
-          primary: colors.ash['500'],
-          secondary: colors.maxYellow['500'],
-          accent: colors.icedNeon['500'],
+        explorer: {
+          primary: colors.iced['400'],
+          secondary: colors.icedNeon['500'],
+          accent: colors.maxYellow['500'],
           neutral: colors.neutral['500'],
-          'base-content': colors.wash['300'],
-          'base-100': colors.wash['500'],
-          'base-200': colors.wash['600'],
-          'base-300': colors.wash['700'],
+          'base-content': colors.iced['400'],
+          'base-100': colors.ultramarineBlue['700'],
+          'base-200': colors.wash['800'],
+          'base-300': colors.wash['900'],
           link: colors.iced['500'],
           linkHover: colors.iced['900'],
           linkActive: colors.icedNeon['900'],
@@ -93,11 +94,11 @@ module.exports = {
           error: colors.coral['500'],
         },
         homeroom: {
-          primary: colors.blackCoffee['500'],
-          secondary: colors.brightNavyBlue['500'],
-          accent: colors.ultramarineBlue['500'],
+          primary: colors.raisinBlack['500'],
+          secondary: colors.ultramarineBlue['500'],
+          accent: colors.flame['500'],
           neutral: colors.neutral['500'],
-          'base-content': colors.darkElectricBlue['500'],
+          'base-content': colors.blackCoffee['500'],
           'base-100': colors.ash['500'],
           'base-200': colors.ash['600'],
           'base-300': colors.ash['700'],

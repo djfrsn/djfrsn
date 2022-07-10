@@ -1,10 +1,126 @@
 {
-  "id": "4b3169b2-7d01-43f9-b8a5-92df3f28f9b6",
-  "uid": "nostrum-voluptatibus-omnis",
+  "id": "56340055-adf0-419b-8bfd-310a093f70e9",
+  "uid": "aut-rem-maxime",
   "type": "bio",
   "data": {
-    "title": "generate impactful networks",
-    "description": "incentivize strategic users",
-    "showLogo": false
+    "title": "embrace open-source web-readiness",
+    "description": "visualize efficient vortals",
+    "showLogo": false,
+    "name": "embrace impactful technologies",
+    "jobTitle": "brand best-of-breed initiatives",
+    "profilePhoto": {
+      "dimensions": {
+        "width": 900,
+        "height": 500
+      },
+      "alt": "Placeholder image",
+      "copyright": null,
+      "url": "https://images.unsplash.com/photo-1471897488648-5eae4ac6686b?w=900&h=500&fit=crop"
+    },
+    "profileDescription": [
+      {
+        "type": "paragraph",
+        "text": "Cupidatat est laboris do Lorem occaecat ea exercitation mollit non laboris non aliquip. Ut culpa veniam elit proident anim culpa qui officia ullamco cillum enim.",
+        "spans": []
+      }
+    ],
+    "footerLinks": [
+      {
+        "link": {
+          "link_type": "Web",
+          "url": "https://slicemachine.dev"
+        },
+        "linkTitle": "reintermediate granular metrics",
+        "linkImage": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": "Placeholder image",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1576662712957-9c79ae1280f8?w=900&h=500&fit=crop"
+        }
+      },
+      {
+        "link": {
+          "link_type": "Web",
+          "url": "http://twitter.com"
+        },
+        "linkTitle": "leverage revolutionary models",
+        "linkImage": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": "Placeholder image",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1537498425277-c283d32ef9db?w=900&h=500&fit=crop"
+        }
+      },
+      {
+        "link": {
+          "link_type": "Web",
+          "url": "https://prismic.io"
+        },
+        "linkTitle": "streamline dynamic methodologies",
+        "linkImage": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": "Placeholder image",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=900&h=500&fit=crop"
+        }
+      },
+      {
+        "link": {
+          "link_type": "Web",
+          "url": "http://google.com"
+        },
+        "linkTitle": "strategize 24/7 users",
+        "linkImage": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": "Placeholder image",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1579931794097-0ad001e51edb?w=900&h=500&fit=crop"
+        }
+      },
+      {
+        "link": {
+          "link_type": "Web",
+          "url": "http://twitter.com"
+        },
+        "linkTitle": "transform leading-edge synergies",
+        "linkImage": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": "Placeholder image",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1544731612-de7f96afe55f?w=900&h=500&fit=crop"
+        }
+      },
+      {
+        "link": {
+          "link_type": "Web",
+          "url": "http://google.com"
+        },
+        "linkTitle": "strategize integrated networks",
+        "linkImage": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": "Placeholder image",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1571126770897-2d612d1f7b89?w=900&h=500&fit=crop"
+        }
+      }
+    ]
   }
 }

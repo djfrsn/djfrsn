@@ -9,6 +9,14 @@ export type PageType = {
   slices?: SliceLike[]
 }
 
+export type FooterType = {
+  links: {
+    link: { url: string }
+    linkTitle: string
+    linkImage: PrismicImageProps['field']
+  }[]
+}
+
 export type NavigationItemType = {
   title: string
   link: {

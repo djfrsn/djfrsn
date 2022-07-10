@@ -42,7 +42,7 @@ const formatJobData = {
   [QUEUE.refresh.sp500TickerInfo]: (data: RefreshMarketTickerJob) => {
     return (
       <div>
-        <p className="text-iced-100">Tickers</p>
+        <p className="text-iced-500">Tickers</p>
         <p className="break-words text-xxs lg:text-xs">
           {data.tickers.map(d => d.symbol).join(',')}
         </p>
@@ -55,7 +55,7 @@ function JobInfoTime({ date }: { date: string }) {
   const mDate = moment(date)
   return (
     <p className="text-xs">
-      <span className="text-iced-200">Created</span> {mDate.fromNow()} -{' '}
+      <span className="text-iced-500">Created</span> {mDate.fromNow()} -{' '}
       {mDate.format('M-D h:mma')}
     </p>
   )
@@ -71,23 +71,23 @@ function JobInfo({ data }) {
   return (
     <div>
       <p>
-        <span className="text-iced-200">State</span> {data.state}
+        <span className="text-iced-500">State</span> {data.state}
       </p>
       <JobInfoTime date={data.job.createdAt} key={data.timestamp} />
       <p>
-        <span className="text-maxYellow-100">
+        <span className="text-maxYellow-500">
           {messageParts ? messageParts[0] : data.message}
         </span>
         {messageParts && (
           <>
-            <span className="text-iced-100">/</span>
+            <span className="text-iced-500">/</span>
             {messageParts[1]}
           </>
         )}
       </p>
       <div className="text-xs">
         {data.job.progress > 0 && (
-          <div className="flex">
+          <div className="flex text-iced-500">
             Progress:{' '}
             <ProgressBar
               className="ml-2 w-1/4 mb-1"
@@ -95,12 +95,15 @@ function JobInfo({ data }) {
             />
           </div>
         )}
-        <p>Attempts: {data.job.attemptsMade}</p>
+        <p className="text-iced-500">
+          Attempts:{' '}
+          <span className="text-wash-300">{data.job.attemptsMade}</span>
+        </p>
       </div>
       <div className="mt-6">
         {hasChildren && (
           <>
-            <span className="text-iced-100 mb-1 block">
+            <span className="text-iced-500 mb-1 block">
               Children
               <span className="text-ash-500 text-xxs">
                 ({data.job.children.length})
@@ -110,13 +113,17 @@ function JobInfo({ data }) {
               {children.map(childJob => (
                 <div key={childJob.id} className="mb-2 text-xs">
                   <p className="text-icedNeon-500">{childJob.name}</p>
-                  <ProgressBar className=" mb-1" value={childJob.progress} />
+                  <ProgressBar className="mb-1" value={childJob.progress} />
                   <p>
-                    <span className="text-iced-200">Attempts</span>{' '}
-                    {childJob.attemptsMade}
+                    <span className="text-iced-500">Attempts</span>{' '}
+                    <span className="text-wash-300">
+                      {childJob.attemptsMade}
+                    </span>
                   </p>
                   {formatJobData[childJob.name] && (
-                    <div>{formatJobData[childJob.name](childJob.data)}</div>
+                    <div className="text-wash-300">
+                      {formatJobData[childJob.name](childJob.data)}
+                    </div>
                   )}
                 </div>
               ))}
@@ -146,11 +153,11 @@ const Job = ({ job }) => {
   return (
     <article className="mt-10 ml-2">
       <h2>
-        <span className="text-iced-100">Queue</span>{' '}
+        <span className="text-iced-500">Queue</span>{' '}
         <span>{job.queueName}</span>
       </h2>
       <h3>
-        <span className="text-iced-100">Job</span> <span>{job.name}</span>
+        <span className="text-iced-500">Job</span> <span>{job.name}</span>
       </h3>
       {data ? (
         <div>
@@ -189,10 +196,10 @@ const Jobs = ({ page, global }) => {
         global: global.data,
       }}
     >
-      <div className="mb-16">
+      <div className="mb-16 cursor-default">
         <h1 className="text-maxYellow-100">
           Jobs
-          <span className="text-xs text-iced-100">
+          <span className="text-xs text-iced-500">
             ({jobsCount}
             {jobsCount === 0 && ' queued'})
           </span>

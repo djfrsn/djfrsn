@@ -40,6 +40,9 @@ const moduleExports = {
       // },
     ]
   },
+  images: {
+    domains: ['images.prismic.io'],
+  },
 }
 
 module.exports = withBundleAnalyzer(moduleExports)

@@ -6,16 +6,16 @@
 
 html {
   &[data-theme='homeroom'] {
-    @apply bg-gradient-to-t from-ash-300 to-ash-500 bg-no-repeat bg-fixed h-full font-body;
+    @apply bg-gradient-to-t from-ash-300 to-ash-500 bg-no-repeat bg-fixed h-full font-serif;
   }
 
-  &[data-theme='tron'] {
-    @apply bg-gradient-to-t to-ultramarineBlue-900 from-wash-800 bg-no-repeat bg-fixed h-full font-body;
+  &[data-theme='explorer'] {
+    @apply bg-gradient-to-t to-ultramarineBlue-900 from-wash-800 bg-no-repeat bg-fixed h-full font-sans;
   }
 }
 
 body {
-  @apply h-full;
+  @apply h-full text-primary;
 }
 
 body,
@@ -68,18 +68,19 @@ ol {
 }
 
 ul {
-  li {
+  .list-style-custom {
     @apply flex;
 
-    &:before {
-      content: '\2022';
-      width: 1em;
-      @apply flex text-primary;
-    }
-
-    &:first-of-type {
+    &:not(.list-none) {
       &:before {
-        @apply hidden;
+        content: '\2022';
+        @apply flex mx-3 text-primary;
+      }
+
+      &:first-of-type {
+        &:before {
+          @apply hidden;
+        }
       }
     }
   }
@@ -98,16 +99,20 @@ input[type='submit'] {
   @apply bg-ash-500 text-wash-500 mt-4 mr-4 py-2 px-4 rounded-md;
 }
 
+a {
+  @apply text-primary;
+}
+
 @layer components {
   .link {
-    @apply text-accent underline transition-colors;
+    @apply text-secondary underline transition-colors duration-300;
 
     &:hover {
-      @apply text-secondary;
+      @apply text-accent;
     }
 
     &[data-active='true'] {
-      @apply text-secondary;
+      @apply text-accent;
     }
   }
 

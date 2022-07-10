@@ -1,28 +1,13 @@
 import { PrismicRichText } from '@prismicio/react';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import BackButton from 'components/BackButton';
 import UtilBar from 'components/UtilBar';
-import parseUrl from 'lib/utils/parseUrl';
-import Link from 'next/link';
+import htmlSerializer from 'lib/utils/htmlSerializer';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import packageDetails from '../../package.json';
 import styles from './utilBarTitle.module.css';
-
-const htmlSerializer = (type, element, content, children, key) => {
-  if (type === 'hyperlink') {
-    return (
-      <Link href={parseUrl(element.data.url)}>
-        <a className={classNames('link', styles.link)} id={key}>
-          {children}
-        </a>
-      </Link>
-    )
-  }
-
-  return null
-}
 
 const UtilBarTitle = ({ slice }) => {
   const router = useRouter()
@@ -44,7 +29,7 @@ const UtilBarTitle = ({ slice }) => {
       <p className="ml-auto select-none">
         OS{' '}
         <a
-          className={classNames('link', styles.link)}
+          className={classnames('link', styles.link)}
           href={`${packageDetails.repository.url
             .replace('git+', '')
             .replace('.git', '')}/releases/tag/v${packageDetails.version}`}

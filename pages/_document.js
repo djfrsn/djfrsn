@@ -21,7 +21,7 @@ export default function Document(props) {
     <Html data-theme={theme(props)} lang="en">
       <Head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&family=Lora:wght@400;500&display=swap"
           rel="stylesheet"
         />
       </Head>

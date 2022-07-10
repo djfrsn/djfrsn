@@ -1,3 +1,4 @@
+import Profile from 'components/Profile';
 import { createClient } from 'prismicio';
 import React from 'react';
 
@@ -19,9 +20,14 @@ export async function getStaticProps({ previewData }) {
 function About(props) {
   return (
     <Layout
-      className="text-primary"
-      data={{ page: props.page.data, global: props.global.data }}
-    />
+      data={{
+        page: props.page.data,
+        global: props.global.data,
+        footer: { links: props.page.data.footerLinks },
+      }}
+    >
+      <Profile content={props.page.data} />
+    </Layout>
   )
 }
 

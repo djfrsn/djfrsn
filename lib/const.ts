@@ -27,3 +27,7 @@ export const QUEUE = {
     marketIndexes: process.env.MARKET_INDEX_CRON,
   },
 }
+
+export const SITE_PATHS = {
+  root: ['/', '/about'],
+}
