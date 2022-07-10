@@ -1,6 +1,5 @@
 import { SliceZone } from '@prismicio/react';
 import classnames from 'classnames';
-import MobileNavigation from 'components/MobileNavigation';
 import { FooterType, GlobalType, PageType } from 'lib/types';
 import theme from 'lib/utils/theme';
 import Head from 'next/head';
@@ -23,6 +22,7 @@ export default function Layout({
   children?: React.ReactNode
 }) {
   const router = useRouter()
+  const withFooter = data.footer
 
   if (router.isFallback) {
     return <LoadingIndicator />
@@ -60,17 +60,17 @@ export default function Layout({
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <div className={classnames('relative w-full', className)}>
-        <MobileNavigation
-          title={data.global.title}
-          logo={data.page.showLogo === false ? null : data.global.logo}
-          navigation={data.global.navigation}
-        />
         <Navigation
           navigation={data.global.navigation}
           global={data.global}
           listStyle
         />
-        <main className={styles.mainContainer}>
+        <main
+          className={classnames(
+            { [styles.withFooter]: withFooter },
+            styles.mainContainer
+          )}
+        >
           <div className={styles.mainColumn}>
             {children}
             <SliceZone
@@ -78,8 +78,8 @@ export default function Layout({
               components={components}
             />
           </div>
-          {data.footer && <Footer data={data.footer} />}
         </main>
+        {withFooter && <Footer data={data.footer} />}
       </div>
     </>
   )

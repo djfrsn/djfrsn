@@ -34,9 +34,9 @@ function FooterLinkItem({ data }) {
 
 function Footer({ data }: { data: FooterType }) {
   return (
-    <footer className="footer">
+    <footer className="footer h-[120px] container px-6 py-8 mx-auto">
       {data.links && (
-        <ul className="flex items-center">
+        <ul className="flex items-center pt-4 pb-8 md:mt-auto">
           {data.links.map((footerLink, i) => {
             return (
               <li key={i} className="list-style-custom items-center">

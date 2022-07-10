@@ -1,10 +1,30 @@
+.nav {
+  @apply h-[80px] navbar container mx-auto text-ash-500 px-6 pt-8 pb-0;
+}
+
 .navigationList {
-  @apply flex;
+  @apply hidden navbar-start lg:flex;
 
   li {
     &:first-of-type {
       @apply list-none ml-0;
     }
+
+    a {
+      @apply no-underline;
+    }
+  }
+}
+
+.mobileNav {
+  @apply navbar-start lg:hidden text-secondary;
+}
+
+.mobileNavItems {
+  @apply mt-2 py-2 shadow bg-base-100 rounded-box w-52;
+
+  li {
+    @apply text-2xl list-none;
 
     a {
       @apply no-underline;

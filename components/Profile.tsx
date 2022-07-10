@@ -1,4 +1,5 @@
 import { PrismicRichText } from '@prismicio/react';
+import htmlSerializer from 'lib/utils/htmlSerializer';
 import Image from 'next/image';
 
 import styles from './profile.module.css';
@@ -8,11 +9,7 @@ function Profile({ content }) {
 
   return (
     <div className="flex flex-col text-base-content">
-      <div className={styles.profileHeader}>
-        <div className={styles.titleContainer}>
-          <h1>{name}</h1>
-          <h2>{jobTitle}</h2>
-        </div>
+      <div className={styles.header}>
         <div className={styles.profileImageContainer}>
           <Image
             className={styles.profileImage}
@@ -22,9 +19,16 @@ function Profile({ content }) {
             width={120}
           />
         </div>
+        <div className={styles.titleContainer}>
+          <h1>{name}</h1>
+          <h2>{jobTitle}</h2>
+        </div>
       </div>
-      <div className={styles.profileDescription}>
-        <PrismicRichText field={profileDescription} />
+      <div className={styles.description}>
+        <PrismicRichText
+          field={profileDescription}
+          components={htmlSerializer}
+        />
       </div>
     </div>
   )

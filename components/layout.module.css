@@ -1,5 +1,10 @@
 .mainContainer {
-  @apply container px-6 py-8 mx-auto w-full h-full grid grid-cols-12 gap-6; /* mx-6 2xl:mx-12; */
+  height: calc(100% - (80px));
+  @apply container overflow-y-scroll px-6 py-8 mx-auto w-full grid grid-cols-12 gap-6;
+
+  &.withFooter {
+    height: calc(100% - (80px + 120px));
+  }
 }
 
 .mainColumn {

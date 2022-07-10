@@ -1,27 +1,33 @@
+.header {
+  @apply flex;
+}
+
+.profileImageContainer {
+  shape-outside: ellipse();
+  @apply flex;
+}
+
 .titleContainer {
-  @apply flex flex-col basis-1/2 md:basis-2/5;
+  @apply flex flex-col items-center justify-center pl-4;
 
   h1,
   h2 {
     @apply leading-7;
   }
 
-  h2 {
-    @apply text-base;
+  h1 {
+    @apply text-xl md:text-2xl;
   }
-}
 
-.profileHeader {
-  @apply flex flex-col sm:flex-row;
-}
-
-.profileImageContainer {
-  @apply basis-1/2;
+  h2 {
+    @apply text-base text-secondary;
+  }
 }
 
 .profileImage {
   @apply w-[100px] h-[100px] rounded-[50%] overflow-hidden;
 }
 
-.profileDescription {
+.description {
+  @apply mt-10;
 }
