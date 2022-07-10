@@ -10,6 +10,7 @@ import { components } from 'slices';
 import Footer from './Footer';
 import styles from './layout.module.css';
 import LoadingIndicator from './Loading';
+import Modal from './Modal';
 import Navigation from './Navigation';
 
 export default function Layout({
@@ -81,6 +82,8 @@ export default function Layout({
         </main>
         {withFooter && <Footer data={data.footer} />}
       </div>
+
+      <Modal />
     </>
   )
 }
