@@ -6,11 +6,11 @@
 
 html {
   &[data-theme='homeroom'] {
-    @apply bg-gradient-to-t from-ash-300 to-ash-500 bg-no-repeat bg-fixed h-full font-body;
+    @apply bg-gradient-to-t from-ash-300 to-ash-500 bg-no-repeat bg-fixed h-full font-serif;
   }
 
   &[data-theme='explorer'] {
-    @apply bg-gradient-to-t to-ultramarineBlue-900 from-wash-800 bg-no-repeat bg-fixed h-full font-body;
+    @apply bg-gradient-to-t to-ultramarineBlue-900 from-wash-800 bg-no-repeat bg-fixed h-full font-sans;
   }
 }
 
@@ -74,8 +74,7 @@ ul {
     &:not(.list-none) {
       &:before {
         content: '\2022';
-        width: 1em;
-        @apply flex text-primary;
+        @apply flex mx-3 text-primary;
       }
 
       &:first-of-type {

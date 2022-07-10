@@ -20,7 +20,7 @@
   }
 
   h2 {
-    @apply text-base text-secondary;
+    @apply text-base text-secondary font-bold;
   }
 }
 

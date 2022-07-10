@@ -45,7 +45,7 @@ function Footer({ data }: { data: FooterType }) {
         <ul className="flex items-center pt-4 pb-8 md:mt-auto">
           {data.links.map((footerLink, i) => {
             return (
-              <li key={i} className="list-style-custom items-center">
+              <li key={i} className="mx-2 items-center">
                 <FooterLinkItem data={footerLink} />
               </li>
             )

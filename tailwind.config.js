@@ -6,6 +6,7 @@ const colors = generateColors({
   ash: '#E7ECEF',
   ultramarineBlue: '#2667FF',
   darkElectricBlue: '#3E6680',
+  raisinBlack: '#332E3C',
   brightNavyBlue: '#027BCE',
   aliceBlue: '#EBF2FA',
   neutral: '#191D24',
@@ -49,8 +50,8 @@ module.exports = {
       '7xl': '5rem',
     },
     fontFamily: {
-      body: ['Inconsolata', 'monospace'],
-      logo: ['Open Sans'],
+      sans: ['Inconsolata', 'monospace'],
+      serif: ['Lora', 'serif'],
     },
     colors,
     extend: {
@@ -93,7 +94,7 @@ module.exports = {
           error: colors.coral['500'],
         },
         homeroom: {
-          primary: colors.darkElectricBlue['500'],
+          primary: colors.raisinBlack['500'],
           secondary: colors.ultramarineBlue['500'],
           accent: colors.flame['500'],
           neutral: colors.neutral['500'],
