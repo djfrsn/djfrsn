@@ -27,7 +27,7 @@ export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData })
 
   const [page, global] = await Promise.all([
-    // FIXME: 'MARKET_INDEX.sp500' should come from the router query
+    // FIXME: 'MARKET_INDEX.sp500' should come from the router query, fetch markets from db to generate paths for getStaticPaths
     client.getSingle(MARKET_INDEX.sp500),
     client.getSingle('global'),
   ])
