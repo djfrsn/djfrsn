@@ -4,13 +4,13 @@ import { ApolloServerPluginCacheControl } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
-import { serverCache } from 'lib/cache';
-import { minutesToMilliseconds } from 'lib/utils/time';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
 import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
 import path from 'path';
 
+import { serverCache } from '../../lib/cache';
+import { minutesToMilliseconds } from '../../lib/utils/time';
 import context from './context';
 
 export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
