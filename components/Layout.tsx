@@ -1,4 +1,4 @@
-import { useElementSize } from '@mantine/hooks';
+import { useElementSize, useWindowScroll } from '@mantine/hooks';
 import { SliceZone } from '@prismicio/react';
 import classnames from 'classnames';
 import { FooterType, GlobalType, PageType } from 'lib/types';
@@ -7,6 +7,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useEffect } from 'react';
+import { FaArrowUp } from 'react-icons/fa';
 import { components } from 'slices';
 
 import Footer from './Footer';
@@ -26,6 +27,7 @@ export default function Layout({
   data: { page: PageType; global: GlobalType; footer?: FooterType }
   children?: React.ReactNode
 }) {
+  const [scroll, scrollTo] = useWindowScroll()
   const { ref: mainRef, height: mainHeight } = useElementSize()
   const router = useRouter()
   const withFooter = data.footer
@@ -37,6 +39,8 @@ export default function Layout({
   useEffect(() => {
     theme(router)
   }, [router.pathname])
+
+  const showScrollToTop = scroll?.y > 500
 
   return (
     <>
@@ -92,6 +96,14 @@ export default function Layout({
             />
           </div>
         </main>
+        <button
+          onClick={() => scrollTo({ y: 0 })}
+          className={classnames('opacity-0 btn fixed bottom-12 right-12', {
+            '!opacity-100': showScrollToTop,
+          })}
+        >
+          <FaArrowUp />
+        </button>
         {withFooter && <Footer data={data.footer} />}
       </div>
 
