@@ -28,6 +28,7 @@ const MarketIndexTickersQuery = gql`
 `
 
 const MarketIndex = ({
+  height,
   marketIndexId,
   limit,
   bypassTimeSeriesLimit,
@@ -57,7 +58,7 @@ const MarketIndex = ({
 
   return (
     <Container loading={loading} error={error}>
-      <Tickers data={marketIndexTickers || []} />
+      <Tickers height={height} data={marketIndexTickers || []} />
     </Container>
   )
 }

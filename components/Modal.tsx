@@ -16,9 +16,11 @@ const ModalContent = ({ data: { modalContentId }, content }) => {
     case modalContentId.includes('Info'):
       return (
         <div>
-          {content.map(item => {
+          {content.map((item, index) => {
             return (
-              item?.markdown && <RichTextToMarkdown content={item.markdown} />
+              item?.markdown && (
+                <RichTextToMarkdown key={index} content={item.markdown} />
+              )
             )
           })}
         </div>

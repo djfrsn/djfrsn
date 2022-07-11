@@ -40,6 +40,63 @@ export async function getStaticProps({ previewData }) {
   }
 }
 
+const MarketPageLayout = ({
+  mainHeight = null,
+  data,
+  marketName,
+  limit,
+  timeSeriesLimit,
+  bypassTimeSeriesLimit,
+}) => {
+  const [numOfDays, setNumOfDays] = useState(null)
+  const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
+
+  return data?.marketIndex ? (
+    <>
+      <div className="flex flex-row h-[45px]">
+        <div className="flex flex-row basis-1/2 cursor-default">
+          <h1
+            className="text-iced-300 tooltip tooltip-info"
+            data-tip={`Last refreshed: ${moment(
+              data.marketIndex.lastRefreshed
+            ).fromNow()}`}
+          >
+            {data.marketIndex.displayName}
+          </h1>
+          <span
+            className={classnames('ml-1 tooltip tooltip-info text-wash-50', {
+              hidden: !days,
+              ['animate-fadeIn']: days > 0,
+            })}
+            data-tip={`${momentBusiness()
+              .businessSubtract(days)
+              .format(format.standard)} - ${momentBusiness().format(
+              format.standard
+            )}`}
+          >
+            {days}D
+          </span>
+        </div>
+        <div className="flex justify-end basis-1/2 items-center">
+          <ModalButton onClick={() => modalContentIdVar(`${marketName}Info`)}>
+            <FaInfoCircle className="text-xl text-accent" />
+          </ModalButton>
+        </div>
+      </div>
+      <MarketIndex
+        height={mainHeight}
+        marketIndexId={data.marketIndex.id}
+        limit={limit}
+        bypassTimeSeriesLimit={bypassTimeSeriesLimit}
+        timeSeriesLimit={timeSeriesLimit}
+        setNumOfDays={setNumOfDays}
+      />
+    </>
+  ) : (
+    <div className="text-crayolaRed-500">Market "{marketName}" not found.</div>
+  )
+}
+
 const MarketPage = ({ page, global }) => {
   const routerQuery = useRouter().query
   const { marketName, limit, timeSeriesLimit, bypassTimeSeriesLimit } =
@@ -56,62 +113,20 @@ const MarketPage = ({ page, global }) => {
     fetchPolicy: 'cache-and-network',
     variables: { name: marketName },
   })
-  const [numOfDays, setNumOfDays] = useState(null)
-  const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
 
   return (
     <Container loading={loading} error={error}>
-      <Layout data={{ page: page.data, global: global.data }}>
-        {data?.marketIndex ? (
-          <>
-            <div className="flex flex-row mt-10">
-              <div className="flex flex-row basis-1/2 cursor-default">
-                <h1
-                  className="text-iced-300 tooltip tooltip-info"
-                  data-tip={`Last refreshed: ${moment(
-                    data.marketIndex.lastRefreshed
-                  ).fromNow()}`}
-                >
-                  {data.marketIndex.displayName}
-                </h1>
-                <span
-                  className={classnames(
-                    'ml-1 tooltip tooltip-info text-wash-50',
-                    {
-                      hidden: !days,
-                      ['animate-fadeIn']: days > 0,
-                    }
-                  )}
-                  data-tip={`${momentBusiness()
-                    .businessSubtract(days)
-                    .format(format.standard)} - ${momentBusiness().format(
-                    format.standard
-                  )}`}
-                >
-                  {days}D
-                </span>
-              </div>
-              <div className="flex justify-end basis-1/2 items-center">
-                <ModalButton
-                  onClick={() => modalContentIdVar(`${marketName}Info`)}
-                >
-                  <FaInfoCircle className="text-xl text-accent" />
-                </ModalButton>
-              </div>
-            </div>
-            <MarketIndex
-              marketIndexId={data.marketIndex.id}
-              limit={limit}
-              bypassTimeSeriesLimit={bypassTimeSeriesLimit}
-              timeSeriesLimit={timeSeriesLimit}
-              setNumOfDays={setNumOfDays}
-            />
-          </>
-        ) : (
-          <div className="text-crayolaRed-500">
-            Market "{marketName}" not found.
-          </div>
-        )}
+      <Layout
+        mainOverflow="overflow-hidden"
+        data={{ page: page.data, global: global.data }}
+      >
+        <MarketPageLayout
+          data={data}
+          marketName={marketName}
+          limit={limit}
+          timeSeriesLimit={timeSeriesLimit}
+          bypassTimeSeriesLimit={bypassTimeSeriesLimit}
+        />
       </Layout>
     </Container>
   )

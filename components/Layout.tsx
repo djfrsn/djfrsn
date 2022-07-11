@@ -1,10 +1,12 @@
+import { useElementSize } from '@mantine/hooks';
 import { SliceZone } from '@prismicio/react';
 import classnames from 'classnames';
 import { FooterType, GlobalType, PageType } from 'lib/types';
 import theme from 'lib/utils/theme';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect } from 'react';
 import { components } from 'slices';
 
 import Footer from './Footer';
@@ -15,13 +17,16 @@ import Navigation from './Navigation';
 
 export default function Layout({
   className = '',
+  mainOverflow = 'overflow-auto',
   data,
   children,
 }: {
   className?: string
+  mainOverflow?: string
   data: { page: PageType; global: GlobalType; footer?: FooterType }
   children?: React.ReactNode
 }) {
+  const { ref: mainRef, height: mainHeight } = useElementSize()
   const router = useRouter()
   const withFooter = data.footer
 
@@ -67,13 +72,20 @@ export default function Layout({
           listStyle
         />
         <main
+          ref={mainRef}
           className={classnames(
             { [styles.withFooter]: withFooter },
-            styles.mainContainer
+            styles.mainContainer,
+            mainOverflow
           )}
         >
           <div className={styles.mainColumn}>
-            {children}
+            {React.Children.map(children, child => {
+              if (React.isValidElement(child)) {
+                return React.cloneElement(child, { mainHeight })
+              }
+              return child
+            })}
             <SliceZone
               slices={data.page.slices || []}
               components={components}
