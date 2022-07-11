@@ -6,6 +6,7 @@ import Layout from 'components/Layout';
 import MarketIndex from 'components/MarketIndex';
 import { ModalButton } from 'components/Modal';
 import gql from 'graphql-tag';
+import { modalContentIdVar } from 'lib/cache';
 import { MARKET_INDEX } from 'lib/const';
 import { getMarketPageOptions } from 'lib/utils/pages';
 import { format, moment, momentBusiness } from 'lib/utils/time';
@@ -91,7 +92,9 @@ const MarketPage = ({ page, global }) => {
                 </span>
               </div>
               <div className="flex justify-end basis-1/2 items-center">
-                <ModalButton>
+                <ModalButton
+                  onClick={() => modalContentIdVar(`${marketName}-info`)}
+                >
                   <FaInfoCircle className="text-xl text-accent" />
                 </ModalButton>
               </div>

@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
-import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { Prisma } from '@prisma/client';
 import { ApolloServerPluginCacheControl } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
+import { serverCache } from 'lib/cache';
+import { minutesToMilliseconds } from 'lib/utils/time';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
 import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
@@ -262,10 +263,12 @@ const typeDefs = gql`
 const apolloServer = new ApolloServer({
   schema,
   context,
-  cache: new InMemoryLRUCache(),
+  cache: serverCache,
   plugins: [
     responseCachePlugin(),
-    ApolloServerPluginCacheControl({ defaultMaxAge: 60 * 15 }),
+    ApolloServerPluginCacheControl({
+      defaultMaxAge: minutesToMilliseconds(5),
+    }),
   ],
   typeDefs,
 })

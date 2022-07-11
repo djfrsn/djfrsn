@@ -1,14 +1,15 @@
 import './global.css';
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
 import { PrismicPreview } from '@prismicio/next';
 import { PrismicProvider } from '@prismicio/react';
+import { clientCache } from 'lib/cache';
 import Link from 'next/link';
 
 import { linkResolver, repositoryName } from '../prismicio';
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: clientCache,
   uri: '/api',
 })
 
