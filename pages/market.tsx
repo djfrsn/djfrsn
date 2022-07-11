@@ -93,7 +93,7 @@ const MarketPage = ({ page, global }) => {
               </div>
               <div className="flex justify-end basis-1/2 items-center">
                 <ModalButton
-                  onClick={() => modalContentIdVar(`${marketName}-info`)}
+                  onClick={() => modalContentIdVar(`${marketName}Info`)}
                 >
                   <FaInfoCircle className="text-xl text-accent" />
                 </ModalButton>

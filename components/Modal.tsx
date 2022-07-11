@@ -1,5 +1,6 @@
-import { gql, useApolloClient, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { isModalOpenVar } from 'lib/cache';
+import { RichTextToMarkdown } from 'slices/Markdown';
 
 import Loading from './Loading';
 
@@ -10,20 +11,26 @@ export const GET_MODAL = gql`
   }
 `
 
-const ModalContent = ({ data: { modalContentId } }) => {
+const ModalContent = ({ data: { modalContentId }, content }) => {
   switch (true) {
-    case modalContentId.includes('-info'):
-      return <div>info style</div>
+    case modalContentId.includes('Info'):
+      return (
+        <div>
+          {content.map(item => {
+            return (
+              item?.markdown && <RichTextToMarkdown content={item.markdown} />
+            )
+          })}
+        </div>
+      )
     default:
       return <div>default style</div>
   }
 }
 
-const Modal = () => {
-  const client = useApolloClient()
+const Modal = ({ content }) => {
   const { data, loading, error } = useQuery(GET_MODAL)
-
-  console.log('data', data)
+  const modalContent = data?.modalContentId && content[data.modalContentId]
 
   return (
     <>
@@ -32,8 +39,6 @@ const Modal = () => {
         <label className="modal-box relative" htmlFor="">
           <label
             onClick={() => {
-              // client.cache.evict({ fieldName: 'isModalOpen' })
-              // client.cache.gc()
               localStorage.setItem('isModalOpen', 'false')
               isModalOpenVar(false)
             }}
@@ -46,7 +51,9 @@ const Modal = () => {
             <div className="text-crayolaRed-500">Error loading content!</div>
           )}
           {loading && <Loading />}
-          {data?.modalContentId && <ModalContent data={data} />}
+          {data?.modalContentId && (
+            <ModalContent data={data} content={modalContent} />
+          )}
         </label>
       </label>
     </>

@@ -18,7 +18,16 @@
     "root-page": {},
     "feed": {},
     "contract": {},
-    "sp500": {},
+    "sp500": {
+      "sp500Info": {
+        "markdown": {
+          "config": {
+            "patternType": "PARAGRAPH",
+            "blocks": 1
+          }
+        }
+      }
+    },
     "jobs": {},
     "bio": {}
   },

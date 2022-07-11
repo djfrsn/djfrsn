@@ -83,7 +83,7 @@ export default function Layout({
         {withFooter && <Footer data={data.footer} />}
       </div>
 
-      <Modal />
+      <Modal content={data.page} />
     </>
   )
 }
