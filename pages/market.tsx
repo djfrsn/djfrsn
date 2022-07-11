@@ -87,10 +87,9 @@ const MarketPageLayout = ({
           >
             {days}D
           </span>
-          <InfoButton className="flex md:hidden ml-6" />
+          <InfoButton className="flex ml-4" />
         </div>
         <div className="flex md:flex-initial justify-end md:basis-1/2 items-center mt-4 md:mt-0">
-          <InfoButton className="hidden md:flex mr-6" />
           <div className="">
             {timeframes.map((timeframe, index) => {
               return (
