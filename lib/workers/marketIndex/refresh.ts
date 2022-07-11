@@ -2,7 +2,7 @@ import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { RefreshMarketJob } from 'lib/interfaces';
-import { moment } from 'lib/utils/dates';
+import { moment } from 'lib/utils/time';
 
 /**
  * Description: Runs after all tickers for a given index have been updated(see: refreshTicker.ts)

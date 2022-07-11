@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client';
 import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { Prisma } from '@prisma/client';
 import { ApolloServerPluginCacheControl } from 'apollo-server-core';
@@ -251,6 +252,13 @@ export const config = {
   },
 }
 
+const typeDefs = gql`
+  extend type Query {
+    isModalOpen: Boolean!
+    modalContentId: String
+  }
+`
+
 const apolloServer = new ApolloServer({
   schema,
   context,
@@ -259,6 +267,7 @@ const apolloServer = new ApolloServer({
     responseCachePlugin(),
     ApolloServerPluginCacheControl({ defaultMaxAge: 60 * 15 }),
   ],
+  typeDefs,
 })
 
 let apolloServerHandler: NextApiHandler
