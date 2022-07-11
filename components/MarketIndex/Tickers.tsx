@@ -8,7 +8,7 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
   return (
     <div
-      className={classNames({ hidden: height <= 0 }, `mt-8 overflow-y-scroll`)}
+      className={classNames({ hidden: height <= 0 }, `mt-8`)}
       style={{ height: `${height - 45}px` }}
     >
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-8">
