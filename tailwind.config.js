@@ -55,6 +55,9 @@ module.exports = {
     },
     colors,
     extend: {
+      flex: {
+        max: 'max-content',
+      },
       animation: {
         fadeOut: 'fadeOut 1s ease-in-out',
         fadeIn: 'fadeIn 1s ease-in-out',

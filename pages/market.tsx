@@ -10,6 +10,7 @@ import { modalContentIdVar } from 'lib/cache';
 import { MARKET_INDEX } from 'lib/const';
 import { getMarketPageOptions } from 'lib/utils/pages';
 import { format, moment, momentBusiness } from 'lib/utils/time';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
@@ -50,11 +51,21 @@ const MarketPageLayout = ({
 }) => {
   const [numOfDays, setNumOfDays] = useState(null)
   const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
+  const timeframes = [7, 14, 30, 90, 180, 365]
+
+  const InfoButton = ({ className = '' }) => (
+    <ModalButton
+      className={className}
+      onClick={() => modalContentIdVar(`${marketName}Info`)}
+    >
+      <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
+    </ModalButton>
+  )
 
   return data?.marketIndex ? (
     <>
-      <div className="flex flex-row h-[45px]">
-        <div className="flex flex-row basis-1/2 cursor-default">
+      <div className="flex md:flex-row md:h-[45px] flex-wrap">
+        <div className="flex flex-max flex-row md:basis-1/2 cursor-default">
           <h1
             className="text-iced-300 tooltip tooltip-info"
             data-tip={`Last refreshed: ${moment(
@@ -76,11 +87,25 @@ const MarketPageLayout = ({
           >
             {days}D
           </span>
+          <InfoButton className="flex md:hidden ml-6" />
         </div>
-        <div className="flex justify-end basis-1/2 items-center">
-          <ModalButton onClick={() => modalContentIdVar(`${marketName}Info`)}>
-            <FaInfoCircle className="text-xl text-accent" />
-          </ModalButton>
+        <div className="flex md:flex-initial justify-end md:basis-1/2 items-center mt-4 md:mt-0">
+          <InfoButton className="hidden md:flex mr-6" />
+          <div className="">
+            {timeframes.map((timeframe, index) => {
+              return (
+                <button
+                  key={index}
+                  className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
+                  data-active={timeSeriesLimit === timeframe}
+                >
+                  <Link href={`/market?days=${timeframe}`}>
+                    <a>{timeframe}D</a>
+                  </Link>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
       <MarketIndex
@@ -117,7 +142,7 @@ const MarketPage = ({ page, global }) => {
   return (
     <Container loading={loading} error={error}>
       <Layout
-        mainOverflow="overflow-hidden"
+        mainOverflow="overflow-visible"
         data={{ page: page.data, global: global.data }}
       >
         <MarketPageLayout

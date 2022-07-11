@@ -87,7 +87,19 @@ ul {
 }
 
 button {
-  @apply rounded-md;
+  @apply rounded-md transition-all;
+
+  &[data-active='true'] {
+    @apply bg-accent text-neutral font-bold;
+
+    &:hover {
+      @apply bg-accent-focus;
+    }
+
+    a {
+      @apply text-neutral;
+    }
+  }
 }
 
 textarea,

@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+import classnames from 'classnames';
 import { isModalOpenVar } from 'lib/cache';
 import { RichTextToMarkdown } from 'slices/Markdown';
 
@@ -62,7 +63,7 @@ const Modal = ({ content }) => {
   )
 }
 
-export const ModalButton = ({ children, onClick }) => (
+export const ModalButton = ({ className = '', children, onClick }) => (
   <label
     onClick={() => {
       localStorage.setItem('isModalOpen', 'true')
@@ -70,7 +71,7 @@ export const ModalButton = ({ children, onClick }) => (
       onClick()
     }}
     htmlFor="my-modal-4"
-    className="modal-button cursor-pointer"
+    className={classnames(className, 'modal-button cursor-pointer')}
   >
     {children}
   </label>
