@@ -29,5 +29,5 @@
 }
 
 .description {
-  @apply mt-10;
+  @apply mt-10 xl:w-1/2;
 }
