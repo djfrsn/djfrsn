@@ -1,9 +1,29 @@
 {
-  "id": "817bb179-3489-4fb7-91e9-0527a9f2d76b",
-  "uid": "voluptatem-dolorem-a",
+  "id": "d3ed8c8c-2a89-469d-a6b7-2f15a8919cf5",
+  "uid": "pariatur-numquam-rem",
   "type": "sp500",
   "data": {
-    "title": "streamline compelling deliverables",
-    "description": "maximize compelling deliverables"
+    "title": "redefine global platforms",
+    "description": "exploit frictionless e-markets",
+    "sp500MarketInfo": [
+      {
+        "markdown": [
+          {
+            "type": "paragraph",
+            "text": "Deserunt esse tempor adipisicing occaecat do nulla qui laborum dolor ex do non et ullamco anim.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "markdown": [
+          {
+            "type": "paragraph",
+            "text": "Excepteur aliquip consequat adipisicing aliquip proident nostrud commodo laborum voluptate tempor.",
+            "spans": []
+          }
+        ]
+      }
+    ]
   }
 }

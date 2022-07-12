@@ -25,6 +25,23 @@
           "label": "Description",
           "placeholder": ""
         }
+      },
+      "sp500MarketInfo": {
+        "type": "Group",
+        "config": {
+          "label": "",
+          "fields": {
+            "markdown": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Markdown",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "preformatted"
+              }
+            }
+          }
+        }
       }
     }
   }

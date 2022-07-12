@@ -1,13 +1,22 @@
+import { TickerInfo } from '@prisma/client';
+import classNames from 'classnames';
 import LineChart from 'components/LineChart';
+import { ModalButton } from 'components/Modal';
+import { modalContentIdVar, modalContentVar } from 'lib/cache';
+import { COLORS } from 'lib/const';
 import getTrendDirection from 'lib/data/getTrendDirection';
 import { Ticker } from 'lib/interfaces';
 import chartOptions from 'lib/utils/chartOptions';
+import { formatUSD } from 'lib/utils/numbers';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
-const Tickers = ({ data }: { data: Ticker[] }) => {
+const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
   return (
-    <div className="my-8">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+    <div
+      className={classNames({ hidden: height <= 0 }, `mt-8`)}
+      style={{ height: `${height - 45}px` }}
+    >
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-8">
         {data.length > 0 ? (
           data.map(
             ({
@@ -22,8 +31,8 @@ const Tickers = ({ data }: { data: Ticker[] }) => {
             }) => {
               const lineColor =
                 getTrendDirection(timeSeries) !== 'negative'
-                  ? 'limegreen'
-                  : 'rgb(255, 99, 132)'
+                  ? COLORS.positiveValue
+                  : COLORS.negativeValue
               const symbolTip = `${name}\n${sector}`
 
               if (timeSeries.length === 0)
@@ -42,23 +51,54 @@ const Tickers = ({ data }: { data: Ticker[] }) => {
                   </div>
                 )
 
+              const close = formatUSD(timeSeries[0].close)
+
               return (
                 <div key={id} className="">
                   <div className="flex items-center z-10">
-                    <h2
-                      className="tooltip tooltip-info whitespace-pre-line text-left z-100"
-                      data-tip={symbolTip}
+                    <ModalButton
+                      onClick={() => {
+                        let high: TickerInfo | null = null
+                        let low: TickerInfo | null = null
+
+                        timeSeries.forEach(item => {
+                          const itemClose = Number(item.close)
+                          if (
+                            !high ||
+                            (high.close && itemClose > Number(high.close))
+                          )
+                            high = item
+                          if (
+                            !low ||
+                            (low.close && itemClose < Number(low.close))
+                          )
+                            low = item
+                        })
+
+                        modalContentVar({
+                          id,
+                          symbol,
+                          name,
+                          founded,
+                          headQuarter,
+                          sector,
+                          subSector,
+                          close,
+                          high,
+                          low,
+                        })
+                        modalContentIdVar(`${symbol}TickerInfo`)
+                      }}
                     >
-                      <a
-                        href={`https://www.marketwatch.com/investing/stock/${symbol}`}
-                        target="_blank"
-                        className="z-0 link no-underline"
+                      <h2
+                        className="tooltip tooltip-info whitespace-pre-line text-left z-100"
+                        data-tip={symbolTip}
                       >
                         {symbol}
-                      </a>
-                    </h2>
+                      </h2>
+                    </ModalButton>
                     <div className="ml-2 text-wash-50 cursor-default">
-                      ${Number(timeSeries[0].close).toFixed(2)}
+                      {close}
                     </div>
                   </div>
                   <LineChart

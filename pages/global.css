@@ -87,7 +87,19 @@ ul {
 }
 
 button {
-  @apply rounded-md;
+  @apply rounded-md transition-all;
+
+  &[data-active='true'] {
+    @apply bg-accent text-neutral font-bold;
+
+    &:hover {
+      @apply bg-accent-focus;
+    }
+
+    a {
+      @apply text-neutral;
+    }
+  }
 }
 
 textarea,
@@ -113,18 +125,6 @@ a {
 
     &[data-active='true'] {
       @apply text-accent;
-    }
-  }
-
-  .modal {
-    @apply hidden;
-  }
-
-  .modal.active {
-    @apply absolute block top-0 left-0 w-full h-full;
-    &::before {
-      content: '';
-      @apply absolute bg-wash-500 opacity-75 z-40 h-full w-full select-none;
     }
   }
 

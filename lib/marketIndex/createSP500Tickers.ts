@@ -3,7 +3,7 @@ import FMPApi from 'lib/data/FMPApi';
 import prisma from 'lib/db/prisma';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import arrayHasItems from 'lib/utils/arrayHasItems';
-import { beforeMarketCloseTime, withinMarketRefreshWindow } from 'lib/utils/dates';
+import { beforeMarketCloseTime, withinMarketRefreshWindow } from 'lib/utils/time';
 
 const fmpApi = new FMPApi()
 

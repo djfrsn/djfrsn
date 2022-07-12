@@ -1,8 +1,15 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const color = require('color')
+const COLORS = require('./lib/const').COLORS
 const generateColors = require('./lib/utils/generateColors')
 
 const colors = generateColors({
+  positiveValue: COLORS.positiveValue,
+  negativeValue: COLORS.negativeValue,
+  gradeS: '#2bd474',
+  gradeA: '#cfe437',
+  gradeB: '#ffdc00',
+  gradeC: '#ff9702',
+  gradeD: '#ff4a19',
   ash: '#E7ECEF',
   ultramarineBlue: '#2667FF',
   darkElectricBlue: '#3E6680',
@@ -55,6 +62,9 @@ module.exports = {
     },
     colors,
     extend: {
+      flex: {
+        max: 'max-content',
+      },
       animation: {
         fadeOut: 'fadeOut 1s ease-in-out',
         fadeIn: 'fadeIn 1s ease-in-out',
