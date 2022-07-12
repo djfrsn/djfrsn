@@ -1,8 +1,10 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const color = require('color')
+const COLORS = require('./lib/const').COLORS
 const generateColors = require('./lib/utils/generateColors')
 
 const colors = generateColors({
+  chartPositive: COLORS.chartPositive,
+  chartNegative: COLORS.chartNegative,
   ash: '#E7ECEF',
   ultramarineBlue: '#2667FF',
   darkElectricBlue: '#3E6680',

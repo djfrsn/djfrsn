@@ -86,6 +86,7 @@ export function isLatestBusinessDay(date: _Date): boolean {
 
 export const format = {
   standard: 'M/D/Y',
+  standardShort: 'M/D/YY',
 }
 
 export const minutesToMilliseconds = (numOfMinutes: number): number =>

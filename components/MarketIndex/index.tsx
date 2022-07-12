@@ -17,6 +17,9 @@ const MarketIndexTickersQuery = gql`
       symbol
       name
       sector
+      subSector
+      founded
+      headQuarter
       timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
         id
         date

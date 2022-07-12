@@ -17,12 +17,14 @@ export const isModalOpenVar = makeVar<boolean>(
     localStorage.getItem('isModalOpen') === 'true'
 )
 
-// Initializes to an empty array
 export const modalContentIdVar = makeVar<string>(
   typeof window !== 'undefined' && localStorage.getItem('modalContentId')
 )
 
+export const modalContentVar = makeVar<object>({})
+
 // Local state: https://www.apollographql.com/docs/react/local-state/local-state-management
+// reactive variables, fields, persistence: https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies/#storing-local-state-in-reactive-variables
 
 export const clientCache: InMemoryCache = new InMemoryCache({
   typePolicies: {
@@ -36,6 +38,11 @@ export const clientCache: InMemoryCache = new InMemoryCache({
         modalContentId: {
           read() {
             return modalContentIdVar()
+          },
+        },
+        modalContent: {
+          read() {
+            return modalContentVar()
           },
         },
       },

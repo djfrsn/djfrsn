@@ -56,7 +56,7 @@ const MarketPageLayout = ({
   const InfoButton = ({ className = '' }) => (
     <ModalButton
       className={className}
-      onClick={() => modalContentIdVar(`${marketName}Info`)}
+      onClick={() => modalContentIdVar(`${marketName}MarketInfo`)}
     >
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
