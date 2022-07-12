@@ -1,16 +1,16 @@
 {
-  "id": "e4a97daa-9ed8-4956-aea4-2324ed74d63c",
-  "uid": "minima-minima-quibusdam",
+  "id": "d3ed8c8c-2a89-469d-a6b7-2f15a8919cf5",
+  "uid": "pariatur-numquam-rem",
   "type": "sp500",
   "data": {
-    "title": "incentivize e-business users",
-    "description": "engineer cutting-edge markets",
-    "sp500Info": [
+    "title": "redefine global platforms",
+    "description": "exploit frictionless e-markets",
+    "sp500MarketInfo": [
       {
         "markdown": [
           {
             "type": "paragraph",
-            "text": "Consequat occaecat esse cillum ex enim sit laborum in exercitation laborum sit et. Ea exercitation nulla dolore Lorem do mollit dolor veniam irure exercitation quis ullamco sunt id amet. Eu magna aute occaecat.",
+            "text": "Deserunt esse tempor adipisicing occaecat do nulla qui laborum dolor ex do non et ullamco anim.",
             "spans": []
           }
         ]
@@ -19,34 +19,7 @@
         "markdown": [
           {
             "type": "paragraph",
-            "text": "Aliquip ea anim aliquip cillum esse ipsum mollit aliquip veniam nisi qui proident est quis. Et officia in consequat aliqua qui dolor ea nostrud ad fugiat laborum est.",
-            "spans": []
-          }
-        ]
-      },
-      {
-        "markdown": [
-          {
-            "type": "paragraph",
-            "text": "Quis cupidatat tempor officia. Adipisicing dolore ea ut consectetur labore ad dolore Lorem. Id sit minim qui Lorem ex amet sit cupidatat nisi voluptate ex ea duis duis.",
-            "spans": []
-          }
-        ]
-      },
-      {
-        "markdown": [
-          {
-            "type": "paragraph",
-            "text": "Labore proident id officia aute officia do esse ad labore nulla sunt irure quis exercitation.",
-            "spans": []
-          }
-        ]
-      },
-      {
-        "markdown": [
-          {
-            "type": "paragraph",
-            "text": "Ut sunt magna ut.",
+            "text": "Excepteur aliquip consequat adipisicing aliquip proident nostrud commodo laborum voluptate tempor.",
             "spans": []
           }
         ]

@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import classnames from 'classnames';
 import { isModalOpenVar, modalContentVar } from 'lib/cache';
+import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
@@ -50,14 +51,21 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
           <p className="mt-4">
             <strong>${modalContent.symbol}</strong> last reached a high of{' '}
             <span className="text-chartPositive-500">
-              ${modalContent.high.close}
+              {formatUSD(modalContent.high.close)}
             </span>{' '}
-            on {moment(modalContent.high.date).format(format.standardShort)} and
-            a low of{' '}
+            on{' '}
+            <em>
+              {moment(modalContent.high.date).format(format.standardShort)}
+            </em>{' '}
+            and a low of{' '}
             <span className="text-chartNegative-500">
-              ${modalContent.low.close}
+              {formatUSD(modalContent.low.close)}
             </span>{' '}
-            on {moment(modalContent.low.date).format(format.standardShort)}.
+            on{' '}
+            <em>
+              {moment(modalContent.low.date).format(format.standardShort)}
+            </em>
+            .
           </p>
         </div>
       )

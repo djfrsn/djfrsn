@@ -7,6 +7,7 @@ import { COLORS } from 'lib/const';
 import getTrendDirection from 'lib/data/getTrendDirection';
 import { Ticker } from 'lib/interfaces';
 import chartOptions from 'lib/utils/chartOptions';
+import { formatUSD } from 'lib/utils/numbers';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
 const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
@@ -30,8 +31,8 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
             }) => {
               const lineColor =
                 getTrendDirection(timeSeries) !== 'negative'
-                  ? COLORS.chartNegative
-                  : COLORS.chartPositive
+                  ? COLORS.chartPositive
+                  : COLORS.chartNegative
               const symbolTip = `${name}\n${sector}`
 
               if (timeSeries.length === 0)
@@ -91,7 +92,7 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                       </h2>
                     </ModalButton>
                     <div className="ml-2 text-wash-50 cursor-default">
-                      ${Number(timeSeries[0].close).toFixed(2)}
+                      {formatUSD(timeSeries[0].close)}
                     </div>
                   </div>
                   <LineChart

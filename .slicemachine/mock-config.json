@@ -19,7 +19,7 @@
     "feed": {},
     "contract": {},
     "sp500": {
-      "sp500Info": {
+      "sp500MarketInfo": {
         "markdown": {
           "config": {
             "patternType": "PARAGRAPH",
