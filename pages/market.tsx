@@ -42,7 +42,7 @@ export async function getStaticProps({ previewData }) {
 }
 
 const MarketPageLayout = ({
-  mainHeight = null,
+  mainheight = null,
   data,
   marketName,
   limit,
@@ -108,7 +108,7 @@ const MarketPageLayout = ({
         </div>
       </div>
       <MarketIndex
-        height={mainHeight}
+        height={mainheight}
         marketIndexId={data.marketIndex.id}
         limit={limit}
         bypassTimeSeriesLimit={bypassTimeSeriesLimit}
