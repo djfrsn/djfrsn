@@ -51,6 +51,8 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                   </div>
                 )
 
+              const close = formatUSD(timeSeries[0].close)
+
               return (
                 <div key={id} className="">
                   <div className="flex items-center z-10">
@@ -60,13 +62,16 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                         let low: TickerInfo | null = null
 
                         timeSeries.forEach(item => {
-                          const close = Number(item.close)
+                          const itemClose = Number(item.close)
                           if (
                             !high ||
-                            (high.close && close > Number(high.close))
+                            (high.close && itemClose > Number(high.close))
                           )
                             high = item
-                          if (!low || (low.close && close < Number(low.close)))
+                          if (
+                            !low ||
+                            (low.close && itemClose < Number(low.close))
+                          )
                             low = item
                         })
 
@@ -78,6 +83,7 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                           headQuarter,
                           sector,
                           subSector,
+                          close,
                           high,
                           low,
                         })
@@ -92,7 +98,7 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                       </h2>
                     </ModalButton>
                     <div className="ml-2 text-wash-50 cursor-default">
-                      {formatUSD(timeSeries[0].close)}
+                      {close}
                     </div>
                   </div>
                   <LineChart

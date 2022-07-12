@@ -26,20 +26,25 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
 
       return (
         <div>
-          <h2 className="text-secondary font-bold">
-            <a
-              href={`https://www.marketwatch.com/investing/stock/${modalContent.symbol}`}
-              target="_blank"
-              className="z-0 link no-underline"
-            >
-              {modalContent.name}
-            </a>
-            {typeof modalContent.founded === 'string' && (
-              <span className="ml-3 text-sm italic text-wash-50">
-                Est. {modalContent.founded}
-              </span>
-            )}
-          </h2>
+          <div className="flex">
+            <h2 className="flex-1 text-secondary font-bold">
+              <a
+                href={`https://www.marketwatch.com/investing/stock/${modalContent.symbol}`}
+                target="_blank"
+                className="z-0 link no-underline"
+              >
+                {modalContent.name}
+              </a>
+              {typeof modalContent.founded === 'string' && (
+                <span className="ml-3 text-sm italic text-wash-50">
+                  Est. {modalContent.founded}
+                </span>
+              )}
+            </h2>
+            <div className="text-lg flex align-center mr-[10%] cursor-default">
+              {modalContent.close}
+            </div>
+          </div>
           <p>
             <span className="text-sm text-wash-50">Headquarter</span>:{' '}
             {modalContent.headQuarter}
