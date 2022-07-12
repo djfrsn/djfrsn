@@ -56,7 +56,7 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
       const tickerRating = Array.isArray(ratingData) && ratingData[0]
       const tickerProfile = Array.isArray(profileData) && profileData[0]
       const positiveChange = tickerProfile?.changes > 0
-      console.log('tickerRating', tickerRating)
+
       return (
         <div>
           {tickerProfile?.website && tickerProfile?.image && (
@@ -72,7 +72,7 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
           <div className="flex">
             <h2 className="flex flex-wrap flex-1 text-secondary font-bold">
               <a
-                href={`https://www.marketwatch.com/investing/stock/${modalContent.symbol}`}
+                href={tickerProfile.website}
                 target="_blank"
                 className="z-0 link no-underline"
               >
@@ -85,7 +85,12 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
               )}
             </h2>
             <div className="text-lg flex align-center mr-[10%] cursor-default">
-              {modalContent.close}
+              <a
+                href={`https://www.marketwatch.com/investing/stock/${modalContent.symbol}`}
+                target="_blank"
+              >
+                <strong>{modalContent.close}</strong>
+              </a>
               <span
                 className={classnames(
                   tickerProfile.changes > 0
