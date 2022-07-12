@@ -2,6 +2,7 @@ import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { RefreshMarketJob } from 'lib/interfaces';
+import refreshMarketIndexTimeSeries from 'lib/marketIndex/refreshMarketIndexTimeSeries';
 import { moment } from 'lib/utils/time';
 
 /**
@@ -17,12 +18,16 @@ export default async function refreshMarketProcessor(
     case QUEUE.refresh.sp500 === job.name:
       console.log('job.data', job.data)
       const marketIndex = await prisma.marketIndex.findFirst({
-        where: { id: job.data.id },
+        where: { id: job.data.marketIndex.id },
       })
+
+      if (marketIndex.symbol) {
+        await refreshMarketIndexTimeSeries(job.data, { job })
+      }
 
       if (marketIndex) {
         await prisma.marketIndex.update({
-          where: { id: job.data.id },
+          where: { id: job.data.marketIndex.id },
           data: { lastRefreshed: moment().toISOString() },
         })
       }

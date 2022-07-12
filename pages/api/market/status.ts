@@ -33,10 +33,14 @@ async function getJobData(
         : { message: `Job ${jobId} not found` }
     case queueName === QUEUE.refresh.marketIndexes:
       res = await refreshMarketsQueue.getJob(jobId)
+      const getRefreshMarketsMessage = () =>
+        res.opts.repeat?.cron
+          ? `Scheduled: ${cronstrue.toString(res.opts.repeat?.cron)}`
+          : 'N/A'
       return {
         job: res,
         message: res?.opts
-          ? `Scheduled: ${cronstrue.toString(res.opts.repeat.cron)}`
+          ? getRefreshMarketsMessage()
           : `Job ${jobId} not found`,
       }
   }

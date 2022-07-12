@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.6.4",
+    "@braintree/sanitize-url": "^6.0.0",
     "@bull-board/ui": "^4.0.0",
     "@mantine/hooks": "^4.2.11",
     "@next/bundle-analyzer": "^12.1.6",

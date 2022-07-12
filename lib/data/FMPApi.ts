@@ -19,7 +19,9 @@ class FMPApi {
 
   getApiUrl(apiStr: string, version = 'v3') {
     const apiKeySeperator = apiStr.includes('?') ? '&' : '?'
-    return `${this.apiUrl}/${version}/${apiStr}${apiKeySeperator}apikey=${this.apiKey}`
+    return encodeURI(
+      `${this.apiUrl}/${version}/${apiStr}${apiKeySeperator}apikey=${this.apiKey}`
+    )
   }
 
   get marketIndex() {
@@ -54,8 +56,8 @@ class FMPApi {
               ? ticker.map(item => item.symbol).join(',')
               : ticker
 
-            const apiUrl = `historical-price-full/${arg}?serietype=line${
-              query ? `&${query}` : ''
+            const apiUrl = `historical-price-full/${arg}${
+              query ? `?${query}` : ''
             }`
 
             let data: any = await fetch(getApiUrl(apiUrl))
@@ -70,7 +72,9 @@ class FMPApi {
           }
         } else {
           res = await await fetch(
-            getApiUrl(`historical-price-full/${tickers}?serietype=line`)
+            getApiUrl(
+              `historical-price-full/${tickers}${query ? `?${query}` : ''}`
+            )
           )
         }
 
