@@ -10,6 +10,22 @@ import useSWR from 'swr';
 
 import Loading from './Loading';
 
+function getRatingClassName(val) {
+  switch (val) {
+    case 5:
+      return 'text-gradeS-500 tooltip-success'
+    case 4:
+      return 'text-gradeA-500 tooltip-info'
+    case 3:
+      return 'text-gradeB-500 tooltip-warning'
+    case 2:
+    case 1:
+      return 'text-gradeD-500 tooltip-error'
+    default:
+      return ''
+  }
+}
+
 export const GET_MODAL = gql`
   query GetModal {
     isModalOpen @client
@@ -32,11 +48,15 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
         `${process.env.NEXT_PUBLIC_FMP_API_URL}/v3/profile/${modalContent.symbol}?apikey=${process.env.NEXT_PUBLIC_FMP_API_KEY}`,
         fetcher
       )
+      const { data: tickerNews } = useSWR(
+        `${process.env.NEXT_PUBLIC_FMP_API_URL}/v3/stock_news?tickers=${modalContent.symbol}&limit=5&apikey=${process.env.NEXT_PUBLIC_FMP_API_KEY}`,
+        fetcher
+      )
 
       const tickerRating = Array.isArray(ratingData) && ratingData[0]
       const tickerProfile = Array.isArray(profileData) && profileData[0]
       const positiveChange = tickerProfile?.changes > 0
-
+      console.log('tickerRating', tickerRating)
       return (
         <div>
           {tickerProfile?.website && tickerProfile?.image && (
@@ -69,8 +89,8 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
               <span
                 className={classnames(
                   tickerProfile.changes > 0
-                    ? 'text-chartPositive-500'
-                    : 'text-chartNegative-500',
+                    ? 'text-positiveValue-500'
+                    : 'text-negativeValue-500',
                   'text-sm tooltip tooltip-info tooltip-bottom'
                 )}
                 data-tip="Daily Change"
@@ -84,7 +104,16 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
           </div>
           {tickerRating?.rating && (
             <p>
-              Rating: <strong className="text-xl">{tickerRating.rating}</strong>
+              Rating:{' '}
+              <strong
+                className={classnames(
+                  getRatingClassName(tickerRating.ratingScore),
+                  'text-xl tooltip'
+                )}
+                data-tip={tickerRating.ratingRecommendation}
+              >
+                {tickerRating.rating}
+              </strong>
             </p>
           )}
           <p>
@@ -97,7 +126,7 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
           </p>
           <p className="mt-4">
             <strong>${modalContent.symbol}</strong> last reached a high of{' '}
-            <span className="text-chartPositive-500">
+            <span className="text-positiveValue-500">
               {formatUSD(modalContent.high.close)}
             </span>{' '}
             on{' '}
@@ -105,7 +134,7 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
               {moment(modalContent.high.date).format(format.standardShort)}
             </em>{' '}
             and a low of{' '}
-            <span className="text-chartNegative-500">
+            <span className="text-negativeValue-500">
               {formatUSD(modalContent.low.close)}
             </span>{' '}
             on{' '}
@@ -132,6 +161,23 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
               <p>
                 YTD Range: <strong>${tickerProfile.range}</strong>
               </p>
+            </div>
+          )}
+          {Array.isArray(tickerNews) && (
+            <div className="pt-4">
+              <h3>News</h3>
+              <div className="flex flex-col">
+                {tickerNews.map((article, index) => (
+                  <a
+                    key={index}
+                    href={article.url}
+                    className="link truncate no-underline mb-1 last-of-type:mb-0"
+                    target="_blank"
+                  >
+                    {article.title}
+                  </a>
+                ))}
+              </div>
             </div>
           )}
         </div>

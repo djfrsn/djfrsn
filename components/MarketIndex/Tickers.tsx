@@ -31,8 +31,8 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
             }) => {
               const lineColor =
                 getTrendDirection(timeSeries) !== 'negative'
-                  ? COLORS.chartPositive
-                  : COLORS.chartNegative
+                  ? COLORS.positiveValue
+                  : COLORS.negativeValue
               const symbolTip = `${name}\n${sector}`
 
               if (timeSeries.length === 0)
