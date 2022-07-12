@@ -12,14 +12,14 @@ class FMPApi {
   apiKey: string
   apiUrl: string
   constructor() {
-    this.apiUrl = process.env.FMP_API_URL
-    this.apiKey = process.env.FMP_API_KEY
+    this.apiUrl = process.env.NEXT_PUBLIC_FMP_API_URL
+    this.apiKey = process.env.NEXT_PUBLIC_FMP_API_KEY
     this.getApiUrl = this.getApiUrl.bind(this)
   }
 
   getApiUrl(apiStr: string, version = 'v3') {
     const apiKeySeperator = apiStr.includes('?') ? '&' : '?'
-    return `${this.apiUrl}/api/${version}/${apiStr}${apiKeySeperator}apikey=${this.apiKey}`
+    return `${this.apiUrl}/${version}/${apiStr}${apiKeySeperator}apikey=${this.apiKey}`
   }
 
   get marketIndex() {
