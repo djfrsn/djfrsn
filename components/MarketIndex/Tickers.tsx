@@ -1,5 +1,5 @@
 import { MarketIndex, TickerInfo } from '@prisma/client';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
 import { modalContentIdVar, modalContentVar } from 'lib/cache';
@@ -7,6 +7,7 @@ import { SCREENS } from 'lib/const';
 import { Ticker as TickerType } from 'lib/interfaces';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
+import chunk from 'lib/utils/chunk';
 import { formatUSD } from 'lib/utils/numbers';
 import { PureComponent } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
@@ -14,21 +15,24 @@ import { FixedSizeGrid as Grid } from 'react-window';
 
 class Ticker extends PureComponent {
   props: {
-    marketIndex: MarketIndex
+    className?: string
     style: { [name: string]: string | number }
-    data: TickerType
+    data: { marketIndex: MarketIndex; ticker: TickerType }
   }
   render() {
-    const { marketIndex, style = {} } = this.props
+    const { className = '', style = {} } = this.props
     const {
-      id,
-      symbol,
-      name,
-      founded,
-      headQuarter,
-      sector,
-      subSector,
-      timeSeries,
+      marketIndex,
+      ticker: {
+        id,
+        symbol,
+        name,
+        founded,
+        headQuarter,
+        sector,
+        subSector,
+        timeSeries,
+      },
     } = this.props.data
 
     const symbolTip = `${name}\n${sector}`
@@ -37,7 +41,10 @@ class Ticker extends PureComponent {
       return (
         <div
           key={id}
-          className="flex flex-col items-center justify-content text-crayolaRed-500 text-center"
+          className={classnames(
+            className,
+            'flex flex-col items-center justify-content text-crayolaRed-500 text-center'
+          )}
           style={style}
         >
           <div className="tooltip tooltip-info" data-tip={symbolTip}>
@@ -54,7 +61,9 @@ class Ticker extends PureComponent {
 
     return (
       <div key={id} style={style}>
-        <div className="flex items-center z-10 w-[100px]">
+        <div
+          className={classnames(className, 'flex items-center z-10 w-[100px]')}
+        >
           <ModalButton
             onClick={() => {
               let high: TickerInfo | null = null
@@ -126,6 +135,41 @@ const getColumnCount = width => {
   }
 }
 
+class Cell extends PureComponent {
+  props: {
+    index: number
+    style: { [name: string]: string | number }
+    rowIndex: number
+    columnIndex: number
+    data: TickerType[]
+    marketIndex: MarketIndex
+  }
+  render() {
+    const { index, style, rowIndex, columnIndex, data } = this.props
+    const tickerData = data[rowIndex][columnIndex]
+
+    if (!tickerData) return null
+
+    const className =
+      columnIndex % 2
+        ? rowIndex % 2 === 0
+          ? 'cell-item-odd'
+          : 'cell-item-even'
+        : rowIndex % 2
+        ? 'cell-item-odd'
+        : 'cell-item-even'
+
+    return (
+      <Ticker
+        className={className}
+        key={index}
+        style={style}
+        data={tickerData}
+      />
+    )
+  }
+}
+
 class TickerList extends PureComponent {
   props: {
     containerWidth: number
@@ -136,46 +180,25 @@ class TickerList extends PureComponent {
   }
   render() {
     const { containerWidth, height, width, data, marketIndex } = this.props
-    const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
-      console.log('data', data)
-      console.log('rowIndex', rowIndex)
-      console.log('columnIndex', columnIndex)
-
-      return (
-        <Ticker
-          key={index}
-          style={style}
-          marketIndex={marketIndex}
-          data={data[rowIndex]}
-        />
-      )
-    }
 
     const columnCount = getColumnCount(containerWidth)
-    const columnWidth = () => 300
-    const rowHeights = new Array(data.length)
-      .fill(true)
-      .map(() => 25 + Math.round(Math.random() * 50))
-
-    console.log('columnCount', columnCount)
-    console.log('height', height)
-    console.log('width', width)
-
-    // calc how many to fit per row
-    // chunk data by num per row
-    // TODO: use chunk count for num of rows
+    const gridData = chunk(data, columnCount, {
+      props: { marketIndex },
+      chunkPropName: 'ticker',
+    })
+    // TODO: add some pad to columnWidth and add even odd logic
 
     // prior grid: grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-8
 
     return (
       <Grid
         columnCount={columnCount}
-        columnWidth={300}
+        columnWidth={width / columnCount}
         height={height - 80}
-        rowCount={data.length}
-        rowHeight={150}
+        rowCount={gridData.length}
+        rowHeight={(width / columnCount) * 0.75}
         width={width}
-        itemData={data}
+        itemData={gridData}
       >
         {Cell}
       </Grid>
@@ -198,7 +221,7 @@ const Tickers = ({
 }) => {
   return (
     <div
-      className={classNames({ hidden: height <= 0 }, `mt-8`)}
+      className={classnames({ hidden: height <= 0 }, `mt-8`)}
       style={{ height: `${height - 80}px` }}
     >
       <div className="pb-8">
