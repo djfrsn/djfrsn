@@ -113,63 +113,74 @@ class Ticker extends PureComponent {
 }
 
 const getColumnCount = width => {
+  const screenToNum = val => Number(val.replace('px', ''))
   switch (true) {
-    case width >= SCREENS.sm:
+    case width >= screenToNum(SCREENS.sm):
       return 3
-    case width >= SCREENS.md:
+    case width >= screenToNum(SCREENS.md):
       return 4
-    case width >= SCREENS.lg:
+    case width >= screenToNum(SCREENS.lg):
       return 5
     default:
       return 2
   }
 }
 
-const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
-  const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
-    console.log('data', data)
-    console.log('rowIndex', rowIndex)
-    console.log('columnIndex', columnIndex)
+class TickerList extends PureComponent {
+  props: {
+    containerWidth: number
+    height: number
+    width: number
+    data: TickerType[]
+    marketIndex: MarketIndex
+  }
+  render() {
+    const { containerWidth, height, width, data, marketIndex } = this.props
+    const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
+      console.log('data', data)
+      console.log('rowIndex', rowIndex)
+      console.log('columnIndex', columnIndex)
+
+      return (
+        <Ticker
+          key={index}
+          style={style}
+          marketIndex={marketIndex}
+          data={data[rowIndex]}
+        />
+      )
+    }
+
+    const columnCount = getColumnCount(containerWidth)
+    const columnWidth = () => 300
+    const rowHeights = new Array(data.length)
+      .fill(true)
+      .map(() => 25 + Math.round(Math.random() * 50))
+
+    console.log('columnCount', columnCount)
+    console.log('height', height)
+    console.log('width', width)
+
+    // calc how many to fit per row
+    // chunk data by num per row
+    // TODO: use chunk count for num of rows
+
+    // prior grid: grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-8
 
     return (
-      <Ticker
-        key={index}
-        style={style}
-        marketIndex={marketIndex}
-        data={data[rowIndex]}
-      />
+      <Grid
+        columnCount={columnCount}
+        columnWidth={300}
+        height={height - 80}
+        rowCount={data.length}
+        rowHeight={150}
+        width={width}
+        itemData={data}
+      >
+        {Cell}
+      </Grid>
     )
   }
-
-  const columnCount = getColumnCount(containerWidth)
-  const columnWidth = () => 300
-  const rowHeights = new Array(data.length)
-    .fill(true)
-    .map(() => 25 + Math.round(Math.random() * 50))
-
-  console.log('columnCount', columnCount)
-  console.log('height', height)
-  console.log('width', width)
-
-  // calc how many to fit per row
-  // chunk data by num per row
-  // TODO: use chunk count for num of rows
-
-  // prior grid: grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-8
-
-  return (
-    <Grid
-      columnCount={columnCount}
-      columnWidth={300}
-      height={height - 80}
-      rowCount={data.length}
-      rowHeight={150}
-      width={width}
-      itemData={data}
-    >
-      {Cell}
-    </Grid>
-  )
 }
 
 const Tickers = ({
