@@ -197,7 +197,7 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
                       .map(set => Number(set.close))
                       .reverse(),
                     borderColor: COLORS.correlationBeta,
-                    yAxisID: 'y',
+                    yAxisID: 'y1',
                   },
                   {
                     label: getFriendlyMarketSymbol(
@@ -207,7 +207,7 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
                       .map(set => Number(set.close))
                       .reverse(),
                     borderColor: COLORS.correlationBase,
-                    yAxisID: 'y1',
+                    yAxisID: 'y',
                   },
                 ],
               }}

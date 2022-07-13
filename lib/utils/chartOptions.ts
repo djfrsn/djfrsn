@@ -38,17 +38,17 @@ const chartOptions = {
       y: {
         type: 'linear',
         display: true,
-        position: 'left',
+        position: 'right',
         ticks: {
-          color: COLORS.ash,
+          color: COLORS.correlationBeta,
         },
       },
       y1: {
         type: 'linear',
         display: true,
-        position: 'right',
+        position: 'left',
         ticks: {
-          color: COLORS.ash,
+          color: COLORS.correlationBeta,
         },
         grid: {
           drawOnChartArea: false, // only want the grid lines for one axis to show up
