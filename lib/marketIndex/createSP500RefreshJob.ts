@@ -38,7 +38,7 @@ async function createSP500RefreshJob(
     name,
     queueName,
     opts: defaultJobOptions,
-    data: { id: marketIndex.id, name: marketIndex.name },
+    data: { marketIndex, marketInterval },
     children: tickerListChunks.map((tickerListChunk: Ticker[]) => {
       const symbolDict = {}
       const tickers = tickerListChunk.map((ticker: Ticker) => {

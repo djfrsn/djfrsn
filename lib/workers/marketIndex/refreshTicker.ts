@@ -36,7 +36,7 @@ export default async function refreshMarketTickerProcessor(
         : null
       const query =
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
-          ? `timeseries=${dayDiff}`
+          ? `serietype=line&timeseries=${dayDiff}`
           : ''
       const onComplete = []
 

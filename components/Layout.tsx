@@ -28,7 +28,7 @@ export default function Layout({
   children?: React.ReactNode
 }) {
   const [scroll, scrollTo] = useWindowScroll()
-  const { ref: mainRef, height: mainHeight } = useElementSize()
+  const { ref: mainRef, height: mainheight } = useElementSize()
   const router = useRouter()
   const withFooter = data.footer
 
@@ -86,7 +86,7 @@ export default function Layout({
           <div className={styles.mainColumn}>
             {React.Children.map(children, child => {
               if (React.isValidElement(child)) {
-                return React.cloneElement(child, { mainHeight })
+                return React.cloneElement(child, { mainheight })
               }
               return child
             })}

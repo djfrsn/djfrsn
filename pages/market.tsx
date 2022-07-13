@@ -3,13 +3,16 @@ import { MarketIndex as MarketIndexType } from '@prisma/client';
 import classnames from 'classnames';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
+import LineChart from 'components/LineChart';
 import MarketIndex from 'components/MarketIndex';
 import { ModalButton } from 'components/Modal';
 import gql from 'graphql-tag';
 import { modalContentIdVar } from 'lib/cache';
 import { MARKET_INDEX } from 'lib/const';
+import chartOptions from 'lib/utils/chartOptions';
+import { getLineColor } from 'lib/utils/charts';
 import { getMarketPageOptions } from 'lib/utils/pages';
-import { format, moment, momentBusiness } from 'lib/utils/time';
+import { format, moment } from 'lib/utils/time';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -18,11 +21,21 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { createClient } from '../prismicio';
 
 const MarketIndexQuery = gql`
-  query MarketIndex($name: String) {
+  query MarketIndex(
+    $name: String
+    $timeSeriesLimit: Int
+    $bypassTimeSeriesLimit: Boolean
+  ) {
     marketIndex(name: $name) {
       id
       displayName
       lastRefreshed
+      symbol
+      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
+        id
+        date
+        close
+      }
     }
   }
 `
@@ -42,7 +55,7 @@ export async function getStaticProps({ previewData }) {
 }
 
 const MarketPageLayout = ({
-  mainHeight = null,
+  mainheight = null,
   data,
   marketName,
   limit,
@@ -61,11 +74,13 @@ const MarketPageLayout = ({
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
+  const oldestTimeSeriesItem = data?.marketIndex.timeSeries[timeSeriesLimit - 1]
+  const latestTimeSeriesItem = data?.marketIndex.timeSeries[0]
 
   return data?.marketIndex ? (
     <>
       <div className="flex md:flex-row md:h-[45px] flex-wrap">
-        <div className="flex flex-max flex-row md:basis-1/2 cursor-default">
+        <div className="flex flex-max flex-wrap flex-row md:basis-1/2 cursor-default">
           <h1
             className="text-iced-300 tooltip tooltip-info"
             data-tip={`Last refreshed: ${moment(
@@ -79,36 +94,52 @@ const MarketPageLayout = ({
               hidden: !days,
               ['animate-fadeIn']: days > 0,
             })}
-            data-tip={`${momentBusiness()
-              .businessSubtract(days)
-              .format(format.standard)} - ${momentBusiness().format(
+            data-tip={`${moment(oldestTimeSeriesItem.date).format(
               format.standard
-            )}`}
+            )} - ${moment(latestTimeSeriesItem.date).format(format.standard)}`}
           >
             {days}D
           </span>
-          <InfoButton className="flex ml-4" />
+          <div className="ml-2 text-xl">- {latestTimeSeriesItem.close}</div>
+          <div className="ml-4 w-16 xs:w-20 md:w-24 mx-2">
+            <LineChart
+              options={chartOptions.simple}
+              data={{
+                labels: data.marketIndex.timeSeries.map(series => series.date),
+                datasets: [
+                  {
+                    label: data.marketIndex.symbol,
+                    data: data.marketIndex.timeSeries
+                      .map(set => Number(set.close))
+                      .reverse(),
+                    borderColor: getLineColor(data.marketIndex.timeSeries),
+                  },
+                ],
+              }}
+            />
+          </div>
+          <InfoButton className="flex" />
         </div>
         <div className="flex md:flex-initial justify-end md:basis-1/2 items-center mt-4 md:mt-0">
           <div className="">
             {timeframes.map((timeframe, index) => {
               return (
-                <button
-                  key={index}
-                  className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
-                  data-active={timeSeriesLimit === timeframe}
-                >
-                  <Link href={`/market?days=${timeframe}`}>
+                <Link key={index} href={`/market?days=${timeframe}`}>
+                  <button
+                    className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
+                    data-active={timeSeriesLimit === timeframe}
+                  >
                     <a>{timeframe}D</a>
-                  </Link>
-                </button>
+                  </button>
+                </Link>
               )
             })}
           </div>
         </div>
       </div>
       <MarketIndex
-        height={mainHeight}
+        marketIndex={data.marketIndex}
+        height={mainheight}
         marketIndexId={data.marketIndex.id}
         limit={limit}
         bypassTimeSeriesLimit={bypassTimeSeriesLimit}
@@ -135,7 +166,7 @@ const MarketPage = ({ page, global }) => {
     data: { marketIndex: MarketIndexType }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { name: marketName },
+    variables: { name: marketName, timeSeriesLimit, bypassTimeSeriesLimit },
   })
 
   return (

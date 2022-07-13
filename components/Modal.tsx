@@ -1,13 +1,17 @@
 import { gql, useQuery } from '@apollo/client';
 import classnames from 'classnames';
 import { isModalOpenVar, modalContentVar } from 'lib/cache';
+import { COLORS } from 'lib/const';
+import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
+import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
 import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
 import { RichTextToMarkdown } from 'slices/Markdown';
 import useSWR from 'swr';
 
+import LineChart from './LineChart';
 import Loading from './Loading';
 
 function getRatingClassName(val) {
@@ -168,6 +172,47 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
               </p>
             </div>
           )}
+          <div className="pt-4">
+            <div className="text-center mb-1">
+              <h3>
+                <strong className="mr-2 text-correlationBeta-500">
+                  ${modalContent.symbol}
+                </strong>
+                vs
+                <span className="ml-2 text-correlationBase-500">
+                  {getFriendlyMarketSymbol(modalContent.marketIndex.symbol)}
+                </span>
+              </h3>
+            </div>
+            <LineChart
+              options={chartOptions.correlation}
+              data={{
+                labels: modalContent.marketIndex.timeSeries.map(series =>
+                  moment(series.date).format(format.standardShort)
+                ),
+                datasets: [
+                  {
+                    label: modalContent.symbol,
+                    data: modalContent.timeSeries
+                      .map(set => Number(set.close))
+                      .reverse(),
+                    borderColor: COLORS.correlationBeta,
+                    yAxisID: 'y1',
+                  },
+                  {
+                    label: getFriendlyMarketSymbol(
+                      modalContent.marketIndex.symbol
+                    ),
+                    data: modalContent.marketIndex.timeSeries
+                      .map(set => Number(set.close))
+                      .reverse(),
+                    borderColor: COLORS.correlationBase,
+                    yAxisID: 'y',
+                  },
+                ],
+              }}
+            />
+          </div>
           {Array.isArray(tickerNews) && (
             <div className="pt-4">
               <h3>News</h3>

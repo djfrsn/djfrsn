@@ -14,6 +14,7 @@ const marketIndexData = [
   {
     name: MARKET_INDEX.sp500,
     displayName: 'S&P 500',
+    symbol: '^GSPC',
   },
 ]
 

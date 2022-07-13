@@ -20,8 +20,12 @@ export interface TickerData {
 }
 
 export interface RefreshMarketJob {
-  id: number
-  name: string
+  marketIndex: MarketIndex
+  marketInterval: MarketInterval
+}
+export interface RefreshMarketJobOptions {
+  query?: string
+  job: any
 }
 
 export interface RefreshMarketTickerJob {
@@ -55,4 +59,6 @@ export interface FMPPrice {
   date: string
   close: string
   open?: string
+  change?: number
+  changePercent?: number
 }

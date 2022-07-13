@@ -47,8 +47,10 @@ model MarketIndex {
   id   Int     @default(autoincrement()) @id
   name String
   displayName String
+  symbol String?
   lastRefreshed  DateTime?
   tickers Ticker[]
+  timeSeries TickerInfo[]
 }
 
 model MarketInterval {
@@ -87,7 +89,12 @@ model TickerInfo {
   high          String?
   low           String?
   volume        String?
+  change        Float?
+  changePercent Float?
   tickerId      Int?
   @@index([tickerId(ops: Int4MinMaxOps)], type: Brin)
   ticker        Ticker? @relation(fields: [tickerId], references: [id])
+  marketIndexId      Int?
+  @@index([marketIndexId(ops: Int4MinMaxOps)], type: Brin)
+  marketIndex        MarketIndex? @relation(fields: [marketIndexId], references: [id])
 }
