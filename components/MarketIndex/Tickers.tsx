@@ -3,10 +3,9 @@ import classNames from 'classnames';
 import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
 import { modalContentIdVar, modalContentVar } from 'lib/cache';
-import { COLORS } from 'lib/const';
-import getTrendDirection from 'lib/data/getTrendDirection';
 import { Ticker } from 'lib/interfaces';
 import chartOptions from 'lib/utils/chartOptions';
+import { getLineColor } from 'lib/utils/charts';
 import { formatUSD } from 'lib/utils/numbers';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
@@ -29,10 +28,6 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
               subSector,
               timeSeries,
             }) => {
-              const lineColor =
-                getTrendDirection(timeSeries) !== 'negative'
-                  ? COLORS.positiveValue
-                  : COLORS.negativeValue
               const symbolTip = `${name}\n${sector}`
 
               if (timeSeries.length === 0)
@@ -111,7 +106,7 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                           data: timeSeries
                             .map(set => Number(set.close))
                             .reverse(),
-                          borderColor: lineColor,
+                          borderColor: getLineColor(timeSeries),
                         },
                       ],
                     }}

@@ -3,11 +3,14 @@ import { MarketIndex as MarketIndexType } from '@prisma/client';
 import classnames from 'classnames';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
+import LineChart from 'components/LineChart';
 import MarketIndex from 'components/MarketIndex';
 import { ModalButton } from 'components/Modal';
 import gql from 'graphql-tag';
 import { modalContentIdVar } from 'lib/cache';
 import { MARKET_INDEX } from 'lib/const';
+import chartOptions from 'lib/utils/chartOptions';
+import { getLineColor } from 'lib/utils/charts';
 import { getMarketPageOptions } from 'lib/utils/pages';
 import { format, moment, momentBusiness } from 'lib/utils/time';
 import Link from 'next/link';
@@ -70,13 +73,12 @@ const MarketPageLayout = ({
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
-
-  console.log('data', data)
+  const getLatestClose = () => data?.marketIndex.timeSeries[0].close
 
   return data?.marketIndex ? (
     <>
       <div className="flex md:flex-row md:h-[45px] flex-wrap">
-        <div className="flex flex-max flex-row md:basis-1/2 cursor-default">
+        <div className="flex flex-max flex-wrap flex-row md:basis-1/2 cursor-default">
           <h1
             className="text-iced-300 tooltip tooltip-info"
             data-tip={`Last refreshed: ${moment(
@@ -98,7 +100,25 @@ const MarketPageLayout = ({
           >
             {days}D
           </span>
-          <InfoButton className="flex ml-4" />
+          <div className="ml-2 text-xl">- {getLatestClose()}</div>
+          <div className="ml-4 w-16 xs:w-20 md:w-24 mx-2">
+            <LineChart
+              options={chartOptions.simple}
+              data={{
+                labels: data.marketIndex.timeSeries.map(series => series.date),
+                datasets: [
+                  {
+                    label: data.marketIndex.symbol,
+                    data: data.marketIndex.timeSeries
+                      .map(set => Number(set.close))
+                      .reverse(),
+                    borderColor: getLineColor(data.marketIndex.timeSeries),
+                  },
+                ],
+              }}
+            />
+          </div>
+          <InfoButton className="flex" />
         </div>
         <div className="flex md:flex-initial justify-end md:basis-1/2 items-center mt-4 md:mt-0">
           <div className="">
