@@ -1,5 +1,8 @@
+import { COLORS } from 'lib/const';
+
 const chartOptions = {
   simple: {
+    normalized: true,
     responsive: true,
     cubicInterpolationMode: 'monotone',
     pointRadius: 0,
@@ -16,6 +19,41 @@ const chartOptions = {
     },
     plugins: {
       tooltip: { enabled: false },
+    },
+  },
+  correlation: {
+    normalized: true,
+    responsive: true,
+    cubicInterpolationMode: 'monotone',
+    pointRadius: 0,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    stacked: false,
+    scales: {
+      x: {
+        display: false,
+      },
+      y: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+        ticks: {
+          color: COLORS.ash,
+        },
+      },
+      y1: {
+        type: 'linear',
+        display: true,
+        position: 'right',
+        ticks: {
+          color: COLORS.ash,
+        },
+        grid: {
+          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        },
+      },
     },
   },
 }

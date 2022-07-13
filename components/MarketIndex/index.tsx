@@ -37,6 +37,7 @@ const MarketIndex = ({
   bypassTimeSeriesLimit,
   timeSeriesLimit,
   setNumOfDays,
+  marketIndex,
 }) => {
   const {
     loading,
@@ -61,7 +62,11 @@ const MarketIndex = ({
 
   return (
     <Container loading={loading} error={error}>
-      <Tickers height={height} data={marketIndexTickers || []} />
+      <Tickers
+        marketIndex={marketIndex}
+        height={height}
+        data={marketIndexTickers || []}
+      />
     </Container>
   )
 }

@@ -30,6 +30,7 @@ const MarketIndexQuery = gql`
       id
       displayName
       lastRefreshed
+      symbol
       timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
         id
         date
@@ -137,6 +138,7 @@ const MarketPageLayout = ({
         </div>
       </div>
       <MarketIndex
+        marketIndex={data.marketIndex}
         height={mainheight}
         marketIndexId={data.marketIndex.id}
         limit={limit}

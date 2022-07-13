@@ -79,6 +79,7 @@ const MarketIndex = objectType({
     t.int('id')
     t.string('name')
     t.string('displayName')
+    t.string('symbol')
     t.field('lastRefreshed', { type: 'DateTime' })
     t.list.field('ticker', {
       type: 'Ticker',

@@ -1,4 +1,4 @@
-import { TickerInfo } from '@prisma/client';
+import { MarketIndex, TickerInfo } from '@prisma/client';
 import classNames from 'classnames';
 import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
@@ -9,7 +9,15 @@ import { getLineColor } from 'lib/utils/charts';
 import { formatUSD } from 'lib/utils/numbers';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
-const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
+const Tickers = ({
+  height,
+  data,
+  marketIndex,
+}: {
+  height: number
+  data: Ticker[]
+  marketIndex: MarketIndex
+}) => {
   return (
     <div
       className={classNames({ hidden: height <= 0 }, `mt-8`)}
@@ -81,6 +89,8 @@ const Tickers = ({ height, data }: { height: number; data: Ticker[] }) => {
                           close,
                           high,
                           low,
+                          timeSeries,
+                          marketIndex,
                         })
                         modalContentIdVar(`${symbol}TickerInfo`)
                       }}
