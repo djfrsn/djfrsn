@@ -18,11 +18,20 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { createClient } from '../prismicio';
 
 const MarketIndexQuery = gql`
-  query MarketIndex($name: String) {
+  query MarketIndex(
+    $name: String
+    $timeSeriesLimit: Int
+    $bypassTimeSeriesLimit: Boolean
+  ) {
     marketIndex(name: $name) {
       id
       displayName
       lastRefreshed
+      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
+        id
+        date
+        close
+      }
     }
   }
 `
@@ -61,6 +70,8 @@ const MarketPageLayout = ({
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
+
+  console.log('data', data)
 
   return data?.marketIndex ? (
     <>
@@ -135,7 +146,7 @@ const MarketPage = ({ page, global }) => {
     data: { marketIndex: MarketIndexType }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { name: marketName },
+    variables: { name: marketName, timeSeriesLimit, bypassTimeSeriesLimit },
   })
 
   return (

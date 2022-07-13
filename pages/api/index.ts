@@ -17,6 +17,21 @@ export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
 
 const largeDatasetCacheHint = { maxAge: 3600 }
 
+function parseTimeSeriesOptions(args) {
+  const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
+  const takeLimit = Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
+
+  if (args.limit) options.take = args.limit
+  else
+    options.take = Number(
+      process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT_DEFAULT
+    )
+
+  if (options.take > takeLimit && !args.bypassLimit) options.take = takeLimit
+
+  return options
+}
+
 const User = objectType({
   name: 'User',
   definition(t) {
@@ -74,6 +89,27 @@ const MarketIndex = objectType({
         })
       },
     })
+    t.list.field('timeSeries', {
+      type: 'TickerInfo',
+      args: {
+        limit: intArg(),
+        bypassLimit: booleanArg(),
+      },
+      resolve: (
+        parent,
+        args: { limit: number; bypassLimit: boolean },
+        ctx,
+        info
+      ) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
+
+        return ctx.prisma.tickerInfo.findMany({
+          orderBy: { date: 'desc' },
+          where: { marketIndexId: parent.id },
+          ...parseTimeSeriesOptions(args),
+        })
+      },
+    })
   },
 })
 
@@ -100,22 +136,11 @@ const Ticker = objectType({
         info
       ) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
-        const options: { take?: Prisma.UserFindManyArgs['take'] } = {}
-        const takeLimit = Number(process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT)
-
-        if (args.limit) options.take = args.limit
-        else
-          options.take = Number(
-            process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT_DEFAULT
-          )
-
-        if (options.take > takeLimit && !args.bypassLimit)
-          options.take = takeLimit
 
         return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
           where: { tickerId: parent.id },
-          ...options,
+          ...parseTimeSeriesOptions(args),
         })
       },
     })
