@@ -47,7 +47,7 @@ model MarketIndex {
   id   Int     @default(autoincrement()) @id
   name String
   displayName String
-  symbol String
+  symbol String?
   lastRefreshed  DateTime?
   tickers Ticker[]
   timeSeries TickerInfo[]
