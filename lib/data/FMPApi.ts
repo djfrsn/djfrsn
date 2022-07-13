@@ -76,6 +76,7 @@ class FMPApi {
               `historical-price-full/${tickers}${query ? `?${query}` : ''}`
             )
           )
+          if (res.historical) res = [res]
         }
 
         return res

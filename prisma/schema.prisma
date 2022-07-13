@@ -89,8 +89,8 @@ model TickerInfo {
   high          String?
   low           String?
   volume        String?
-  change        Int?
-  changePercent Int?
+  change        Float?
+  changePercent Float?
   tickerId      Int?
   @@index([tickerId(ops: Int4MinMaxOps)], type: Brin)
   ticker        Ticker? @relation(fields: [tickerId], references: [id])

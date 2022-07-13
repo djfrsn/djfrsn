@@ -17,9 +17,7 @@ export default async function refreshMarketProcessor(
   switch (true) {
     case QUEUE.refresh.sp500 === job.name:
       console.log('job.data', job.data)
-      const marketIndex = await prisma.marketIndex.findFirst({
-        where: { id: job.data.marketIndex.id },
-      })
+      const marketIndex = job.data.marketIndex
 
       if (marketIndex.symbol) {
         await refreshMarketIndexTimeSeries(job.data, { job })
@@ -27,7 +25,7 @@ export default async function refreshMarketProcessor(
 
       if (marketIndex) {
         await prisma.marketIndex.update({
-          where: { id: job.data.marketIndex.id },
+          where: { id: marketIndex.id },
           data: { lastRefreshed: moment().toISOString() },
         })
       }

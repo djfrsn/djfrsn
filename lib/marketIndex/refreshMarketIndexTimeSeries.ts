@@ -75,5 +75,5 @@ export default async function refreshMarketIndexTimeSeries(
     }
   }
 
-  return await res
+  return res
 }
