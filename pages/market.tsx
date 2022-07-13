@@ -12,7 +12,7 @@ import { MARKET_INDEX } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import { getMarketPageOptions } from 'lib/utils/pages';
-import { format, moment, momentBusiness } from 'lib/utils/time';
+import { format, moment } from 'lib/utils/time';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -73,7 +73,8 @@ const MarketPageLayout = ({
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
-  const getLatestClose = () => data?.marketIndex.timeSeries[0].close
+  const oldestTimeSeriesItem = data?.marketIndex.timeSeries[timeSeriesLimit - 1]
+  const latestTimeSeriesItem = data?.marketIndex.timeSeries[0]
 
   return data?.marketIndex ? (
     <>
@@ -92,15 +93,13 @@ const MarketPageLayout = ({
               hidden: !days,
               ['animate-fadeIn']: days > 0,
             })}
-            data-tip={`${momentBusiness()
-              .businessSubtract(days)
-              .format(format.standard)} - ${momentBusiness().format(
+            data-tip={`${moment(oldestTimeSeriesItem.date).format(
               format.standard
-            )}`}
+            )} - ${moment(latestTimeSeriesItem.date).format(format.standard)}`}
           >
             {days}D
           </span>
-          <div className="ml-2 text-xl">- {getLatestClose()}</div>
+          <div className="ml-2 text-xl">- {latestTimeSeriesItem.close}</div>
           <div className="ml-4 w-16 xs:w-20 md:w-24 mx-2">
             <LineChart
               options={chartOptions.simple}
