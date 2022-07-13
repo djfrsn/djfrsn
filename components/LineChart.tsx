@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -21,9 +21,13 @@ ChartJS.register(
 )
 
 // TODO: specify min/max for scales https://www.chartjs.org/docs/latest/general/performance.html#specify-min-and-max-for-scales
+class LineChart extends PureComponent {
+  props: { options; data: ChartData<'line'> }
 
-function LineChart({ options, data }: { options; data: ChartData<'line'> }) {
-  return <Line options={options} data={data} />
+  render() {
+    const { options, data } = this.props
+    return <Line options={options} data={data} />
+  }
 }
 
 export default LineChart

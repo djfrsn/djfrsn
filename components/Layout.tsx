@@ -28,7 +28,12 @@ export default function Layout({
   children?: React.ReactNode
 }) {
   const [scroll, scrollTo] = useWindowScroll()
-  const { ref: mainRef, height: mainheight } = useElementSize()
+  const { ref: appRef, height: appheight, width: appwidth } = useElementSize()
+  const {
+    ref: mainRef,
+    height: mainheight,
+    width: mainwidth,
+  } = useElementSize()
   const router = useRouter()
   const withFooter = data.footer
 
@@ -69,7 +74,7 @@ export default function Layout({
         <meta name="msapplication-TileColor" content="#2b5797" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <div className={classnames('relative w-full', className)}>
+      <div className={classnames('relative w-full', className)} ref={appRef}>
         <Navigation
           navigation={data.global.navigation}
           global={data.global}
@@ -86,7 +91,12 @@ export default function Layout({
           <div className={styles.mainColumn}>
             {React.Children.map(children, child => {
               if (React.isValidElement(child)) {
-                return React.cloneElement(child, { mainheight })
+                return React.cloneElement(child, {
+                  mainheight,
+                  mainwidth,
+                  appheight,
+                  appwidth,
+                })
               }
               return child
             })}

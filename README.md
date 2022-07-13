@@ -157,6 +157,7 @@ Adding a new row or column is done by changing or adding Models in [schema.prism
 - [Prismic Templating](https://prismic.io/docs/technologies/template-content-nextjs#intro-to-templating)
 - [React Markdown](https://www.npmjs.com/package/react-markdown)
 - [React Chart.js](https://www.npmjs.com/package/react-chartjs-2)
+- [React Window](https://github.com/bvaughn/react-window#how-is-react-window-different-from-react-virtualized)
 
 ### Backend
 

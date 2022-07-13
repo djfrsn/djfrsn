@@ -1,7 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const COLORS = require('./lib/const').COLORS
+const libConst = require('./lib/const')
 const generateColors = require('./lib/utils/generateColors')
-
+const { COLORS, SCREENS } = libConst
 const colors = generateColors({
   ...COLORS,
   gradeS: '#2bd474',
@@ -35,10 +35,7 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    screens: {
-      xs: '475px',
-      ...defaultTheme.screens,
-    },
+    screens: SCREENS,
     fontSize: {
       xxs: '0.65rem',
       xs: '0.75rem',
