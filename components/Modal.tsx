@@ -187,9 +187,11 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
             <LineChart
               options={chartOptions.correlation}
               data={{
-                labels: modalContent.marketIndex.timeSeries.map(series =>
-                  moment(series.date).format(format.standardShort)
-                ),
+                labels: modalContent.marketIndex.timeSeries
+                  .map(series =>
+                    moment(series.date).format(format.standardShort)
+                  )
+                  .reverse(),
                 datasets: [
                   {
                     label: modalContent.symbol,
