@@ -123,15 +123,14 @@ const MarketPageLayout = ({
           <div className="">
             {timeframes.map((timeframe, index) => {
               return (
-                <button
-                  key={index}
-                  className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
-                  data-active={timeSeriesLimit === timeframe}
-                >
-                  <Link href={`/market?days=${timeframe}`}>
+                <Link key={index} href={`/market?days=${timeframe}`}>
+                  <button
+                    className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
+                    data-active={timeSeriesLimit === timeframe}
+                  >
                     <a>{timeframe}D</a>
-                  </Link>
-                </button>
+                  </button>
+                </Link>
               )
             })}
           </div>
