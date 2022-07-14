@@ -19,10 +19,12 @@
 </div>
 
 ### 👨🏽‍💻 About Me :
+
 I am a Software Developer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Playa Del Rey, CA.
+
 - :telescope: I’m working as a Software Developer and contributing to frontend and backend for building web applications.
 
-- :seedling: Exploring interesting problems in financial markets with Next.js, GraphQL, Postgres, Redis and React 18.
+- :seedling: Exploring interesting problems in financial markets and time series data with Next.js, GraphQL, Postgres, Redis and React 18.
 
 - :zap: In my free time, I research financial markets and related technologies.
 
@@ -31,6 +33,7 @@ I am a Software Developer <img src="https://media.giphy.com/media/WUlplcMpOCEmTG
 ---
 
 ### :hammer_and_wrench: Languages and Tools :
+
 <div>
   <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original-wordmark.svg" title="React" alt="React" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/tailwindcss/tailwindcss-plain.svg" title="TailwindCSS" alt="TailwindCSS" width="40" height="40"/>&nbsp;
@@ -50,6 +53,7 @@ I am a Software Developer <img src="https://media.giphy.com/media/WUlplcMpOCEmTG
 ---
 
 ### :fire: My Stats :
+
 [![GitHub Streak](http://github-readme-streak-stats.herokuapp.com?user=djfrsn&theme=dark&background=000000)](https://git.io/streak-stats)
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=djfrsn&layout=compact&theme=vision-friendly-dark)](https://github.com/anuraghazra/github-readme-stats)
@@ -57,5 +61,5 @@ I am a Software Developer <img src="https://media.giphy.com/media/WUlplcMpOCEmTG
 ---
 
 ### 🚧 Projects :
--  📈 [Financial Data Pipeline](http://www.dennisjefferson.xyz/market)
 
+- 📈 [Financial Data Pipeline](http://www.dennisjefferson.xyz/market)
