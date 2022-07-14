@@ -62,8 +62,9 @@ class Ticker extends PureComponent {
     const close = formatUSD(timeSeries[0].close)
 
     return (
-      <div key={id} style={style}>
+      <div key={id} style={style} className={className}>
         <ModalButton
+          className="flex flex-col"
           onClick={() => {
             let high: TickerInfo | null = null
             let low: TickerInfo | null = null
@@ -93,15 +94,15 @@ class Ticker extends PureComponent {
             modalContentIdVar(`${symbol}TickerInfo`)
           }}
         >
-          <div className={classnames(className, 'flex items-center z-10')}>
+          <div className={'flex items-center z-10'}>
             <h2 className="whitespace-pre-line text-left">{symbol}</h2>
             {/* <h2
-            className="tooltip tooltip-info whitespace-pre-line text-left z-100"
-            data-tip={symbolTip}
-          >
-            {symbol}
-          </h2> */}
-            <div className="ml-2 text-wash-50">{close}</div>
+              className="tooltip tooltip-info whitespace-pre-line text-left z-100"
+              data-tip={symbolTip}
+            >
+              {symbol}
+            </h2> */}
+            <div className="ml-2 text-wash-50 cursor-default">{close}</div>
           </div>
           <LineChart
             options={chartOptions.simple}
