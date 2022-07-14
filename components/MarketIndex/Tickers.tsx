@@ -131,11 +131,12 @@ class Ticker extends PureComponent {
 
 function areEqual(prevProps, nextProps) {
   /*
-    avoid rendering ticker unless we change timeSeries
+    avoid rendering ticker unless we change timeSeries or screen width
   */
   return (
     prevProps.data.ticker.timeSeries[0].date ===
-    nextProps.data.ticker.timeSeries[0].date
+      nextProps.data.ticker.timeSeries[0].date &&
+    prevProps.data.containerWidth === nextProps.data.containerWidth
   )
 }
 
@@ -146,7 +147,7 @@ const screenToNum = val => Number(val.replace('px', ''))
 const getHeaderHeight = width => {
   switch (true) {
     case width < 370:
-      return 203
+      return 173
     case width < screenToNum(SCREENS.sm):
       return 133
     case width >= screenToNum(SCREENS.md):
@@ -157,7 +158,7 @@ const getHeaderHeight = width => {
 
 const getColumnCount = (width, timeSeriesLength) => {
   const isLgScreen = width >= screenToNum(SCREENS.lg)
-  const isMedScreen = width >= screenToNum(SCREENS.md)
+  const isMdScreen = width >= screenToNum(SCREENS.md)
   const isSmScreen = width >= screenToNum(SCREENS.sm)
 
   switch (true) {
@@ -165,14 +166,14 @@ const getColumnCount = (width, timeSeriesLength) => {
       return 8
     case timeSeriesLength < 30 && isLgScreen:
       return 6
-    case timeSeriesLength <= 30 && isMedScreen:
-    case timeSeriesLength <= 7 && isMedScreen:
+    case timeSeriesLength <= 30 && isMdScreen:
+    case timeSeriesLength <= 7 && isMdScreen:
       return 5
     case timeSeriesLength >= 180:
-      return 2
+      return 1
     case isLgScreen:
-      return timeSeriesLength >= 90 ? 4 : 5
-    case isMedScreen:
+      return 5
+    case isMdScreen:
       return 4
     case isSmScreen:
       return 3
@@ -189,9 +190,11 @@ class Cell extends PureComponent {
     columnIndex: number
     data: TickerType[]
     marketIndex: MarketIndex
+    containerWidth: number
   }
   render() {
-    const { index, style, rowIndex, columnIndex, data } = this.props
+    const { containerWidth, index, style, rowIndex, columnIndex, data } =
+      this.props
     const tickerData = data[rowIndex][columnIndex]
 
     if (!tickerData) return null
@@ -213,7 +216,7 @@ class TickerList extends PureComponent {
     const timeSeriesLength = data[0].timeSeries.length
     const columnCount = getColumnCount(containerWidth, timeSeriesLength)
     const gridData = chunk(data, columnCount, {
-      props: { marketIndex },
+      props: { containerWidth, marketIndex },
       chunkPropName: 'ticker',
     })
     const cellWidth = width / columnCount
