@@ -55,7 +55,9 @@ export async function getStaticProps({ previewData }) {
 }
 
 const MarketPageLayout = ({
+  appwidth = null,
   mainheight = null,
+  mainwidth = null,
   data,
   marketName,
   limit,
@@ -79,7 +81,7 @@ const MarketPageLayout = ({
 
   return data?.marketIndex ? (
     <>
-      <div className="flex md:flex-row md:h-[45px] flex-wrap">
+      <div className="flex md:flex-row flex-wrap">
         <div className="flex flex-max flex-wrap flex-row md:basis-1/2 cursor-default">
           <h1
             className="text-iced-300 tooltip tooltip-info"
@@ -101,7 +103,7 @@ const MarketPageLayout = ({
             {days}D
           </span>
           <div className="ml-2 text-xl">- {latestTimeSeriesItem.close}</div>
-          <div className="ml-4 w-16 xs:w-20 md:w-24 mx-2">
+          <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
             <LineChart
               options={chartOptions.simple}
               data={{
@@ -139,7 +141,9 @@ const MarketPageLayout = ({
       </div>
       <MarketIndex
         marketIndex={data.marketIndex}
+        appWidth={appwidth}
         height={mainheight}
+        width={mainwidth}
         marketIndexId={data.marketIndex.id}
         limit={limit}
         bypassTimeSeriesLimit={bypassTimeSeriesLimit}
