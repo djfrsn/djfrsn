@@ -1,5 +1,4 @@
 import Layout from 'components/Layout';
-import { TOPIC_FETCH_LINKS } from 'lib/const';
 import { getStaticPathsData } from 'lib/utils/getStaticPathsData';
 import { GetStaticPaths } from 'next';
 
@@ -9,9 +8,7 @@ export async function getStaticProps({ params, previewData }) {
   const client = createClient({ previewData })
 
   const [page, global] = await Promise.all([
-    client.getByUID('root-page', params.uid, {
-      fetchLinks: TOPIC_FETCH_LINKS,
-    }),
+    client.getByUID('root-page', params.uid),
     client.getSingle('global'),
   ])
 
