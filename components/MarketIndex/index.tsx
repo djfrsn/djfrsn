@@ -3,7 +3,9 @@ import Container from 'components/Container';
 import Tickers from 'components/MarketIndex/Tickers';
 import gql from 'graphql-tag';
 import { Ticker } from 'lib/interfaces';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import MarketIndexHeader from './MarketIndexHeader';
 
 const MarketIndexTickersQuery = gql`
   query MarketIndexTickers(
@@ -31,6 +33,7 @@ const MarketIndexTickersQuery = gql`
 `
 
 const MarketIndex = ({
+  mainWidth,
   appWidth,
   width,
   height,
@@ -38,7 +41,6 @@ const MarketIndex = ({
   limit,
   bypassTimeSeriesLimit,
   timeSeriesLimit,
-  setNumOfDays,
   marketIndex,
 }) => {
   const {
@@ -55,6 +57,8 @@ const MarketIndex = ({
   })
   const marketIndexTickers = data?.marketIndexTickers || []
 
+  const [numOfDays, setNumOfDays] = useState(null)
+  const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
   useEffect(() => {
     if (marketIndexTickers.length > 0) {
       const timeSeriesLength = marketIndexTickers[0].timeSeries?.length
@@ -64,6 +68,12 @@ const MarketIndex = ({
 
   return (
     <Container loading={loading} error={error}>
+      <MarketIndexHeader
+        data={marketIndex}
+        days={days}
+        timeSeriesLimit={timeSeriesLimit}
+        mainWidth={mainWidth}
+      />
       <Tickers
         marketIndex={marketIndex}
         containerWidth={appWidth}
