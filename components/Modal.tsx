@@ -38,7 +38,7 @@ export const GET_MODAL = gql`
   }
 `
 
-const ModalContent = ({ data: { modalContentId, modalContent } }) => {
+const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
   if (!modalContentId || !modalContent) return null
 
   switch (true) {
@@ -234,28 +234,27 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
           )}
         </div>
       )
-    case modalContentId.includes('MarketInfo'):
+    case modalContentId === 'markets':
+      const marketInfo = pageData.find(
+        content => content.name === modalContent.marketName
+      )
+
       return (
         <div>
-          {Array.isArray(modalContent) &&
-            modalContent.map((item, index) => {
-              return (
-                item?.markdown && (
-                  <RichTextToMarkdown key={index} content={item.markdown} />
-                )
-              )
-            })}
+          {marketInfo ? (
+            <RichTextToMarkdown content={marketInfo.description} />
+          ) : (
+            <p>Info unavailable for {modalContent.marketName}.</p>
+          )}
         </div>
       )
     default:
-      return <div>Content not found.</div>
+      return <div>Content unavailable.</div>
   }
 }
 
 const Modal = ({ content }) => {
   const { data, loading, error } = useQuery(GET_MODAL)
-  const externalContent = data?.modalContentId && content[data.modalContentId]
-  const modalContent = externalContent ? externalContent : data?.modalContent
   const onModalClose = () => {
     localStorage.setItem('isModalOpen', 'false')
     document.body.style.overflow = ''
@@ -289,7 +288,13 @@ const Modal = ({ content }) => {
           )}
           {loading && <Loading />}
           {data?.modalContentId && (
-            <ModalContent data={{ ...data, modalContent }} />
+            <ModalContent
+              data={{
+                ...data,
+                modalContent: data?.modalContent,
+                pageData: content[data?.modalContentId],
+              }}
+            />
           )}
         </label>
       </label>

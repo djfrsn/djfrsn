@@ -7,7 +7,7 @@ import LineChart from 'components/LineChart';
 import MarketIndex from 'components/MarketIndex';
 import { ModalButton } from 'components/Modal';
 import gql from 'graphql-tag';
-import { modalContentIdVar } from 'lib/cache';
+import { modalContentIdVar, modalContentVar } from 'lib/cache';
 import { SCREENS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
@@ -72,7 +72,12 @@ const MarketPageLayout = ({
   const InfoButton = ({ className = '' }) => (
     <ModalButton
       className={className}
-      onClick={() => modalContentIdVar(`${marketName}MarketInfo`)}
+      onClick={() => {
+        modalContentVar({
+          marketName,
+        })
+        modalContentIdVar('markets')
+      }}
     >
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
