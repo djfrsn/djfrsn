@@ -8,10 +8,10 @@ import MarketIndex from 'components/MarketIndex';
 import { ModalButton } from 'components/Modal';
 import gql from 'graphql-tag';
 import { modalContentIdVar } from 'lib/cache';
-import { MARKET_INDEX } from 'lib/const';
+import { MARKET_INDEX, SCREENS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
-import { getMarketPageOptions } from 'lib/utils/pages';
+import { getMarketPageOptions, screenToNum } from 'lib/utils/pages';
 import { format, moment } from 'lib/utils/time';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -66,7 +66,9 @@ const MarketPageLayout = ({
 }) => {
   const [numOfDays, setNumOfDays] = useState(null)
   const days = timeSeriesLimit > 0 ? timeSeriesLimit : numOfDays
-  const timeframes = [7, 14, 30, 90, 180, 365]
+  const timeframes = [7, 14, 30, 90].concat(
+    mainwidth > screenToNum(SCREENS.md) ? [180, 365] : []
+  )
 
   const InfoButton = ({ className = '' }) => (
     <ModalButton

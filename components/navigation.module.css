@@ -1,5 +1,5 @@
 .nav {
-  @apply h-[80px] navbar container mx-auto text-ash-500 px-6 pt-8 pb-0;
+  @apply navbar container mx-auto text-ash-500 px-3 py-2 lg:px-6 lg:pt-8 pb-0;
 }
 
 .navigationList {

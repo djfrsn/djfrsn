@@ -183,7 +183,7 @@ const Tickers = ({
   height = height - getHeaderHeight(width)
   return (
     <div
-      className={classnames({ hidden: height <= 0 }, `mt-8`)}
+      className={classnames({ hidden: height <= 0 }, `mt-2 lg:mt-8`)}
       style={{ height: `${height}px` }}
     >
       <div>

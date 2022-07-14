@@ -20,17 +20,14 @@ export function getMarketPageOptions(routerQuery) {
   return { marketName, limit, timeSeriesLimit, bypassTimeSeriesLimit }
 }
 
-const screenToNum = val => Number(val.replace('px', ''))
+export const screenToNum = val => Number(val.replace('px', ''))
 
 export const getHeaderHeight = width => {
   switch (true) {
     case width < 370:
-      return 173
-    case width < screenToNum(SCREENS.sm):
-      return 133
-    case width >= screenToNum(SCREENS.md):
+      return 115
     default:
-      return 73
+      return 48
   }
 }
 
