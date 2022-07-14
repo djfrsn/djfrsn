@@ -63,59 +63,60 @@ class Ticker extends PureComponent {
 
     return (
       <div key={id} style={style}>
-        <div className={classnames(className, 'flex items-center z-10')}>
-          <ModalButton
-            onClick={() => {
-              let high: TickerInfo | null = null
-              let low: TickerInfo | null = null
+        <ModalButton
+          onClick={() => {
+            let high: TickerInfo | null = null
+            let low: TickerInfo | null = null
 
-              timeSeries.forEach(item => {
-                const itemClose = Number(item.close)
-                if (!high || (high.close && itemClose > Number(high.close)))
-                  high = item
-                if (!low || (low.close && itemClose < Number(low.close)))
-                  low = item
-              })
+            timeSeries.forEach(item => {
+              const itemClose = Number(item.close)
+              if (!high || (high.close && itemClose > Number(high.close)))
+                high = item
+              if (!low || (low.close && itemClose < Number(low.close)))
+                low = item
+            })
 
-              modalContentVar({
-                id,
-                symbol,
-                name,
-                founded,
-                headQuarter,
-                sector,
-                subSector,
-                close,
-                high,
-                low,
-                timeSeries,
-                marketIndex,
-              })
-              modalContentIdVar(`${symbol}TickerInfo`)
-            }}
-          >
-            <h2
-              className="tooltip tooltip-info whitespace-pre-line text-left z-100"
-              data-tip={symbolTip}
-            >
-              {symbol}
-            </h2>
-          </ModalButton>
-          <div className="ml-2 text-wash-50 cursor-default">{close}</div>
-        </div>
-        <LineChart
-          options={chartOptions.simple}
-          data={{
-            labels: timeSeries.map(series => series.date),
-            datasets: [
-              {
-                label: symbol,
-                data: timeSeries.map(set => Number(set.close)).reverse(),
-                borderColor: getLineColor(timeSeries),
-              },
-            ],
+            modalContentVar({
+              id,
+              symbol,
+              name,
+              founded,
+              headQuarter,
+              sector,
+              subSector,
+              close,
+              high,
+              low,
+              timeSeries,
+              marketIndex,
+            })
+            modalContentIdVar(`${symbol}TickerInfo`)
           }}
-        />
+        >
+          <div className={classnames(className, 'flex items-center z-10')}>
+            <h2 className="whitespace-pre-line text-left">{symbol}</h2>
+            {/* <h2
+            className="tooltip tooltip-info whitespace-pre-line text-left z-100"
+            data-tip={symbolTip}
+          >
+            {symbol}
+          </h2> */}
+            <div className="ml-2 text-wash-50">{close}</div>
+          </div>
+          <LineChart
+            options={chartOptions.simple}
+            data={{
+              labels: timeSeries.map(series => series.date),
+              datasets: [
+                {
+                  label: symbol,
+                  data: timeSeries.map(set => Number(set.close)).reverse(),
+                  borderColor: getLineColor(timeSeries),
+                },
+              ],
+            }}
+          />
+        </ModalButton>
       </div>
     )
   }
