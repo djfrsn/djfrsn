@@ -1,6 +1,6 @@
 {
-  "id": "sp500",
-  "label": "S&P 500",
+  "id": "markets",
+  "label": "Markets",
   "repeatable": false,
   "status": true,
   "json": {
@@ -26,15 +26,22 @@
           "placeholder": ""
         }
       },
-      "sp500MarketInfo": {
+      "markets": {
         "type": "Group",
         "config": {
-          "label": "",
+          "label": "Markets",
           "fields": {
-            "markdown": {
+            "name": {
+              "type": "Text",
+              "config": {
+                "label": "Name",
+                "placeholder": ""
+              }
+            },
+            "description": {
               "type": "StructuredText",
               "config": {
-                "label": "Markdown",
+                "label": "Description",
                 "placeholder": "",
                 "allowTargetBlank": true,
                 "single": "preformatted"
