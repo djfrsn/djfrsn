@@ -13,6 +13,8 @@ import { PureComponent } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
 
+import styles from './tickers.module.css';
+
 class Ticker extends PureComponent {
   props: {
     className?: string
@@ -61,9 +63,7 @@ class Ticker extends PureComponent {
 
     return (
       <div key={id} style={style}>
-        <div
-          className={classnames(className, 'flex items-center z-10 w-[100px]')}
-        >
+        <div className={classnames(className, 'flex items-center z-10')}>
           <ModalButton
             onClick={() => {
               let high: TickerInfo | null = null
@@ -121,15 +121,41 @@ class Ticker extends PureComponent {
   }
 }
 
-const getColumnCount = width => {
-  const screenToNum = val => Number(val.replace('px', ''))
+const screenToNum = val => Number(val.replace('px', ''))
+
+const getHeaderHeight = width => {
   switch (true) {
-    case width >= screenToNum(SCREENS.sm):
-      return 3
+    case width < 370:
+      return 203
+    case width < screenToNum(SCREENS.sm):
+      return 133
     case width >= screenToNum(SCREENS.md):
-      return 4
-    case width >= screenToNum(SCREENS.lg):
+    default:
+      return 73
+  }
+}
+
+const getColumnCount = (width, timeSeriesLength) => {
+  const isLgScreen = width >= screenToNum(SCREENS.lg)
+  const isMedScreen = width >= screenToNum(SCREENS.md)
+  const isSmScreen = width >= screenToNum(SCREENS.sm)
+
+  switch (true) {
+    case timeSeriesLength <= 7 && isLgScreen:
+      return 8
+    case timeSeriesLength < 30 && isLgScreen:
+      return 6
+    case timeSeriesLength <= 30 && isMedScreen:
+    case timeSeriesLength <= 7 && isMedScreen:
       return 5
+    case timeSeriesLength >= 180:
+      return 2
+    case isLgScreen:
+      return timeSeriesLength >= 90 ? 4 : 5
+    case isMedScreen:
+      return 4
+    case isSmScreen:
+      return 3
     default:
       return 2
   }
@@ -153,11 +179,11 @@ class Cell extends PureComponent {
     const className =
       columnIndex % 2
         ? rowIndex % 2 === 0
-          ? 'cell-item-odd'
-          : 'cell-item-even'
+          ? styles.tickerCellOdd
+          : styles.tickerCellEven
         : rowIndex % 2
-        ? 'cell-item-odd'
-        : 'cell-item-even'
+        ? styles.tickerCellOdd
+        : styles.tickerCellEven
 
     return (
       <Ticker
@@ -180,23 +206,25 @@ class TickerList extends PureComponent {
   }
   render() {
     const { containerWidth, height, width, data, marketIndex } = this.props
-
-    const columnCount = getColumnCount(containerWidth)
+    const timeSeriesLength = data[0].timeSeries.length
+    const columnCount = getColumnCount(containerWidth, timeSeriesLength)
     const gridData = chunk(data, columnCount, {
       props: { marketIndex },
       chunkPropName: 'ticker',
     })
-    // TODO: add some pad to columnWidth and add even odd logic
-
-    // prior grid: grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-8
+    const cellWidth = width / columnCount
+    const cellHeight = (width / columnCount) * 0.75
 
     return (
       <Grid
+        className={classnames(styles.tickerGrid, [
+          styles[`tickerGrid-col-${columnCount}`],
+        ])}
         columnCount={columnCount}
-        columnWidth={width / columnCount}
-        height={height - 80}
+        columnWidth={cellWidth}
+        height={height}
         rowCount={gridData.length}
-        rowHeight={(width / columnCount) * 0.75}
+        rowHeight={cellHeight}
         width={width}
         itemData={gridData}
       >
@@ -219,12 +247,13 @@ const Tickers = ({
   data: TickerType[]
   marketIndex: MarketIndex
 }) => {
+  height = height - getHeaderHeight(width)
   return (
     <div
       className={classnames({ hidden: height <= 0 }, `mt-8`)}
-      style={{ height: `${height - 80}px` }}
+      style={{ height: `${height}px` }}
     >
-      <div className="pb-8">
+      <div>
         {data.length > 0 ? (
           <TickerList
             containerWidth={containerWidth}
