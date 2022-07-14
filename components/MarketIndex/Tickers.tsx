@@ -9,11 +9,17 @@ import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import chunk from 'lib/utils/chunk';
 import { formatUSD } from 'lib/utils/numbers';
+import memoizeOne from 'memoize-one';
+import React from 'react';
 import { PureComponent } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
 
 import styles from './tickers.module.css';
+
+const reverseTimeSeries = memoizeOne(timeSeries =>
+  timeSeries.map(set => Number(set.close)).reverse()
+)
 
 class Ticker extends PureComponent {
   props: {
@@ -111,7 +117,7 @@ class Ticker extends PureComponent {
               datasets: [
                 {
                   label: symbol,
-                  data: timeSeries.map(set => Number(set.close)).reverse(),
+                  data: reverseTimeSeries(timeSeries),
                   borderColor: getLineColor(timeSeries),
                 },
               ],
@@ -122,6 +128,18 @@ class Ticker extends PureComponent {
     )
   }
 }
+
+function areEqual(prevProps, nextProps) {
+  /*
+    avoid rendering ticker unless we change timeSeries
+  */
+  return (
+    prevProps.data.ticker.timeSeries[0].date ===
+    nextProps.data.ticker.timeSeries[0].date
+  )
+}
+
+const MemoTicker: any = React.memo(Ticker, areEqual)
 
 const screenToNum = val => Number(val.replace('px', ''))
 
@@ -178,23 +196,7 @@ class Cell extends PureComponent {
 
     if (!tickerData) return null
 
-    const className =
-      columnIndex % 2
-        ? rowIndex % 2 === 0
-          ? styles.tickerCellOdd
-          : styles.tickerCellEven
-        : rowIndex % 2
-        ? styles.tickerCellOdd
-        : styles.tickerCellEven
-
-    return (
-      <Ticker
-        className={className}
-        key={index}
-        style={style}
-        data={tickerData}
-      />
-    )
+    return <MemoTicker key={index} style={style} data={tickerData} />
   }
 }
 
