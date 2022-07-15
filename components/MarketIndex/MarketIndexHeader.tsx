@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
-import { modalContentIdVar, modalContentVar } from 'lib/cache';
+import { modalContent, modalContentId } from 'lib/cache';
 import { PAGES, SCREENS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
@@ -11,12 +11,12 @@ import Link from 'next/link';
 import { FaInfoCircle } from 'react-icons/fa';
 
 export const showMarketIndexInfo = (name, props = {}) => {
-  modalContentVar({
+  modalContent({
     modalSize: 'large',
     marketName: name,
     ...props,
   })
-  modalContentIdVar(PAGES.markets)
+  modalContentId(PAGES.markets)
 }
 
 const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {

@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import { isModalOpenVar, modalContentIdVar, modalContentVar } from 'lib/cache';
+import { isModalOpen, modalContent as modalContentVar, modalContentId } from 'lib/cache';
 import { COLORS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
@@ -8,6 +8,7 @@ import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
 import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
+import { useEffect, useRef } from 'react';
 import { RichTextToMarkdown } from 'slices/Markdown';
 import useSWR from 'swr';
 
@@ -253,20 +254,40 @@ const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
   }
 }
 
+const onModalClose = () => {
+  modalContentId('')
+  modalContentVar({})
+  localStorage.setItem('isModalOpen', 'false')
+  localStorage.setItem('modalContentId', '')
+  setBodyOverflow('')
+  isModalOpen(false)
+}
+
+const setBodyOverflow = val => (document.body.style.overflow = val)
+
+export const openModal = () => {
+  localStorage.setItem('isModalOpen', 'true')
+  setBodyOverflow('hidden')
+  isModalOpen(true)
+}
+
 const Modal = ({ content }) => {
   const { data, loading, error } = useQuery(GET_MODAL)
-  const onModalClose = () => {
-    modalContentIdVar('')
-    modalContentVar({})
-    localStorage.setItem('isModalOpen', 'false')
-    document.body.style.overflow = ''
-    isModalOpenVar(false)
-  }
   const modalContent = data?.modalContent
+  const inputRef = useRef()
+  useEffect(() => {
+    if (data.isModalOpen) {
+      // opens modal on page load
+      const modalEl = inputRef.current as HTMLInputElement
+      setBodyOverflow('hidden')
+      modalEl.checked = true
+    }
+  }, [])
 
   return (
     <>
       <input
+        ref={inputRef}
         onChange={e => {
           if (!e.target.checked) {
             onModalClose()
@@ -278,10 +299,7 @@ const Modal = ({ content }) => {
       />
       <label
         htmlFor="main-modal"
-        className={classnames(
-          { 'modal-open': data.isModalOpen },
-          'modal cursor-pointer'
-        )}
+        className={classnames('modal cursor-pointer')}
       >
         <label
           className={classnames(
@@ -314,12 +332,6 @@ const Modal = ({ content }) => {
       </label>
     </>
   )
-}
-
-export const openModal = () => {
-  localStorage.setItem('isModalOpen', 'true')
-  document.body.style.overflow = 'hidden'
-  isModalOpenVar(true)
 }
 
 export const ModalButton = ({ className = '', children, onClick }) => {
