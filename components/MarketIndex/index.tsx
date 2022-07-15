@@ -70,11 +70,7 @@ const MarketIndex = ({
     }
   }, [marketIndexTickers.length])
   useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      typeof routerQuery.info === 'string' &&
-      marketIndex?.name
-    ) {
+    if (typeof routerQuery.info === 'string' && marketIndex?.name) {
       showMarketIndexInfo(marketIndex.name)
       openModal(true)
       router.replace(router.asPath.replace('?info', ''))
