@@ -18,7 +18,7 @@ export const isModalOpenVar = makeVar<boolean>(
 )
 
 export const isModalOpen = open => {
-  localStorage.setItem('isModalOpen', open)
+  if (open) localStorage.setItem('isModalOpen', open)
 
   return isModalOpenVar(open)
 }
@@ -28,7 +28,7 @@ export const modalContentIdVar = makeVar<string>(
 )
 
 export const modalContentId = id => {
-  localStorage.setItem('modalContentId', id)
+  if (id) localStorage.setItem('modalContentId', id)
 
   return modalContentIdVar(id)
 }
@@ -39,7 +39,7 @@ export const modalContentVar = makeVar<object>(
 )
 
 export const modalContent = content => {
-  localStorage.setItem('modalContent', JSON.stringify(content))
+  if (content) localStorage.setItem('modalContent', JSON.stringify(content))
 
   return modalContentVar(content)
 }
