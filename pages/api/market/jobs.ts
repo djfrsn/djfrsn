@@ -2,7 +2,7 @@ import initMarketIndexCron from 'lib/marketIndex/initMarketIndexCron';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/market/jobs
-// curl -H "Content-Type: application/json" -d "{\"access_key\": \"x\"}" https://dennisjefferson.xyz/api/market/jobs
+// curl -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://dennisjefferson.xyz/api/market/jobs
 /**
  * Description: Schedule a repeatable job to update market indexes and related ticker info data
  * @constructor
