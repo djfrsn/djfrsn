@@ -56,4 +56,4 @@ I am a Software Developer <img src="https://media.giphy.com/media/WUlplcMpOCEmTG
 
 ### 🚧 Projects :
 
-- 📈 [Financial Data Pipeline](http://www.dennisjefferson.xyz/market)
+- 📈 [Financial Data Pipeline](http://www.dennisjefferson.xyz/markets)
