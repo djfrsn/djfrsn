@@ -78,7 +78,11 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
         <div className="">
           {timeframes.map((timeframe, index) => {
             return (
-              <Link key={index} href={`/${PAGES.markets}?days=${timeframe}`}>
+              <Link
+                key={index}
+                href={`/${PAGES.markets}?days=${timeframe}`}
+                shallow
+              >
                 <button
                   className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
                   data-active={timeSeriesLimit === timeframe}
