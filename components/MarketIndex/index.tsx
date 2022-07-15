@@ -75,8 +75,8 @@ const MarketIndex = ({
       typeof routerQuery.info === 'string' &&
       marketIndex?.name
     ) {
-      showMarketIndexInfo(marketIndex.name, { showCloseButton: false })
-      openModal()
+      showMarketIndexInfo(marketIndex.name)
+      openModal(true)
       router.replace(router.asPath.replace('?info', ''))
       console.log('marketIndex?.name', marketIndex?.name)
     }

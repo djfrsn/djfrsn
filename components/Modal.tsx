@@ -264,8 +264,13 @@ const onModalClose = () => {
 }
 
 const setBodyOverflow = val => (document.body.style.overflow = val)
-
-export const openModal = () => {
+const modalId = 'main-modal'
+export const openModal = force => {
+  if (force) {
+    const modalEl = document.getElementById(modalId) as HTMLInputElement
+    setBodyOverflow('hidden')
+    modalEl.checked = true
+  }
   localStorage.setItem('isModalOpen', 'true')
   setBodyOverflow('hidden')
   isModalOpen(true)
@@ -294,7 +299,7 @@ const Modal = ({ content }) => {
           }
         }}
         type="checkbox"
-        id="main-modal"
+        id={modalId}
         className="modal-toggle"
       />
       <label
