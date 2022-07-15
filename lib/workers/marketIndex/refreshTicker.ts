@@ -5,7 +5,7 @@ import { getSp500RefreshFlow } from 'lib/db/queue';
 import { RefreshMarketTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
 import { getDependenciesCount } from 'lib/utils/bullmq';
-import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/time';
+import { format, getMostRecentBusinessDay, moment, momentBusiness, normalizeDate } from 'lib/utils/time';
 
 let parent: JobNode | null
 
@@ -37,7 +37,7 @@ export default async function refreshMarketTickerProcessor(
       const query =
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
           ? `serietype=line&timeseries=${dayDiff}`
-          : ''
+          : `from=1957-01-01&to=${moment().format(format.standardFMP)}`
       const onComplete = []
 
       await createSP500TickerInfo(job.data, { query, job })
