@@ -5,19 +5,7 @@
       "navigation": {}
     },
     "signup": {},
-    "drafts": {},
-    "create": {},
-    "topic": {
-      "preview": {
-        "config": {
-          "patternType": "PARAGRAPH",
-          "blocks": 1
-        }
-      }
-    },
     "root-page": {},
-    "feed": {},
-    "contract": {},
     "sp500": {
       "sp500MarketInfo": {
         "markdown": {
@@ -29,97 +17,19 @@
       }
     },
     "jobs": {},
-    "bio": {}
+    "bio": {},
+    "markets": {
+      "markets": {
+        "description": {
+          "config": {
+            "patternType": "PARAGRAPH",
+            "blocks": 1
+          }
+        }
+      }
+    }
   },
   "slices": {
-    "Course": {
-      "default": {
-        "primary": {
-          "title": {
-            "config": {
-              "patternType": "HEADING",
-              "blocks": 1
-            }
-          },
-          "description": {
-            "config": {
-              "patternType": "PARAGRAPH",
-              "blocks": 1
-            }
-          }
-        }
-      }
-    },
-    "Header": {
-      "default": {
-        "primary": {
-          "title": {
-            "config": {
-              "patternType": "HEADING",
-              "blocks": 1
-            }
-          }
-        }
-      }
-    },
-    "UtilBar": {
-      "default": {
-        "primary": {
-          "title": {
-            "config": {
-              "patternType": "HEADING",
-              "blocks": 1
-            }
-          }
-        },
-        "items": {
-          "helpfulLinks": {
-            "config": {
-              "patternType": "PARAGRAPH",
-              "blocks": 1
-            }
-          }
-        }
-      }
-    },
-    "TopicList": {
-      "default": {
-        "primary": {
-          "title": {
-            "config": {
-              "patternType": "HEADING",
-              "blocks": 1
-            }
-          }
-        },
-        "items": {}
-      }
-    },
-    "UtilBarLinks": {
-      "default": {
-        "items": {
-          "links": {
-            "config": {
-              "patternType": "PARAGRAPH",
-              "blocks": 1
-            }
-          }
-        },
-        "primary": {}
-      }
-    },
-    "UtilBarTitle": {
-      "default": {
-        "primary": {
-          "title": {
-            "config": {
-              "patternType": "HEADING",
-              "blocks": 1
-            }
-          }
-        }
-      }
-    },
     "Markdown": {
       "default": {
         "primary": {

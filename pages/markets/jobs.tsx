@@ -9,7 +9,7 @@ import fetcher from 'lib/utils/fetcher';
 import moment from 'moment';
 import useSWR from 'swr';
 
-import { createClient } from '../prismicio';
+import { createClient } from '../../prismicio';
 
 const gqlFetcher = query => request('/api', query)
 

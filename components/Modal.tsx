@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import { isModalOpenVar, modalContentVar } from 'lib/cache';
+import { isModalOpenVar, modalContentIdVar, modalContentVar } from 'lib/cache';
 import { COLORS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
@@ -38,7 +38,7 @@ export const GET_MODAL = gql`
   }
 `
 
-const ModalContent = ({ data: { modalContentId, modalContent } }) => {
+const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
   if (!modalContentId || !modalContent) return null
 
   switch (true) {
@@ -234,34 +234,35 @@ const ModalContent = ({ data: { modalContentId, modalContent } }) => {
           )}
         </div>
       )
-    case modalContentId.includes('MarketInfo'):
+    case modalContentId === 'markets':
+      const marketInfo = pageData.find(
+        content => content.name === modalContent.marketName
+      )
+
       return (
         <div>
-          {Array.isArray(modalContent) &&
-            modalContent.map((item, index) => {
-              return (
-                item?.markdown && (
-                  <RichTextToMarkdown key={index} content={item.markdown} />
-                )
-              )
-            })}
+          {marketInfo ? (
+            <RichTextToMarkdown content={marketInfo.description} />
+          ) : (
+            <p>Info unavailable for {modalContent.marketName}.</p>
+          )}
         </div>
       )
     default:
-      return <div>Content not found.</div>
+      return <div>Content unavailable.</div>
   }
 }
 
 const Modal = ({ content }) => {
   const { data, loading, error } = useQuery(GET_MODAL)
-  const externalContent = data?.modalContentId && content[data.modalContentId]
-  const modalContent = externalContent ? externalContent : data?.modalContent
   const onModalClose = () => {
+    modalContentIdVar('')
+    modalContentVar({})
     localStorage.setItem('isModalOpen', 'false')
     document.body.style.overflow = ''
-    modalContentVar({})
     isModalOpenVar(false)
   }
+  const modalContent = data?.modalContent
 
   return (
     <>
@@ -275,8 +276,20 @@ const Modal = ({ content }) => {
         id="main-modal"
         className="modal-toggle"
       />
-      <label htmlFor="main-modal" className="modal cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
+      <label
+        htmlFor="main-modal"
+        className={classnames(
+          { 'modal-open': data.isModalOpen },
+          'modal cursor-pointer'
+        )}
+      >
+        <label
+          className={classnames(
+            { 'w-11/12 max-w-3xl': modalContent?.modalSize === 'large' },
+            'modal-box relative bg-base-100'
+          )}
+          htmlFor=""
+        >
           <label
             onClick={() => onModalClose()}
             htmlFor="main-modal"
@@ -289,7 +302,13 @@ const Modal = ({ content }) => {
           )}
           {loading && <Loading />}
           {data?.modalContentId && (
-            <ModalContent data={{ ...data, modalContent }} />
+            <ModalContent
+              data={{
+                ...data,
+                modalContent,
+                pageData: content[data?.modalContentId],
+              }}
+            />
           )}
         </label>
       </label>
@@ -297,13 +316,17 @@ const Modal = ({ content }) => {
   )
 }
 
+export const openModal = () => {
+  localStorage.setItem('isModalOpen', 'true')
+  document.body.style.overflow = 'hidden'
+  isModalOpenVar(true)
+}
+
 export const ModalButton = ({ className = '', children, onClick }) => {
   return (
     <label
       onClick={() => {
-        localStorage.setItem('isModalOpen', 'true')
-        document.body.style.overflow = 'hidden'
-        isModalOpenVar(true)
+        openModal()
         onClick()
       }}
       htmlFor="main-modal"

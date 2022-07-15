@@ -68,6 +68,9 @@ ol {
 }
 
 ul {
+  &:not(.list-style-custom) {
+    @apply list-disc pl-4;
+  }
   .list-style-custom {
     @apply flex;
 

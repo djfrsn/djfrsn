@@ -31,18 +31,6 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "markdown": {
-              "type": "SharedSlice"
-            },
-            "topic_list": {
-              "type": "SharedSlice"
-            },
-            "util_bar_links": {
-              "type": "SharedSlice"
-            },
-            "util_bar_title": {
-              "type": "SharedSlice"
-            },
             "page_content": {
               "type": "SharedSlice"
             }

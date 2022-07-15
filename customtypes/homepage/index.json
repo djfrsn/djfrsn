@@ -40,20 +40,7 @@
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
-          "choices": {
-            "topic_list": {
-              "type": "SharedSlice"
-            },
-            "util_bar_links": {
-              "type": "SharedSlice"
-            },
-            "util_bar_title": {
-              "type": "SharedSlice"
-            },
-            "markdown": {
-              "type": "SharedSlice"
-            }
-          }
+          "choices": {}
         }
       }
     }

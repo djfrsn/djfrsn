@@ -42,6 +42,9 @@ const chartOptions = {
         ticks: {
           color: COLORS.correlationBeta,
         },
+        grid: {
+          color: COLORS.blackCoffee,
+        },
       },
       y1: {
         type: 'linear',
