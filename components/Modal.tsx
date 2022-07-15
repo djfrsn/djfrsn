@@ -265,7 +265,7 @@ const onModalClose = () => {
 
 const setBodyOverflow = val => (document.body.style.overflow = val)
 const modalId = 'main-modal'
-export const openModal = force => {
+export const openModal = (force = false) => {
   if (force) {
     const modalEl = document.getElementById(modalId) as HTMLInputElement
     setBodyOverflow('hidden')
