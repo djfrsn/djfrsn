@@ -66,11 +66,11 @@ ol {
     @apply list-decimal list-inside;
   }
 }
+.list-style-disc {
+  @apply list-disc pl-4;
+}
 
 ul {
-  &:not(.list-style-custom) {
-    @apply list-disc pl-4;
-  }
   .list-style-custom {
     @apply flex;
 
