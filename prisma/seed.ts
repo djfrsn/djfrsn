@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Dennis',
-    email: 'dennis@blockwizards.eth',
+    email: `dennis@${process.env.NEXT_PUBLIC_SITE_URL}`,
   },
 ]
 
