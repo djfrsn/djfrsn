@@ -10,6 +10,15 @@ import { format, moment } from 'lib/utils/time';
 import Link from 'next/link';
 import { FaInfoCircle } from 'react-icons/fa';
 
+export const showMarketIndexInfo = (name, props = {}) => {
+  modalContentVar({
+    modalSize: 'large',
+    marketName: name,
+    ...props,
+  })
+  modalContentIdVar(PAGES.markets)
+}
+
 const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
   const timeframes = [7, 14, 30, 90].concat(
     mainWidth > screenToNum(SCREENS.md) ? [180, 365] : []
@@ -17,13 +26,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
   const InfoButton = ({ className = '' }) => (
     <ModalButton
       className={className}
-      onClick={() => {
-        modalContentVar({
-          modalSize: 'large',
-          marketName: data.name,
-        })
-        modalContentIdVar(PAGES.markets)
-      }}
+      onClick={() => showMarketIndexInfo(data.name)}
     >
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>

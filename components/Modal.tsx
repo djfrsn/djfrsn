@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import { isModalOpenVar, modalContentVar } from 'lib/cache';
+import { isModalOpenVar, modalContentIdVar, modalContentVar } from 'lib/cache';
 import { COLORS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
@@ -256,9 +256,10 @@ const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
 const Modal = ({ content }) => {
   const { data, loading, error } = useQuery(GET_MODAL)
   const onModalClose = () => {
+    modalContentIdVar('')
+    modalContentVar({})
     localStorage.setItem('isModalOpen', 'false')
     document.body.style.overflow = ''
-    modalContentVar({})
     isModalOpenVar(false)
   }
   const modalContent = data?.modalContent
@@ -275,10 +276,16 @@ const Modal = ({ content }) => {
         id="main-modal"
         className="modal-toggle"
       />
-      <label htmlFor="main-modal" className="modal cursor-pointer">
+      <label
+        htmlFor="main-modal"
+        className={classnames(
+          { 'modal-open': data.isModalOpen },
+          'modal cursor-pointer'
+        )}
+      >
         <label
           className={classnames(
-            { 'w-11/12 max-w-5xl': modalContent?.modalSize === 'large' },
+            { 'w-11/12 max-w-3xl': modalContent?.modalSize === 'large' },
             'modal-box relative bg-base-100'
           )}
           htmlFor=""
@@ -309,13 +316,17 @@ const Modal = ({ content }) => {
   )
 }
 
+export const openModal = () => {
+  localStorage.setItem('isModalOpen', 'true')
+  document.body.style.overflow = 'hidden'
+  isModalOpenVar(true)
+}
+
 export const ModalButton = ({ className = '', children, onClick }) => {
   return (
     <label
       onClick={() => {
-        localStorage.setItem('isModalOpen', 'true')
-        document.body.style.overflow = 'hidden'
-        isModalOpenVar(true)
+        openModal()
         onClick()
       }}
       htmlFor="main-modal"

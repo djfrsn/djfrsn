@@ -1,11 +1,13 @@
 import { useQuery } from '@apollo/client';
 import Container from 'components/Container';
 import Tickers from 'components/MarketIndex/Tickers';
+import { openModal } from 'components/Modal';
 import gql from 'graphql-tag';
 import { Ticker } from 'lib/interfaces';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import MarketIndexHeader from './MarketIndexHeader';
+import MarketIndexHeader, { showMarketIndexInfo } from './MarketIndexHeader';
 
 const MarketIndexTickersQuery = gql`
   query MarketIndexTickers(
@@ -43,6 +45,8 @@ const MarketIndex = ({
   timeSeriesLimit,
   marketIndex,
 }) => {
+  const router = useRouter()
+  const routerQuery = router.query
   const {
     loading,
     error,
@@ -65,6 +69,18 @@ const MarketIndex = ({
       if (timeSeriesLength > 0) setNumOfDays(timeSeriesLength)
     }
   }, [marketIndexTickers.length])
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      typeof routerQuery.info === 'string' &&
+      marketIndex?.name
+    ) {
+      showMarketIndexInfo(marketIndex.name, { showCloseButton: false })
+      openModal()
+      router.replace(router.asPath.replace('?info', ''))
+      console.log('marketIndex?.name', marketIndex?.name)
+    }
+  }, [])
 
   return (
     <Container loading={loading} error={error}>
