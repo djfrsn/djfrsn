@@ -12,8 +12,12 @@ const markdownComponents = {
         <a {...props}></a>
       </Link>
     ),
-  ul: ({ node, children, ...props }) => (
-    <ul className="list-style-disc pl-4" {...props} target="_blank">
+  ul: ({ node, children, ordered, ...props }) => (
+    <ul
+      className="list-style-disc pl-4"
+      ordered={ordered.toString()}
+      {...props}
+    >
       {children}
     </ul>
   ),
