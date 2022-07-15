@@ -44,11 +44,9 @@ class FMPApi {
       ): Promise<{ symbol: string; historical: FMPPrice[] }[]> {
         let res: any = []
         const batchLimit = 3
-        const chunkList = tickers.length > 1
-        const tickersList =
-          chunkList && Array.isArray(tickers)
-            ? chunk(tickers, batchLimit)
-            : tickers
+        const tickersList = Array.isArray(tickers)
+          ? chunk(tickers, batchLimit)
+          : tickers
 
         if (Array.isArray(tickersList)) {
           for (const ticker of tickersList) {
