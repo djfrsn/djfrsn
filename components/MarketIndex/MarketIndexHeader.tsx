@@ -43,20 +43,27 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
         >
           {data.displayName}
         </h1>
-        <span
-          className={classnames('ml-1 tooltip tooltip-info text-wash-50', {
-            hidden: !days,
-            ['animate-fadeIn']: days > 0,
-          })}
-          data-tip={`${moment(oldestTimeSeriesItem.date).format(
-            format.standard
-          )} - ${moment(latestTimeSeriesItem.date).format(format.standard)}`}
-        >
-          {days}D
-        </span>
-        <div className="ml-2 text-xl">
-          - {Number(latestTimeSeriesItem.close).toFixed(2)}
-        </div>
+        {oldestTimeSeriesItem && latestTimeSeriesItem && (
+          <>
+            <span
+              className={classnames('ml-1 tooltip tooltip-info text-wash-50', {
+                hidden: !days,
+                ['animate-fadeIn']: days > 0,
+              })}
+              data-tip={`${moment(oldestTimeSeriesItem.date).format(
+                format.standard
+              )} - ${moment(latestTimeSeriesItem.date).format(
+                format.standard
+              )}`}
+            >
+              {days}D
+            </span>
+
+            <div className="ml-2 text-xl">
+              - {Number(latestTimeSeriesItem.close).toFixed(2)}
+            </div>
+          </>
+        )}
         <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
           <LineChart
             options={chartOptions.simple}
