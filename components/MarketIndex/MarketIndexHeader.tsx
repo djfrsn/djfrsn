@@ -19,6 +19,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
       className={className}
       onClick={() => {
         modalContentVar({
+          modalSize: 'large',
           marketName: data.name,
         })
         modalContentIdVar(PAGES.markets)

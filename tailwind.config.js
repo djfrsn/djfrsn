@@ -11,7 +11,6 @@ const colors = generateColors({
   gradeD: '#ff4a19',
   ultramarineBlue: '#2667FF',
   darkElectricBlue: '#3E6680',
-  raisinBlack: '#332E3C',
   brightNavyBlue: '#027BCE',
   aliceBlue: '#EBF2FA',
   neutral: '#191D24',
@@ -26,7 +25,6 @@ const colors = generateColors({
   coral: '#F78154',
   spanishBlue: '#016FB9',
   flame: '#EC4E20',
-  blackCoffee: '#362C28',
 })
 
 module.exports = {
@@ -87,9 +85,9 @@ module.exports = {
           accent: colors.maxYellow['500'],
           neutral: colors.neutral['500'],
           'base-content': colors.iced['400'],
-          'base-100': colors.ultramarineBlue['700'],
-          'base-200': colors.wash['800'],
-          'base-300': colors.wash['900'],
+          'base-100': colors.neutral['700'],
+          'base-200': colors.neutral['800'],
+          'base-300': colors.neutral['900'],
           link: colors.iced['500'],
           linkHover: colors.iced['900'],
           linkActive: colors.icedNeon['900'],

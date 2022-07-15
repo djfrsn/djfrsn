@@ -261,6 +261,7 @@ const Modal = ({ content }) => {
     modalContentVar({})
     isModalOpenVar(false)
   }
+  const modalContent = data?.modalContent
 
   return (
     <>
@@ -275,7 +276,13 @@ const Modal = ({ content }) => {
         className="modal-toggle"
       />
       <label htmlFor="main-modal" className="modal cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
+        <label
+          className={classnames(
+            { 'w-11/12 max-w-5xl': modalContent?.modalSize === 'large' },
+            'modal-box relative bg-base-100'
+          )}
+          htmlFor=""
+        >
           <label
             onClick={() => onModalClose()}
             htmlFor="main-modal"
@@ -291,7 +298,7 @@ const Modal = ({ content }) => {
             <ModalContent
               data={{
                 ...data,
-                modalContent: data?.modalContent,
+                modalContent,
                 pageData: content[data?.modalContentId],
               }}
             />

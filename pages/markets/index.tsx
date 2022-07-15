@@ -8,7 +8,7 @@ import { PAGES } from 'lib/const';
 import { getMarketPageOptions } from 'lib/utils/pages';
 import { useRouter } from 'next/router';
 
-import { createClient } from '../prismicio';
+import { createClient } from '../../prismicio';
 
 const MarketIndexQuery = gql`
   query MarketIndex(
