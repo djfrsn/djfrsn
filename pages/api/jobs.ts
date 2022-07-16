@@ -3,7 +3,7 @@ import connection, { flushdb } from 'lib/db/redis';
 import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://dennisjefferson.xyz/api/jobs
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\", \"flushdb\": \"true\"}" https://dennisjefferson.xyz/api/jobs
 // curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\", \"flushdb\": \"true\"}" http://localhost:3000/api/jobs
 
 /**
