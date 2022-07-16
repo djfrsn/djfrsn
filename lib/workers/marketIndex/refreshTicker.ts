@@ -37,7 +37,7 @@ export default async function refreshMarketTickerProcessor(
       const query =
         dayDiff > 0 && typeof marketIndex.lastRefreshed === 'string'
           ? `serietype=line&timeseries=${dayDiff}`
-          : `from=1957-01-01&to=${moment().format(format.standardFMP)}`
+          : `from=2019-01-01&to=${moment().format(format.standardFMP)}`
       const onComplete = []
 
       await createSP500TickerInfo(job.data, { query, job })
