@@ -34,7 +34,7 @@ const NavigationItems = ({
                 data-active={
                   router.asPath === '/'
                     ? SITE_PATHS.root.includes(linkPath)
-                    : router.asPath === linkPath
+                    : router.asPath.includes(linkPath)
                 }
               >
                 {title}

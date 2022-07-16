@@ -31,6 +31,35 @@ function getRatingClassName(val) {
   }
 }
 
+const toggleModal = val => {
+  const modalEl = document.getElementById(modalId) as HTMLInputElement
+  setBodyOverflow('hidden')
+  modalEl.checked = val
+}
+
+const onModalClose = (force = false) => {
+  if (force) {
+    toggleModal(false)
+  }
+  modalContentId('')
+  modalContentVar({})
+  localStorage.setItem('isModalOpen', 'false')
+  localStorage.setItem('modalContentId', '')
+  setBodyOverflow('')
+  isModalOpen(false)
+}
+
+const setBodyOverflow = val => (document.body.style.overflow = val)
+const modalId = 'main-modal'
+export const openModal = (force = false) => {
+  if (force) {
+    toggleModal(true)
+  }
+  localStorage.setItem('isModalOpen', 'true')
+  setBodyOverflow('hidden')
+  isModalOpen(true)
+}
+
 export const GET_MODAL = gql`
   query GetModal {
     isModalOpen @client
@@ -236,14 +265,20 @@ const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
         </div>
       )
     case modalContentId === 'markets':
-      const marketInfo = pageData.find(
+      const marketInfo = pageData?.find(
         content => content.name === modalContent.marketName
       )
 
       return (
         <div>
           {marketInfo ? (
-            <RichTextToMarkdown content={marketInfo.description} />
+            <RichTextToMarkdown
+              content={marketInfo.description}
+              onLinkClick={() => {
+                console.log('close')
+                onModalClose(true)
+              }}
+            />
           ) : (
             <p>Info unavailable for {modalContent.marketName}.</p>
           )}
@@ -252,28 +287,6 @@ const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
     default:
       return <div>Content unavailable.</div>
   }
-}
-
-const onModalClose = () => {
-  modalContentId('')
-  modalContentVar({})
-  localStorage.setItem('isModalOpen', 'false')
-  localStorage.setItem('modalContentId', '')
-  setBodyOverflow('')
-  isModalOpen(false)
-}
-
-const setBodyOverflow = val => (document.body.style.overflow = val)
-const modalId = 'main-modal'
-export const openModal = (force = false) => {
-  if (force) {
-    const modalEl = document.getElementById(modalId) as HTMLInputElement
-    setBodyOverflow('hidden')
-    modalEl.checked = true
-  }
-  localStorage.setItem('isModalOpen', 'true')
-  setBodyOverflow('hidden')
-  isModalOpen(true)
 }
 
 const Modal = ({ content }) => {

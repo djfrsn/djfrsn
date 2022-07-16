@@ -8,3 +8,4 @@ generated/
 pm-bw.todo
 .env
 dist
+.sentryclirc

@@ -5,8 +5,11 @@ import ReactMarkdown from 'react-markdown';
 import components from './components';
 import styles from './markdown.module.css';
 
-export const RichTextToMarkdown = ({ content }) => (
-  <ReactMarkdown components={components} children={asText(content)} />
+export const RichTextToMarkdown = ({ content, onLinkClick }) => (
+  <ReactMarkdown
+    components={components({ onLinkClick })}
+    children={asText(content)}
+  />
 )
 
 const Markdown = ({ slice }) => (

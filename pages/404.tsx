@@ -22,11 +22,13 @@ export default function Custom404(props) {
       }}
     >
       <div className="w-full mt-32 lg:mt-64 flex flex-col items-center justify-center">
-        <h1 className="text-center text-maxYellow-100">
-          Error: 404 ∆ Page Not Found
-        </h1>
+        <h3 className="text-center text-maxYellow-100">
+          Error: 404 ⚠️ Page Not Found
+        </h3>
         <Link href="/">
-          <a className="mt-12 link font-bold no-underline">Return Home</a>
+          <a className="mt-12 text-lg link font-bold no-underline">
+            Return Home
+          </a>
         </Link>
       </div>
     </Layout>
