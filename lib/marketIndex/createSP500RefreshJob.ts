@@ -16,7 +16,7 @@ async function createSP500RefreshJob(
 ): Promise<Job> {
   const { marketIndex } = options
   const tickerList = await createSP500Tickers(options)
-  const tickerListChunks = chunk(tickerList, 1)
+  const tickerListChunks = chunk(tickerList, 6)
   const name = QUEUE.refresh.sp500
   const queueName = QUEUE.refresh.marketIndex
   const marketInterval = await prisma.marketInterval.findFirst({
