@@ -236,7 +236,7 @@ const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
         </div>
       )
     case modalContentId === 'markets':
-      const marketInfo = pageData.find(
+      const marketInfo = pageData?.find(
         content => content.name === modalContent.marketName
       )
 
