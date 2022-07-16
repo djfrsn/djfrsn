@@ -2,7 +2,7 @@ import { refreshMarketQueue, refreshMarketsQueue } from 'lib/db/queue';
 import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://blockwizards.herokuapp.com/api/jobs
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://dennisjefferson.xyz/api/jobs
 // curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/jobs
 
 /**
