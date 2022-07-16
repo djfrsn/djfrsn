@@ -1,3 +1,4 @@
+import Sentry from '@sentry/node';
 import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import { MarketIndexCronJob } from 'lib/interfaces';
@@ -14,6 +15,10 @@ export default async function refreshMarketIndexCronProcessor(
 
   switch (true) {
     case QUEUE.refresh.marketIndexes === job.queueName:
+      const transaction = Sentry.startTransaction({
+        op: 'refresh-market-index-cron',
+        name: `${job.name}-${job.data.marketIndex.name}`,
+      })
       console.log('data', job.data)
       const { error, job: dbJob } = await handleMarketIndexJobRequest({
         marketIndexId: job.data.marketIndex.id,
@@ -21,6 +26,7 @@ export default async function refreshMarketIndexCronProcessor(
       console.log('init market index', dbJob)
       console.log('err', error)
       await job.updateProgress(100)
+      transaction.finish()
       break
     default:
       console.log(
