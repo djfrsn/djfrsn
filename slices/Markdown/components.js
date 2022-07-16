@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 // Docs: https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 
-const markdownComponents = {
+const markdownComponents = ({ onLinkClick = () => null }) => ({
   a: ({ node, href, ...props }) => {
     return href.includes(process.env.NEXT_PUBLIC_SITE_URL) ? (
       <Link href={parseUrl(href)} {...props}>
-        <a className="link" {...props}></a>
+        <a className="link" {...props} onClick={e => onLinkClick(e)}></a>
       </Link>
     ) : (
       <a className="link" href={href} {...props} target="_blank" />
@@ -22,6 +22,6 @@ const markdownComponents = {
       {children}
     </ul>
   ),
-}
+})
 
 export default markdownComponents
