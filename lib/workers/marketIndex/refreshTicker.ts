@@ -24,7 +24,7 @@ export default async function refreshMarketTickerProcessor(
     case QUEUE.refresh.sp500TickerInfo === job.name:
       const transaction = Sentry.startTransaction({
         op: 'refresh-market-ticker',
-        name: job.name,
+        name: `${job.name}-${job.data.tickers.join(',')}`,
       })
       // Note that we set the transaction as the span on the scope.
       // This step makes sure that if an error happens during the lifetime of the transaction
