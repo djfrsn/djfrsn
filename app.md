@@ -15,15 +15,9 @@ git clone git@github.com:djfrsn/djfrsn.git --depth=1
 Install npm dependencies:
 
 ```
-cd trinity-lib
-npm install
+cd djfrsn
+npm i
 ```
-
-<details><summary><strong>Alternative:</strong> Create new Prismic Theme</summary>
-
-TODO: setup using this guide: https://prismic.io/docs/core-concepts/themes
-
-</details>
 
 <br />
 
@@ -32,7 +26,7 @@ TODO: setup using this guide: https://prismic.io/docs/core-concepts/themes
 Run this command to setup the database:
 
 ```
-npm run setup
+npm run setup && npx prisma db seed
 ```
 
 The above runs commands for the following:
