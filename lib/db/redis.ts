@@ -20,10 +20,10 @@ const connection: IORedis = new IORedis({
   ...redisOptions,
 })
 
-export const obliterate = () =>
+export const flushdb = () =>
   new Promise((resolve, reject) => {
     try {
-      connection.obliterate('ASYNC', () => {
+      connection.flushdb('ASYNC', () => {
         resolve(true)
       })
     } catch (error) {

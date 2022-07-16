@@ -1,9 +1,10 @@
 import { refreshMarketQueue, refreshMarketsQueue } from 'lib/db/queue';
+import connection, { flushdb } from 'lib/db/redis';
 import validKey from 'lib/utils/validKey';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" https://dennisjefferson.xyz/api/jobs
-// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\"}" http://localhost:3000/api/jobs
+// curl -X "DELETE" -H "Content-Type: application/json" -d "{\"access_key\": \"secret\", \"flushdb\": \"true\"}" http://localhost:3000/api/jobs
 
 /**
  * Description: CRUD access to jobs in Redis
@@ -15,6 +16,7 @@ export default async function handler(
 ) {
   if (request.method === 'DELETE') {
     if (validKey(request.body.access_key)) {
+      if (request.body.flushdb) await flushdb()
       await Promise.all([
         refreshMarketsQueue.obliterate(),
         refreshMarketQueue.obliterate(),
