@@ -7,6 +7,8 @@ import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
 import { getDependenciesCount } from 'lib/utils/bullmq';
 import { getMostRecentBusinessDay, momentBusiness, normalizeDate } from 'lib/utils/time';
 
+const Sentry = require('@sentry/node')
+
 let parent: JobNode | null
 
 /**
@@ -20,6 +22,17 @@ export default async function refreshMarketTickerProcessor(
 
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
+      const transaction = Sentry.startTransaction({
+        op: 'refresh-market-ticker',
+        name: job.name,
+      })
+      // Note that we set the transaction as the span on the scope.
+      // This step makes sure that if an error happens during the lifetime of the transaction
+      // the transaction context will be attached to the error event
+      Sentry.configureScope(scope => {
+        scope.setSpan(transaction)
+      })
+
       if (parent?.job?.id !== job.parent.id) {
         parent = await getSp500RefreshFlow(job.parent.id, 1)
       }
@@ -55,6 +68,7 @@ export default async function refreshMarketTickerProcessor(
           progressIncrement > 100 ? 100 : Number(progress.toFixed(2))
         ),
       ])
+      transaction.finish()
       break
     default:
       console.log(
