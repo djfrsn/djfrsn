@@ -1,6 +1,6 @@
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
 
-const plugin: ApolloServerPlugin = {
+const sentryPlugin: ApolloServerPlugin = {
   async requestDidStart({ request, context }) {
     if (!!request.operationName) {
       // set the transaction Name if we have named queries
@@ -30,4 +30,4 @@ const plugin: ApolloServerPlugin = {
   },
 }
 
-export default plugin
+export default sentryPlugin
