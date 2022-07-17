@@ -40,6 +40,7 @@ const MarketIndex = ({
   width,
   height,
   marketIndexId,
+  tickerCount,
   limit,
   bypassTimeSeriesLimit,
   timeSeriesLimit,
@@ -78,6 +79,8 @@ const MarketIndex = ({
     }
   }, [])
 
+  console.log('tickerCount', tickerCount)
+
   return (
     <Container loading={loading} error={error}>
       <MarketIndexHeader
@@ -87,6 +90,7 @@ const MarketIndex = ({
         mainWidth={mainWidth}
       />
       <Tickers
+        count={tickerCount}
         marketIndex={marketIndex}
         containerWidth={appWidth}
         height={height}

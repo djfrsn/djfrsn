@@ -74,6 +74,13 @@ const Job = objectType({
   },
 })
 
+const MarketIndexCount = objectType({
+  name: 'MarketIndexCount',
+  definition(t) {
+    t.int('count')
+  },
+})
+
 const MarketIndex = objectType({
   name: 'MarketIndex',
   definition(t) {
@@ -82,7 +89,18 @@ const MarketIndex = objectType({
     t.string('displayName')
     t.string('symbol')
     t.field('lastRefreshed', { type: 'DateTime' })
-    t.list.field('ticker', {
+    t.field('tickerCount', {
+      type: MarketIndexCount,
+      resolve: async (parent, __, ctx, info) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        return {
+          count: ctx.prisma.ticker.count({
+            where: { marketIndexId: Number(parent.id) },
+          }),
+        }
+      },
+    })
+    t.list.field('tickers', {
       type: 'Ticker',
       resolve: async (parent, __, ctx, info) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
@@ -202,6 +220,24 @@ const Query = objectType({
       resolve: (_, args, ctx, info) => {
         info.cacheControl.setCacheHint({ maxAge: 0 })
         return ctx.prisma.job.findMany()
+      },
+    })
+
+    t.field('marketIndexTickerCount', {
+      args: {
+        name: stringArg(),
+      },
+      type: 'MarketIndex',
+      resolve: async (_, args: { name: string }, ctx) => {
+        console.log('name', name)
+        return ctx.prisma.marketIndex.findFirst({
+          where: { name: args.name },
+          include: {
+            _count: {
+              select: { tickers: true },
+            },
+          },
+        })
       },
     })
 

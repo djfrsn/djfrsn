@@ -136,7 +136,10 @@ const LOADING = 1
 const LOADED = 2
 let itemStatusMap = {}
 
-const isItemLoaded = index => !!itemStatusMap[index]
+const isItemLoaded = index => {
+  console.log('isItemLoaded', index)
+  return !!itemStatusMap[index]
+}
 const loadMoreItems = (startIndex, stopIndex) => {
   console.log('startIndex', startIndex)
   console.log('stopIndex', stopIndex)
@@ -161,8 +164,16 @@ const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
   return <MemoTicker key={index} style={style} data={tickerData} />
 }
 
-const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
+const TickerList = ({
+  count = 504,
+  containerWidth,
+  height,
+  width,
+  data,
+  marketIndex,
+}) => {
   const timeSeriesLength = data[0].timeSeries.length
+
   const columnCount = getTickerColumnCount(containerWidth, timeSeriesLength)
   const gridData = chunk(data, columnCount, {
     props: { containerWidth, marketIndex },
@@ -174,7 +185,7 @@ const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
-      itemCount={timeSeriesLength}
+      itemCount={count}
       loadMoreItems={loadMoreItems}
     >
       {({ onItemsRendered, ref }) => (
@@ -200,12 +211,14 @@ const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
 }
 
 const Tickers = ({
+  count,
   containerWidth,
   height,
   width,
   data,
   marketIndex,
 }: {
+  count: number
   containerWidth: number
   width: number
   height: number
@@ -221,6 +234,7 @@ const Tickers = ({
       <div>
         {data.length > 0 ? (
           <TickerList
+            count={count}
             containerWidth={containerWidth}
             height={height}
             width={width}

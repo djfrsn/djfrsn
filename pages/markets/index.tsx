@@ -22,6 +22,9 @@ const MarketIndexQuery = gql`
       displayName
       lastRefreshed
       symbol
+      tickerCount {
+        count
+      }
       timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
         id
         date
@@ -57,6 +60,7 @@ const MarketPageLayout = ({
   return data?.marketIndex ? (
     <MarketIndex
       marketIndex={data.marketIndex}
+      tickerCount={data.marketIndex.tickerCount}
       mainWidth={mainwidth}
       appWidth={appwidth}
       height={mainheight}
@@ -87,7 +91,7 @@ const MarketPage = ({ page, global }) => {
     fetchPolicy: 'cache-and-network',
     variables: { name: marketName, timeSeriesLimit, bypassTimeSeriesLimit },
   })
-
+  console.log('data', data)
   return (
     <Container loading={loading} error={error}>
       <Layout
