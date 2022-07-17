@@ -10,6 +10,7 @@ import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, str
 import path from 'path';
 
 import { serverCache } from '../../lib/cache';
+import sentryPlugin from '../../lib/utils/sentry-plugin';
 import { minutesToMilliseconds, timeAgo } from '../../lib/utils/time';
 import context from './context';
 
@@ -301,6 +302,7 @@ const apolloServer = new ApolloServer({
   context,
   cache: serverCache,
   plugins: [
+    sentryPlugin,
     responseCachePlugin(),
     ApolloServerPluginCacheControl({
       defaultMaxAge: minutesToMilliseconds(5),
@@ -309,12 +311,12 @@ const apolloServer = new ApolloServer({
   typeDefs,
 })
 
+const startServer = apolloServer.start()
 let apolloServerHandler: NextApiHandler
 
 async function getApolloServerHandler() {
   if (!apolloServerHandler) {
-    const startServer = await apolloServer.start()
-
+    await startServer
     apolloServerHandler = apolloServer.createHandler({
       path: '/api',
     })

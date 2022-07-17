@@ -55,7 +55,7 @@
     "@sentry/nextjs": "^7.7.0",
     "@sentry/node": "^7.7.0",
     "@sentry/tracing": "^7.7.0",
-    "apollo-server-micro": "3.7.0",
+    "apollo-server-micro": "^3.10.0",
     "apollo-server-plugin-response-cache": "^3.6.1",
     "bullmq": "^1.86.2",
     "chart.js": "^3.8.0",
