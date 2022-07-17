@@ -66,6 +66,7 @@ const MarketIndex = ({
   useEffect(() => {
     if (marketIndexTickers.length > 0) {
       const timeSeriesLength = marketIndexTickers[0].timeSeries?.length
+
       if (timeSeriesLength > 0) setNumOfDays(timeSeriesLength)
     }
   }, [marketIndexTickers.length])
@@ -74,7 +75,6 @@ const MarketIndex = ({
       showMarketIndexInfo(marketIndex.name)
       openModal(true)
       router.replace(router.asPath.replace('?info', ''))
-      console.log('marketIndex?.name', marketIndex?.name)
     }
   }, [])
 

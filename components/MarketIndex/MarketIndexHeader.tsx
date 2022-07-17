@@ -31,7 +31,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
-  const oldestTimeSeriesItem = data.timeSeries[timeSeriesLimit - 1]
+  const oldestTimeSeriesItem = data.timeSeries[data.timeSeries.length - 1]
   const latestTimeSeriesItem = data.timeSeries[0]
 
   return (

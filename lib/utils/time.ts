@@ -40,6 +40,23 @@ export function getMostRecentBusinessDay(): moment.Moment {
 }
 
 /**
+ * Subtract x # of days from current day, and return latest day
+ * @constructor
+ */
+export function timeAgo(
+  days: momentBusiness.DurationInputArg1,
+  options?: {
+    nextBusinessDay: boolean
+    unit: momentBusiness.unitOfTime.DurationConstructor
+  }
+): moment.Moment {
+  const { nextBusinessDay = false, unit = 'days' } = options || {}
+  const timeAgo = momentBusiness().subtract(days, unit)
+
+  return nextBusinessDay ? timeAgo.nextBusinessDay().utc() : timeAgo.utc()
+}
+
+/**
  * Get US stock market closing time = 4pm EST of most recent business day
  * @constructor
  */

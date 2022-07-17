@@ -10,7 +10,7 @@ import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, str
 import path from 'path';
 
 import { serverCache } from '../../lib/cache';
-import { minutesToMilliseconds } from '../../lib/utils/time';
+import { minutesToMilliseconds, timeAgo } from '../../lib/utils/time';
 import context from './context';
 
 export const GQLDate = asNexusMethod(DateTimeResolver, 'date')
@@ -103,11 +103,16 @@ const MarketIndex = objectType({
         info
       ) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        const opts = parseTimeSeriesOptions(args)
 
         return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
-          where: { marketIndexId: parent.id },
-          ...parseTimeSeriesOptions(args),
+          where: {
+            marketIndexId: parent.id,
+            date: {
+              gte: timeAgo(opts.take).toDate(),
+            },
+          },
         })
       },
     })
@@ -137,11 +142,16 @@ const Ticker = objectType({
         info
       ) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        const opts = parseTimeSeriesOptions(args)
 
         return ctx.prisma.tickerInfo.findMany({
           orderBy: { date: 'desc' },
-          where: { tickerId: parent.id },
-          ...parseTimeSeriesOptions(args),
+          where: {
+            tickerId: parent.id,
+            date: {
+              gte: timeAgo(opts.take).toDate(),
+            },
+          },
         })
       },
     })
