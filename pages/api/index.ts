@@ -4,6 +4,7 @@ import { ApolloServerPluginCacheControl } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-micro';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
+import SentryPlugin from 'lib/utils/SentryPlugin';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
 import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
@@ -301,6 +302,7 @@ const apolloServer = new ApolloServer({
   context,
   cache: serverCache,
   plugins: [
+    SentryPlugin,
     responseCachePlugin(),
     ApolloServerPluginCacheControl({
       defaultMaxAge: minutesToMilliseconds(5),
@@ -309,12 +311,12 @@ const apolloServer = new ApolloServer({
   typeDefs,
 })
 
+const startServer = apolloServer.start()
 let apolloServerHandler: NextApiHandler
 
 async function getApolloServerHandler() {
   if (!apolloServerHandler) {
-    const startServer = await apolloServer.start()
-
+    await startServer
     apolloServerHandler = apolloServer.createHandler({
       path: '/api',
     })
