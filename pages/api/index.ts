@@ -10,7 +10,7 @@ import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, str
 import path from 'path';
 
 import { serverCache } from '../../lib/cache';
-import sentryPlugin from '../../lib/utils/sentryPlugin';
+import sentryPlugin from '../../lib/utils/sentry-plugin';
 import { minutesToMilliseconds, timeAgo } from '../../lib/utils/time';
 import context from './context';
 
