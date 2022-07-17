@@ -1,3 +1,4 @@
+import Sentry from '@sentry/node';
 import { Job, JobNode } from 'bullmq';
 import { MARKET_INDEX, QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
@@ -20,6 +21,17 @@ export default async function refreshMarketTickerProcessor(
 
   switch (true) {
     case QUEUE.refresh.sp500TickerInfo === job.name:
+      const transaction = Sentry.startTransaction({
+        op: 'refresh-market-ticker',
+        name: `${job.name}-${job.data.tickers.join(',')}`,
+      })
+      // Note that we set the transaction as the span on the scope.
+      // This step makes sure that if an error happens during the lifetime of the transaction
+      // the transaction context will be attached to the error event
+      Sentry.configureScope(scope => {
+        scope.setSpan(transaction)
+      })
+
       if (parent?.job?.id !== job.parent.id) {
         parent = await getSp500RefreshFlow(job.parent.id, 1)
       }
@@ -55,6 +67,7 @@ export default async function refreshMarketTickerProcessor(
           progressIncrement > 100 ? 100 : Number(progress.toFixed(2))
         ),
       ])
+      transaction.finish()
       break
     default:
       console.log(

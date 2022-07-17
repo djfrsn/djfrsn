@@ -274,10 +274,7 @@ const ModalContent = ({ data: { modalContentId, modalContent, pageData } }) => {
           {marketInfo ? (
             <RichTextToMarkdown
               content={marketInfo.description}
-              onLinkClick={() => {
-                console.log('close')
-                onModalClose(true)
-              }}
+              onLinkClick={() => onModalClose(true)}
             />
           ) : (
             <p>Info unavailable for {modalContent.marketName}.</p>

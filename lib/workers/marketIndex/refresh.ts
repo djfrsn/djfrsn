@@ -1,3 +1,4 @@
+import Sentry from '@sentry/node';
 import { Job } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
@@ -16,8 +17,12 @@ export default async function refreshMarketProcessor(
 
   switch (true) {
     case QUEUE.refresh.sp500 === job.name:
-      console.log('job.data', job.data)
       const marketIndex = job.data.marketIndex
+      const transaction = Sentry.startTransaction({
+        op: 'refresh-market',
+        name: `${job.name}-${marketIndex}`,
+      })
+      console.log('job.data', job.data)
 
       if (marketIndex.symbol) {
         await refreshMarketIndexTimeSeries(job.data, { job })
@@ -31,6 +36,7 @@ export default async function refreshMarketProcessor(
       }
 
       await job.updateProgress(100)
+      transaction.finish()
       break
     default:
       console.log(

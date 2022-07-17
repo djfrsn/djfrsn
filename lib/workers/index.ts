@@ -6,6 +6,9 @@ import refreshMarketIndexProcessor from './marketIndex/refresh';
 import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
 import { createWorker } from './worker.factory';
 
+const Sentry = require('@sentry/node')
+require('@sentry/tracing')
+
 const start = () => {
   console.info('Starting workers...')
 
@@ -50,6 +53,19 @@ const start = () => {
   console.info('Workers startup complete')
 }
 
-start()
+Sentry.init({
+  dsn: process.env.SENTRY_WORKER_DSN,
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+})
+
+try {
+  start()
+} catch (e) {
+  Sentry.captureException(e)
+}
 
 export default start
