@@ -40,12 +40,12 @@ export const getTickerColumnCount = (width, timeSeriesLength) => {
   switch (true) {
     case timeSeriesLength <= 7 && isLgScreen:
       return 8
-    case timeSeriesLength < 30 && isLgScreen:
+    case timeSeriesLength < 15 && isLgScreen:
       return 6
-    case timeSeriesLength <= 30 && isMdScreen:
+    case timeSeriesLength <= 15 && isMdScreen:
     case timeSeriesLength <= 7 && isMdScreen:
       return 5
-    case timeSeriesLength >= 180:
+    case timeSeriesLength >= 100:
       return 1
     case isLgScreen:
       return 5

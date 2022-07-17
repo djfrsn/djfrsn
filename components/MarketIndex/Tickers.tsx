@@ -13,6 +13,7 @@ import memoizeOne from 'memoize-one';
 import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
+import InfiniteLoader from 'react-window-infinite-loader';
 
 import styles from './tickers.module.css';
 
@@ -48,13 +49,13 @@ const Ticker = props => {
         )}
         style={style}
       >
-        <div className="tooltip tooltip-info" data-tip={symbolTip}>
+        <div className="tooltip tooltip-info !pr-0 mt-2" data-tip={symbolTip}>
           {symbol}
         </div>
-        <div className="mt-6">
+        <div className="mt-2 !pr-0">
           <FaExclamationTriangle />
         </div>
-        <div className="mt-2 text-xxs">Data Unavailable</div>
+        <div className="mt-2 text-xxs !pr-0">Data Unavailable</div>
       </div>
     )
 
@@ -125,11 +126,32 @@ const MemoTicker: any = React.memo(Ticker, (prevProps, nextProps) => {
     avoid rendering ticker unless we change timeSeries or screen width
   */
   return (
-    prevProps.data.ticker.timeSeries[0].date ===
-      nextProps.data.ticker.timeSeries[0].date &&
+    prevProps.data.ticker?.timeSeries[0]?.date ===
+      nextProps.data.ticker?.timeSeries[0]?.date &&
     prevProps.data.containerWidth === nextProps.data.containerWidth
   )
 })
+
+const LOADING = 1
+const LOADED = 2
+let itemStatusMap = {}
+
+const isItemLoaded = index => !!itemStatusMap[index]
+const loadMoreItems = (startIndex, stopIndex) => {
+  console.log('startIndex', startIndex)
+  console.log('stopIndex', stopIndex)
+  for (let index = startIndex; index <= stopIndex; index++) {
+    itemStatusMap[index] = LOADING
+  }
+  return new Promise(resolve =>
+    setTimeout(() => {
+      for (let index = startIndex; index <= stopIndex; index++) {
+        itemStatusMap[index] = LOADED
+      }
+      resolve(null)
+    }, 2500)
+  )
+}
 
 const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
   const tickerData = data[rowIndex][columnIndex]
@@ -150,20 +172,30 @@ const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
   const cellHeight = (width / columnCount) * 0.75
 
   return (
-    <Grid
-      className={classnames(styles.tickerGrid, [
-        styles[`tickerGrid-col-${columnCount}`],
-      ])}
-      columnCount={columnCount}
-      columnWidth={cellWidth}
-      height={height}
-      rowCount={gridData.length}
-      rowHeight={cellHeight}
-      width={width}
-      itemData={gridData}
+    <InfiniteLoader
+      isItemLoaded={isItemLoaded}
+      itemCount={timeSeriesLength}
+      loadMoreItems={loadMoreItems}
     >
-      {Cell}
-    </Grid>
+      {({ onItemsRendered, ref }) => (
+        <Grid
+          ref={ref}
+          className={classnames(styles.tickerGrid, [
+            styles[`tickerGrid-col-${columnCount}`],
+          ])}
+          columnCount={columnCount}
+          columnWidth={cellWidth}
+          height={height}
+          rowCount={gridData.length}
+          rowHeight={cellHeight}
+          width={width}
+          itemData={gridData}
+          onItemsRendered={onItemsRendered}
+        >
+          {Cell}
+        </Grid>
+      )}
+    </InfiniteLoader>
   )
 }
 
