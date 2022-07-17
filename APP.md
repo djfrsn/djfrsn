@@ -78,7 +78,7 @@ Modifying the application usually means one of the following will happen:
 - Create a new repeatable page section with React and the Slice Machine
 - Add new React components for feature update
 - Author new pages without code via Prismic UI
-- Update schema and server [`API`](./pages/api) to support feature update
+- Update schema and server [`API`](./pages/api/index.ts) to support feature update
 
 <br />
 
@@ -94,13 +94,13 @@ npm run slicemachine
 
 - Create a new [slice](https://prismic.io/docs/technologies/model-content-nextjs#create-your-first-slice) or [content-type](https://prismic.io/docs/technologies/model-content-nextjs#create-your-first-custom-type) via the [Slice Machine](http://localhost:9999) on localhost.
 
-**Reference the patterns established** in [UtilBarTitle.tsx](./slices/UtilBarTitle) for slices. The slice should contain code that makes for a unique component and import resuable code. Reference the [/create](<(./pages/create.tsx)>) page when creating new content-types.
+**Reference the patterns established** in [UtilBarTitle.tsx](./slices/Markdown/index.js) for slices. The slice should contain code that makes for a unique component and import resuable code. Reference the [/create](<(./pages/create.tsx)>) page when creating new content-types.
 
 <br />
 
 ### Create a new Page with Prismic
 
-New pages can be created without code on Prismic using the "Page" content type and existing app sections with unique content. If a new [static zone](https://prismic.io/concepts/content-modeling/introduction-to-content-modeling#static-fields) is required the content type "Create" along with the [associated React UI](./pages/create.tsx) establishes this pattern.
+New pages can be created without code on Prismic using the "Page" content type and existing app sections with unique content.
 
 - Create a new Prismic document with a content type of "Page", the field `uid` will be the path for the page and render using the [[uid].tsx](./pages/[uid].tsx) file. Title and description are used in the HTML `head`.
 
@@ -114,7 +114,7 @@ Components are any reusable UI code found in [`/pages`](./pages) or [`/slices`](
 
 ### Add server side api code
 
-Adding a new row or column is done by changing or adding Models in [schema.prisma](./prisma/schema.prisma). Fetching this data requires an update to object type resolvers in [/pages/api](./pages/api/). Once this is done, the change in backend data can be used in the front end GraphQL queries and components.
+Adding a new row or column is done by changing or adding Models in [schema.prisma](./prisma/schema.prisma). Fetching this data requires an update to object type resolvers in [/pages/api](./pages/api/index.ts). Once this is done, the change in backend data can be used in the front end GraphQL queries and components.
 
 - Follow the 4 step process for doing so is laid out in the **Evolving the app** section of the official [Prisma Next.js example](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-nextjs#evolving-the-app).
 
