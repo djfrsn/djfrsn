@@ -1,3 +1,4 @@
+import { FetchMoreOptions } from '@apollo/client';
 import { PrismicImageProps, SliceLike } from '@prismicio/react';
 
 import { IndexJob } from './interfaces';
@@ -31,5 +32,7 @@ export type GlobalType = {
   logo: PrismicImageProps['field']
   navigation: NavigationItemType[]
 }
+
+export type FetchMore = (args: FetchMoreOptions) => void
 
 export type CreateMarketIndexJob = Promise<IndexJob>

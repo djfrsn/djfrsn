@@ -4,6 +4,7 @@ import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
 import { modalContent, modalContentIdVar } from 'lib/cache';
 import { Ticker as TickerType } from 'lib/interfaces';
+import { FetchMore } from 'lib/types';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import chunk from 'lib/utils/chunk';
@@ -165,11 +166,12 @@ const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
 }
 
 const TickerList = ({
-  count = 504,
+  count = 100,
   containerWidth,
   height,
   width,
   data,
+  fetchMore,
   marketIndex,
 }) => {
   const timeSeriesLength = data[0].timeSeries.length
@@ -181,6 +183,9 @@ const TickerList = ({
   })
   const cellWidth = width / columnCount
   const cellHeight = (width / columnCount) * 0.75
+
+  console.log('fetchMore', fetchMore)
+  console.log('count', count)
 
   return (
     <InfiniteLoader
@@ -217,6 +222,7 @@ const Tickers = ({
   width,
   data,
   marketIndex,
+  fetchMore,
 }: {
   count: number
   containerWidth: number
@@ -224,6 +230,7 @@ const Tickers = ({
   height: number
   data: TickerType[]
   marketIndex: MarketIndex
+  fetchMore: FetchMore
 }) => {
   height = height - getHeaderHeight(width)
   return (
@@ -235,6 +242,7 @@ const Tickers = ({
         {data.length > 0 ? (
           <TickerList
             count={count}
+            fetchMore={fetchMore}
             containerWidth={containerWidth}
             height={height}
             width={width}

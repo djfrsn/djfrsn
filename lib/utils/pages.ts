@@ -6,19 +6,16 @@ export function getMarketPageOptions(routerQuery) {
   limitQuery = limitQuery > indexLimit ? indexLimit : limitQuery
   const marketName = routerQuery.name || MARKET_INDEX.sp500
   const timeSeriesLimitQuery = routerQuery.days
-  const limit = limitQuery ? limitQuery : null
-  const bypassTimeSeriesLimit =
-    limit <= Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_BYPASS_LIMIT)
+  const limit = 5
   let timeSeriesLimit = timeSeriesLimitQuery
     ? Number(timeSeriesLimitQuery)
     : Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT_DEFAULT)
   timeSeriesLimit =
-    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT) &&
-    !bypassTimeSeriesLimit
+    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT)
       ? Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT)
       : timeSeriesLimit
 
-  return { marketName, limit, timeSeriesLimit, bypassTimeSeriesLimit }
+  return { marketName, limit, timeSeriesLimit }
 }
 
 export const screenToNum = val => Number(val.replace('px', ''))

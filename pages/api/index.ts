@@ -6,7 +6,7 @@ import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
-import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
+import { asNexusMethod, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
 import path from 'path';
 
 import { serverCache } from '../../lib/cache';
@@ -28,7 +28,7 @@ function parseTimeSeriesOptions(args) {
       process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT_DEFAULT
     )
 
-  if (options.take > takeLimit && !args.bypassLimit) options.take = takeLimit
+  if (options.take > takeLimit) options.take = takeLimit
 
   return options
 }
@@ -113,14 +113,8 @@ const MarketIndex = objectType({
       type: 'TickerInfo',
       args: {
         limit: intArg(),
-        bypassLimit: booleanArg(),
       },
-      resolve: (
-        parent,
-        args: { limit: number; bypassLimit: boolean },
-        ctx,
-        info
-      ) => {
+      resolve: (parent, args: { limit: number }, ctx, info) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const opts = parseTimeSeriesOptions(args)
 
@@ -152,14 +146,8 @@ const Ticker = objectType({
       type: 'TickerInfo',
       args: {
         limit: intArg(),
-        bypassLimit: booleanArg(),
       },
-      resolve: (
-        parent,
-        args: { limit: number; bypassLimit: boolean },
-        ctx,
-        info
-      ) => {
+      resolve: (parent, args: { limit: number }, ctx, info) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const opts = parseTimeSeriesOptions(args)
 
@@ -257,11 +245,12 @@ const Query = objectType({
       args: {
         marketIndexId: intArg(),
         limit: intArg(),
+        cursor: stringArg(),
       },
       type: 'Ticker',
       resolve: async (
         _,
-        args: { marketIndexId: number; limit: number },
+        args: { marketIndexId: number; limit: number; cursor: string },
         ctx,
         info
       ) => {
@@ -269,10 +258,17 @@ const Query = objectType({
         const options: {
           take?: Prisma.UserFindManyArgs['take']
           where?: { marketIndexId: number }
-        } = {}
+          skip?: number
+          cursor?: { symbol: string }
+          orderBy: { symbol: string }
+        } = { orderBy: { symbol: 'asc' } }
         if (args.marketIndexId)
           options.where = { marketIndexId: args.marketIndexId }
         if (args.limit) options.take = args.limit
+        if (args.cursor) {
+          options.skip = 1
+          options.cursor = { symbol: args.cursor }
+        }
 
         return ctx.prisma.ticker.findMany(options)
       },

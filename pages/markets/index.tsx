@@ -11,11 +11,7 @@ import { useRouter } from 'next/router';
 import { createClient } from '../../prismicio';
 
 const MarketIndexQuery = gql`
-  query MarketIndex(
-    $name: String
-    $timeSeriesLimit: Int
-    $bypassTimeSeriesLimit: Boolean
-  ) {
+  query MarketIndex($name: String, $timeSeriesLimit: Int) {
     marketIndex(name: $name) {
       id
       name
@@ -25,7 +21,7 @@ const MarketIndexQuery = gql`
       tickerCount {
         count
       }
-      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
+      timeSeries(limit: $timeSeriesLimit) {
         id
         date
         close
@@ -55,7 +51,6 @@ const MarketPageLayout = ({
   marketName,
   limit,
   timeSeriesLimit,
-  bypassTimeSeriesLimit,
 }) => {
   return data?.marketIndex ? (
     <MarketIndex
@@ -67,7 +62,6 @@ const MarketPageLayout = ({
       width={mainwidth}
       marketIndexId={data.marketIndex.id}
       limit={limit}
-      bypassTimeSeriesLimit={bypassTimeSeriesLimit}
       timeSeriesLimit={timeSeriesLimit}
     />
   ) : (
@@ -77,7 +71,7 @@ const MarketPageLayout = ({
 
 const MarketPage = ({ page, global }) => {
   const routerQuery = useRouter().query
-  const { marketName, limit, timeSeriesLimit, bypassTimeSeriesLimit } =
+  const { marketName, limit, timeSeriesLimit } =
     getMarketPageOptions(routerQuery)
   const {
     loading,
@@ -89,9 +83,9 @@ const MarketPage = ({ page, global }) => {
     data: { marketIndex: MarketIndexType }
   } = useQuery(MarketIndexQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { name: marketName, timeSeriesLimit, bypassTimeSeriesLimit },
+    variables: { name: marketName, timeSeriesLimit },
   })
-  console.log('data', data)
+
   return (
     <Container loading={loading} error={error}>
       <Layout
@@ -103,7 +97,6 @@ const MarketPage = ({ page, global }) => {
           marketName={marketName}
           limit={limit}
           timeSeriesLimit={timeSeriesLimit}
-          bypassTimeSeriesLimit={bypassTimeSeriesLimit}
         />
       </Layout>
     </Container>

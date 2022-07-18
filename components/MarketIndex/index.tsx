@@ -4,6 +4,7 @@ import Tickers from 'components/MarketIndex/Tickers';
 import { openModal } from 'components/Modal';
 import gql from 'graphql-tag';
 import { Ticker } from 'lib/interfaces';
+import { FetchMore } from 'lib/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +15,6 @@ const MarketIndexTickersQuery = gql`
     $marketIndexId: Int
     $limit: Int
     $timeSeriesLimit: Int
-    $bypassTimeSeriesLimit: Boolean
   ) {
     marketIndexTickers(marketIndexId: $marketIndexId, limit: $limit) {
       id
@@ -24,7 +24,7 @@ const MarketIndexTickersQuery = gql`
       subSector
       founded
       headQuarter
-      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
+      timeSeries(limit: $timeSeriesLimit) {
         id
         date
         tickerId
@@ -42,7 +42,6 @@ const MarketIndex = ({
   marketIndexId,
   tickerCount,
   limit,
-  bypassTimeSeriesLimit,
   timeSeriesLimit,
   marketIndex,
 }) => {
@@ -52,13 +51,15 @@ const MarketIndex = ({
     loading,
     error,
     data,
+    fetchMore,
   }: {
     loading?: boolean
     error?: { message: string }
     data: { marketIndexTickers: Ticker[] }
+    fetchMore: FetchMore
   } = useQuery(MarketIndexTickersQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { marketIndexId, limit, bypassTimeSeriesLimit, timeSeriesLimit },
+    variables: { marketIndexId, limit, timeSeriesLimit },
   })
   const marketIndexTickers = data?.marketIndexTickers || []
 
@@ -79,8 +80,6 @@ const MarketIndex = ({
     }
   }, [])
 
-  console.log('tickerCount', tickerCount)
-
   return (
     <Container loading={loading} error={error}>
       <MarketIndexHeader
@@ -90,7 +89,8 @@ const MarketIndex = ({
         mainWidth={mainWidth}
       />
       <Tickers
-        count={tickerCount}
+        fetchMore={fetchMore}
+        count={tickerCount?.count}
         marketIndex={marketIndex}
         containerWidth={appWidth}
         height={height}
