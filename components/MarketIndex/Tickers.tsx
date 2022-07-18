@@ -137,10 +137,6 @@ const LOADING = 1
 const LOADED = 2
 let itemStatusMap = {}
 
-const isItemLoaded = index => {
-  console.log('isItemLoaded', index)
-  return !!itemStatusMap[index]
-}
 const loadMoreItems = (
   startIndex: number,
   stopIndex: number,
@@ -148,17 +144,9 @@ const loadMoreItems = (
 ) => {
   console.log('startIndex', startIndex)
   console.log('stopIndex', stopIndex)
-  for (let index = startIndex; index <= stopIndex; index++) {
-    itemStatusMap[index] = LOADING
-  }
-  return new Promise(resolve =>
-    setTimeout(() => {
-      for (let index = startIndex; index <= stopIndex; index++) {
-        itemStatusMap[index] = LOADED
-      }
-      resolve(null)
-    }, 2500)
-  )
+  console.log('fetchMore', fetchMore)
+  // itemStatusMap[index] = LOADING
+  // itemStatusMap[index] = LOADED
 }
 
 const CellLoading = ({ style }) => {
@@ -203,6 +191,10 @@ const TickerList = ({
   const cellHeight = (width / columnCount) * 0.75
   const rowCount = count / columnCount
 
+  const isItemLoaded = index => {
+    return !!data[index]
+  }
+
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
@@ -224,7 +216,21 @@ const TickerList = ({
           rowHeight={cellHeight}
           width={width}
           itemData={gridData}
-          onItemsRendered={onItemsRendered}
+          onItemsRendered={({
+            visibleColumnStartIndex,
+            visibleColumnStopIndex,
+            visibleRowStartIndex,
+            visibleRowStopIndex,
+          }) => {
+            const visibleStartIndex =
+              visibleRowStartIndex * columnCount + visibleColumnStartIndex
+            const visibleStopIndex =
+              visibleRowStopIndex * columnCount + visibleColumnStopIndex
+            onItemsRendered({
+              visibleStartIndex,
+              visibleStopIndex,
+            })
+          }}
         >
           {Cell}
         </Grid>
