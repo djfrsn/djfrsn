@@ -1,6 +1,7 @@
 import { MarketIndex, TickerInfo } from '@prisma/client';
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
+import Loading from 'components/Loading';
 import { ModalButton } from 'components/Modal';
 import { modalContent, modalContentIdVar } from 'lib/cache';
 import { Ticker as TickerType } from 'lib/interfaces';
@@ -43,7 +44,6 @@ const Ticker = props => {
   if (timeSeries.length === 0)
     return (
       <div
-        key={id}
         className={classnames(
           className,
           'flex flex-col items-center justify-content text-crayolaRed-500 text-center'
@@ -63,7 +63,7 @@ const Ticker = props => {
   const close = formatUSD(timeSeries[0].close)
 
   return (
-    <div key={id} style={style} className={className}>
+    <div style={style} className={className}>
       <ModalButton
         className="flex flex-col"
         onClick={() => {
@@ -141,7 +141,11 @@ const isItemLoaded = index => {
   console.log('isItemLoaded', index)
   return !!itemStatusMap[index]
 }
-const loadMoreItems = (startIndex, stopIndex) => {
+const loadMoreItems = (
+  startIndex: number,
+  stopIndex: number,
+  fetchMore: FetchMore
+) => {
   console.log('startIndex', startIndex)
   console.log('stopIndex', stopIndex)
   for (let index = startIndex; index <= stopIndex; index++) {
@@ -157,10 +161,24 @@ const loadMoreItems = (startIndex, stopIndex) => {
   )
 }
 
-const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
-  const tickerData = data[rowIndex][columnIndex]
+const CellLoading = ({ style }) => {
+  return (
+    <div
+      className={classnames(
+        'flex flex-col items-center justify-content text-crayolaRed-500 text-center'
+      )}
+      style={style}
+    >
+      <Loading />
+    </div>
+  )
+}
 
-  if (!tickerData) return null
+const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
+  const row = data[rowIndex]
+  const tickerData = row && row[columnIndex]
+
+  if (!tickerData) return <CellLoading style={style} />
 
   return <MemoTicker key={index} style={style} data={tickerData} />
 }
@@ -183,15 +201,15 @@ const TickerList = ({
   })
   const cellWidth = width / columnCount
   const cellHeight = (width / columnCount) * 0.75
-
-  console.log('fetchMore', fetchMore)
-  console.log('count', count)
+  const rowCount = count / columnCount
 
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={count}
-      loadMoreItems={loadMoreItems}
+      loadMoreItems={(startIndex, stopIndex) =>
+        loadMoreItems(startIndex, stopIndex, fetchMore)
+      }
     >
       {({ onItemsRendered, ref }) => (
         <Grid
@@ -202,7 +220,7 @@ const TickerList = ({
           columnCount={columnCount}
           columnWidth={cellWidth}
           height={height}
-          rowCount={gridData.length}
+          rowCount={rowCount}
           rowHeight={cellHeight}
           width={width}
           itemData={gridData}
