@@ -1,5 +1,5 @@
 import { Job } from '@prisma/client';
-import { Job as QueueJob } from 'bullmq';
+import { Job as QueueJob, JobsOptions } from 'bullmq';
 import { QUEUE, TIMEFRAMES } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { defaultJobOptions, refreshMarketsQueue } from 'lib/db/queue';
@@ -12,7 +12,7 @@ interface MarketIndexesRefresh {
 
 /**
  * Description: Create a repeatable job to refresh data for each market index on all timeframes
- * NOTE: Preference would be to add the repeat option to each individual marketIndex flow, but BullMQ flows don't support repeat the option
+ * NOTE: Preference would be to add the repeat option to each individual marketIndex flow, but BullMQ flows don't support repeat
  * IMPORTANT: Bull is smart enough not to add the same repeatable job if the repeat options are the same.
  * @see {@link https://docs.bullmq.io/guide/jobs/repeatable}
  * @constructor
@@ -26,18 +26,19 @@ async function initMarketIndexCron(options: {
     const marketIndexes = await prisma.marketIndex.findMany()
 
     const queueJobs: Promise<QueueJob>[] = []
+    let options: JobsOptions = defaultJobOptions
 
+    if (process.env.MARKET_INDEX_CRON_ENABLED)
+      options.repeat = { cron: QUEUE.cron.marketIndexes }
+
+    // create job for each timeframe available
     marketIndexes.forEach(marketIndex => {
       TIMEFRAMES.forEach(timeframe => {
-        // create job for each timeframe available
         queueJobs.push(
           refreshMarketsQueue.add(
             `refresh-${timeframe}-${marketIndex.name}`,
             { timeframe, marketIndex },
-            {
-              ...defaultJobOptions,
-              repeat: { cron: QUEUE.cron.marketIndexes },
-            }
+            options
           )
         )
       })
