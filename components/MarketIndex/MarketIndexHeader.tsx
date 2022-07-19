@@ -21,7 +21,7 @@ export const showMarketIndexInfo = (name, props = {}) => {
 
 const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
   const timeframes = [7, 14, 30, 90].concat(
-    mainWidth > screenToNum(SCREENS.md) ? [180, 365, 1000] : []
+    mainWidth > screenToNum(SCREENS.md) ? [180] : []
   )
   const InfoButton = ({ className = '' }) => (
     <ModalButton

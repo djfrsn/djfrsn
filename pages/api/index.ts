@@ -244,13 +244,19 @@ const Query = objectType({
     t.list.field('marketIndexTickers', {
       args: {
         marketIndexId: intArg(),
+        offset: intArg(),
         limit: intArg(),
         cursor: intArg(),
       },
       type: 'Ticker',
       resolve: async (
         _,
-        args: { marketIndexId: number; limit: number; cursor: number },
+        args: {
+          marketIndexId: number
+          offset: number
+          limit: number
+          cursor: number
+        },
         ctx,
         info
       ) => {
@@ -265,11 +271,11 @@ const Query = objectType({
         if (args.marketIndexId)
           options.where = { marketIndexId: args.marketIndexId }
         if (args.limit) options.take = args.limit
+        if (args.offset) options.skip = args.offset
         if (args.cursor) {
           options.skip = 1
           options.cursor = { id: args.cursor }
         }
-        console.log('marketIndexTickers', options)
         return ctx.prisma.ticker.findMany(options)
       },
     })

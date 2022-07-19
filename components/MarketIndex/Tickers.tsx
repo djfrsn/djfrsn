@@ -133,10 +133,6 @@ const MemoTicker: any = React.memo(Ticker, (prevProps, nextProps) => {
   )
 })
 
-const LOADING = 1
-const LOADED = 2
-let itemStatusMap = {}
-
 const loadMoreItems = ({
   startIndex,
   stopIndex,
@@ -148,16 +144,8 @@ const loadMoreItems = ({
   fetchMore: FetchMore
   data: TickerType[]
 }) => {
-  console.log('startIndex', startIndex)
-  console.log('stopIndex', stopIndex)
-  console.log('fetchMore', fetchMore)
-  // console.log('data', data)
-  const cursor = data[data.length - 1]
-  console.log('cursor', cursor.id)
-  // itemStatusMap[index] = LOADING
-  // itemStatusMap[index] = LOADED
   fetchMore({
-    variables: { limit: stopIndex - startIndex, cursor: cursor.id },
+    variables: { offset: startIndex, limit: stopIndex - startIndex },
   })
 }
 
@@ -206,7 +194,7 @@ const TickerList = ({
   const isItemLoaded = index => {
     return !!data[index]
   }
-  console.log('data', data.length)
+
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}

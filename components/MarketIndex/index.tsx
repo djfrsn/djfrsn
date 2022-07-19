@@ -13,6 +13,7 @@ import MarketIndexHeader, { showMarketIndexInfo } from './MarketIndexHeader';
 const MarketIndexTickersQuery = gql`
   query MarketIndexTickers(
     $marketIndexId: Int
+    $offset: Int
     $limit: Int
     $timeSeriesLimit: Int
     $cursor: Int
@@ -20,6 +21,7 @@ const MarketIndexTickersQuery = gql`
     marketIndexTickers(
       marketIndexId: $marketIndexId
       limit: $limit
+      offset: $offset
       cursor: $cursor
     ) {
       id
