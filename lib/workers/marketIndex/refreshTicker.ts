@@ -1,4 +1,4 @@
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import { Job, JobNode } from 'bullmq';
 import { MARKET_INDEX, QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';

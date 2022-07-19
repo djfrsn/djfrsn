@@ -1,13 +1,13 @@
 import { QUEUE } from 'lib/const';
 import gracefulShutdown from 'lib/utils/gracefulShutdown';
+import * as Sentry from '@sentry/node'
+import '@sentry/tracing'
+
 
 import marketIndexCronProcessor from './marketIndex/cron';
 import refreshMarketIndexProcessor from './marketIndex/refresh';
 import refreshMarketIndexTickerProcessor from './marketIndex/refreshTicker';
 import { createWorker } from './worker.factory';
-
-const Sentry = require('@sentry/node')
-require('@sentry/tracing')
 
 const start = () => {
   console.info('Starting workers...')
