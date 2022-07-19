@@ -15,8 +15,13 @@ const MarketIndexTickersQuery = gql`
     $marketIndexId: Int
     $limit: Int
     $timeSeriesLimit: Int
+    $cursor: String
   ) {
-    marketIndexTickers(marketIndexId: $marketIndexId, limit: $limit) {
+    marketIndexTickers(
+      marketIndexId: $marketIndexId
+      limit: $limit
+      cursor: $cursor
+    ) {
       id
       symbol
       name

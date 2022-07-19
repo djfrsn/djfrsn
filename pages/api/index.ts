@@ -269,7 +269,7 @@ const Query = objectType({
           options.skip = 1
           options.cursor = { symbol: args.cursor }
         }
-
+        console.log('marketIndexTickers', options)
         return ctx.prisma.ticker.findMany(options)
       },
     })

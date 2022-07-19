@@ -137,16 +137,32 @@ const LOADING = 1
 const LOADED = 2
 let itemStatusMap = {}
 
-const loadMoreItems = (
-  startIndex: number,
-  stopIndex: number,
+const loadMoreItems = ({
+  startIndex,
+  stopIndex,
+  fetchMore,
+  marketIndex,
+  data,
+}: {
+  startIndex: number
+  stopIndex: number
   fetchMore: FetchMore
-) => {
+  marketIndex: MarketIndex
+  data: TickerType[]
+}) => {
   console.log('startIndex', startIndex)
   console.log('stopIndex', stopIndex)
   console.log('fetchMore', fetchMore)
+  console.log('marketIndex', marketIndex)
+  console.log('data', data)
+  const cursor = data[data.length - 1]
+  console.log('fetchMore', fetchMore)
   // itemStatusMap[index] = LOADING
   // itemStatusMap[index] = LOADED
+  console.log({ variables: { limit: 5, cursor: cursor.symbol } })
+  fetchMore({
+    variables: { limit: 10, cursor: cursor.symbol },
+  })
 }
 
 const CellLoading = ({ style }) => {
@@ -200,7 +216,7 @@ const TickerList = ({
       isItemLoaded={isItemLoaded}
       itemCount={count}
       loadMoreItems={(startIndex, stopIndex) =>
-        loadMoreItems(startIndex, stopIndex, fetchMore)
+        loadMoreItems({ startIndex, stopIndex, fetchMore, marketIndex, data })
       }
     >
       {({ onItemsRendered, ref }) => (
