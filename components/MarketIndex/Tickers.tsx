@@ -159,9 +159,8 @@ const loadMoreItems = ({
   console.log('fetchMore', fetchMore)
   // itemStatusMap[index] = LOADING
   // itemStatusMap[index] = LOADED
-  console.log({ variables: { limit: 5, cursor: cursor.symbol } })
   fetchMore({
-    variables: { limit: 10, cursor: cursor.symbol },
+    variables: { limit: 10, cursor: cursor.id },
   })
 }
 
@@ -210,7 +209,7 @@ const TickerList = ({
   const isItemLoaded = index => {
     return !!data[index]
   }
-
+  console.log('data', data)
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}

@@ -245,12 +245,12 @@ const Query = objectType({
       args: {
         marketIndexId: intArg(),
         limit: intArg(),
-        cursor: stringArg(),
+        cursor: intArg(),
       },
       type: 'Ticker',
       resolve: async (
         _,
-        args: { marketIndexId: number; limit: number; cursor: string },
+        args: { marketIndexId: number; limit: number; cursor: number },
         ctx,
         info
       ) => {
@@ -259,7 +259,7 @@ const Query = objectType({
           take?: Prisma.UserFindManyArgs['take']
           where?: { marketIndexId: number }
           skip?: number
-          cursor?: { symbol: string }
+          cursor?: { id: number }
           orderBy: { symbol: string }
         } = { orderBy: { symbol: 'asc' } }
         if (args.marketIndexId)
@@ -267,7 +267,7 @@ const Query = objectType({
         if (args.limit) options.take = args.limit
         if (args.cursor) {
           options.skip = 1
-          options.cursor = { symbol: args.cursor }
+          options.cursor = { id: args.cursor }
         }
         console.log('marketIndexTickers', options)
         return ctx.prisma.ticker.findMany(options)
