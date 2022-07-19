@@ -141,26 +141,23 @@ const loadMoreItems = ({
   startIndex,
   stopIndex,
   fetchMore,
-  marketIndex,
   data,
 }: {
   startIndex: number
   stopIndex: number
   fetchMore: FetchMore
-  marketIndex: MarketIndex
   data: TickerType[]
 }) => {
   console.log('startIndex', startIndex)
   console.log('stopIndex', stopIndex)
   console.log('fetchMore', fetchMore)
-  console.log('marketIndex', marketIndex)
-  console.log('data', data)
+  // console.log('data', data)
   const cursor = data[data.length - 1]
-  console.log('fetchMore', fetchMore)
+  console.log('cursor', cursor.id)
   // itemStatusMap[index] = LOADING
   // itemStatusMap[index] = LOADED
   fetchMore({
-    variables: { limit: 10, cursor: cursor.id },
+    variables: { limit: stopIndex - startIndex, cursor: cursor.id },
   })
 }
 
@@ -209,13 +206,13 @@ const TickerList = ({
   const isItemLoaded = index => {
     return !!data[index]
   }
-  console.log('data', data)
+  console.log('data', data.length)
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={count}
       loadMoreItems={(startIndex, stopIndex) =>
-        loadMoreItems({ startIndex, stopIndex, fetchMore, marketIndex, data })
+        loadMoreItems({ startIndex, stopIndex, fetchMore, data })
       }
     >
       {({ onItemsRendered, ref }) => (
