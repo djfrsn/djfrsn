@@ -51,6 +51,21 @@ export const clientCache: InMemoryCache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
+        marketIndexTickers: {
+          keyArgs: ['type'],
+          merge(existing, incoming, { readField }) {
+            const merged = { ...existing }
+            incoming.forEach(item => {
+              const id = readField('id', item)
+              if (typeof id === 'number') merged[id] = item
+            })
+
+            return merged
+          },
+          read(existing) {
+            return existing && Object.values(existing)
+          },
+        },
         isModalOpen: {
           read() {
             return isModalOpenVar()
