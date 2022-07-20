@@ -102,6 +102,7 @@ const MarketIndex = ({
         containerWidth={appWidth}
         height={height}
         width={width}
+        timeSeriesLimit={timeSeriesLimit}
         data={marketIndexTickers || []}
       />
     </Container>

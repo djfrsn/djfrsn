@@ -12,7 +12,7 @@ import chunk from 'lib/utils/chunk';
 import { formatUSD } from 'lib/utils/numbers';
 import { getHeaderHeight, getTickerColumnCount } from 'lib/utils/pages';
 import memoizeOne from 'memoize-one';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
@@ -144,6 +144,7 @@ const loadMoreItems = ({
   fetchMore: FetchMore
   data: TickerType[]
 }) => {
+  console.log('startIndex', startIndex)
   fetchMore({
     variables: { offset: startIndex, limit: stopIndex - startIndex },
   })
@@ -179,6 +180,7 @@ const TickerList = ({
   data,
   fetchMore,
   marketIndex,
+  timeSeriesLimit,
 }) => {
   const timeSeriesLength = data[0].timeSeries.length
 
@@ -194,9 +196,27 @@ const TickerList = ({
   const isItemLoaded = index => {
     return !!data[index]
   }
+  const infiniteLoaderRef = useRef(null)
+  const hasMountedRef = useRef(false)
+
+  // Each time the sort prop changed we called the method resetloadMoreItemsCache to clear the cache
+  useEffect(() => {
+    // We only need to reset cached items when "sortOrder" changes.
+    // This effect will run on mount too; there's no need to reset in that case.
+    if (hasMountedRef.current) {
+      if (infiniteLoaderRef.current) {
+        infiniteLoaderRef.current.resetloadMoreItemsCache()
+      }
+    }
+    hasMountedRef.current = true
+  }, [timeSeriesLimit])
+
+  console.log('timeSeriesLimit', timeSeriesLimit)
 
   return (
     <InfiniteLoader
+      key={timeSeriesLimit}
+      ref={infiniteLoaderRef}
       isItemLoaded={isItemLoaded}
       itemCount={count}
       loadMoreItems={(startIndex, stopIndex) =>
@@ -247,6 +267,7 @@ const Tickers = ({
   data,
   marketIndex,
   fetchMore,
+  timeSeriesLimit,
 }: {
   count: number
   containerWidth: number
@@ -255,6 +276,7 @@ const Tickers = ({
   data: TickerType[]
   marketIndex: MarketIndex
   fetchMore: FetchMore
+  timeSeriesLimit: number
 }) => {
   height = height - getHeaderHeight(width)
   return (
@@ -272,6 +294,7 @@ const Tickers = ({
             width={width}
             data={data}
             marketIndex={marketIndex}
+            timeSeriesLimit={timeSeriesLimit}
           />
         ) : (
           <div className="text-crayolaRed-500">Tickers Unavailable</div>
