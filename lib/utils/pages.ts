@@ -6,7 +6,7 @@ export function getMarketPageOptions(routerQuery) {
   limitQuery = limitQuery > indexLimit ? indexLimit : limitQuery
   const marketName = routerQuery.name || MARKET_INDEX.sp500
   const timeSeriesLimitQuery = routerQuery.days
-  const limit = 5
+  const limit = null
   let timeSeriesLimit = timeSeriesLimitQuery
     ? Number(timeSeriesLimitQuery)
     : Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT_DEFAULT)

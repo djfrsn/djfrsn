@@ -10,12 +10,11 @@ import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import chunk from 'lib/utils/chunk';
 import { formatUSD } from 'lib/utils/numbers';
-import { getHeaderHeight, getTickerColumnCount } from 'lib/utils/pages';
+import { getHeaderHeight } from 'lib/utils/pages';
 import memoizeOne from 'memoize-one';
 import React, { useEffect, useRef } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
 
 import styles from './tickers.module.css';
 
@@ -167,7 +166,7 @@ const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
   const row = data[rowIndex]
   const tickerData = row && row[columnIndex]
 
-  if (!tickerData) return <CellLoading style={style} />
+  if (!tickerData) return null
 
   return <MemoTicker key={index} style={style} data={tickerData} />
 }
@@ -178,84 +177,32 @@ const TickerList = ({
   height,
   width,
   data,
-  fetchMore,
   marketIndex,
-  timeSeriesLimit,
 }) => {
-  const timeSeriesLength = data[0].timeSeries.length
-
-  const columnCount = getTickerColumnCount(containerWidth, timeSeriesLength)
+  const columnCount = 5
   const gridData = chunk(data, columnCount, {
     props: { containerWidth, marketIndex },
     chunkPropName: 'ticker',
   })
   const cellWidth = width / columnCount
   const cellHeight = (width / columnCount) * 0.75
-  const rowCount = count / columnCount
-
-  const isItemLoaded = index => {
-    return !!data[index]
-  }
-  const infiniteLoaderRef = useRef(null)
-  const hasMountedRef = useRef(false)
-
-  // Each time the sort prop changed we called the method resetloadMoreItemsCache to clear the cache
-  useEffect(() => {
-    // We only need to reset cached items when "sortOrder" changes.
-    // This effect will run on mount too; there's no need to reset in that case.
-    if (hasMountedRef.current) {
-      if (infiniteLoaderRef.current) {
-        infiniteLoaderRef.current.resetloadMoreItemsCache()
-      }
-    }
-    hasMountedRef.current = true
-  }, [timeSeriesLimit])
-
-  console.log('timeSeriesLimit', timeSeriesLimit)
+  const rowCount = Math.ceil(count / columnCount)
 
   return (
-    <InfiniteLoader
-      key={timeSeriesLimit}
-      ref={infiniteLoaderRef}
-      isItemLoaded={isItemLoaded}
-      itemCount={count}
-      loadMoreItems={(startIndex, stopIndex) =>
-        loadMoreItems({ startIndex, stopIndex, fetchMore, data })
-      }
+    <Grid
+      className={classnames(styles.tickerGrid, [
+        styles[`tickerGrid-col-${columnCount}`],
+      ])}
+      columnCount={columnCount}
+      columnWidth={cellWidth}
+      height={height}
+      rowCount={rowCount}
+      rowHeight={cellHeight}
+      width={width}
+      itemData={gridData}
     >
-      {({ onItemsRendered, ref }) => (
-        <Grid
-          ref={ref}
-          className={classnames(styles.tickerGrid, [
-            styles[`tickerGrid-col-${columnCount}`],
-          ])}
-          columnCount={columnCount}
-          columnWidth={cellWidth}
-          height={height}
-          rowCount={rowCount}
-          rowHeight={cellHeight}
-          width={width}
-          itemData={gridData}
-          onItemsRendered={({
-            visibleColumnStartIndex,
-            visibleColumnStopIndex,
-            visibleRowStartIndex,
-            visibleRowStopIndex,
-          }) => {
-            const visibleStartIndex =
-              visibleRowStartIndex * columnCount + visibleColumnStartIndex
-            const visibleStopIndex =
-              visibleRowStopIndex * columnCount + visibleColumnStopIndex
-            onItemsRendered({
-              visibleStartIndex,
-              visibleStopIndex,
-            })
-          }}
-        >
-          {Cell}
-        </Grid>
-      )}
-    </InfiniteLoader>
+      {Cell}
+    </Grid>
   )
 }
 
@@ -267,7 +214,6 @@ const Tickers = ({
   data,
   marketIndex,
   fetchMore,
-  timeSeriesLimit,
 }: {
   count: number
   containerWidth: number
@@ -276,7 +222,6 @@ const Tickers = ({
   data: TickerType[]
   marketIndex: MarketIndex
   fetchMore: FetchMore
-  timeSeriesLimit: number
 }) => {
   height = height - getHeaderHeight(width)
   return (
@@ -288,13 +233,11 @@ const Tickers = ({
         {data.length > 0 ? (
           <TickerList
             count={count}
-            fetchMore={fetchMore}
             containerWidth={containerWidth}
             height={height}
             width={width}
             data={data}
             marketIndex={marketIndex}
-            timeSeriesLimit={timeSeriesLimit}
           />
         ) : (
           <div className="text-crayolaRed-500">Tickers Unavailable</div>
