@@ -4,6 +4,7 @@ import Tickers from 'components/MarketIndex/Tickers';
 import { openModal } from 'components/Modal';
 import gql from 'graphql-tag';
 import { Ticker } from 'lib/interfaces';
+import { FetchMore } from 'lib/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -12,11 +13,17 @@ import MarketIndexHeader, { showMarketIndexInfo } from './MarketIndexHeader';
 const MarketIndexTickersQuery = gql`
   query MarketIndexTickers(
     $marketIndexId: Int
+    $offset: Int
     $limit: Int
     $timeSeriesLimit: Int
-    $bypassTimeSeriesLimit: Boolean
+    $cursor: Int
   ) {
-    marketIndexTickers(marketIndexId: $marketIndexId, limit: $limit) {
+    marketIndexTickers(
+      marketIndexId: $marketIndexId
+      limit: $limit
+      offset: $offset
+      cursor: $cursor
+    ) {
       id
       symbol
       name
@@ -24,7 +31,7 @@ const MarketIndexTickersQuery = gql`
       subSector
       founded
       headQuarter
-      timeSeries(limit: $timeSeriesLimit, bypassLimit: $bypassTimeSeriesLimit) {
+      timeSeries(limit: $timeSeriesLimit) {
         id
         date
         tickerId
@@ -40,8 +47,8 @@ const MarketIndex = ({
   width,
   height,
   marketIndexId,
+  tickerCount,
   limit,
-  bypassTimeSeriesLimit,
   timeSeriesLimit,
   marketIndex,
 }) => {
@@ -51,13 +58,15 @@ const MarketIndex = ({
     loading,
     error,
     data,
+    fetchMore,
   }: {
     loading?: boolean
     error?: { message: string }
     data: { marketIndexTickers: Ticker[] }
+    fetchMore: FetchMore
   } = useQuery(MarketIndexTickersQuery, {
     fetchPolicy: 'cache-and-network',
-    variables: { marketIndexId, limit, bypassTimeSeriesLimit, timeSeriesLimit },
+    variables: { marketIndexId, limit, timeSeriesLimit },
   })
   const marketIndexTickers = data?.marketIndexTickers || []
 
@@ -87,6 +96,8 @@ const MarketIndex = ({
         mainWidth={mainWidth}
       />
       <Tickers
+        fetchMore={fetchMore}
+        count={tickerCount?.count}
         marketIndex={marketIndex}
         containerWidth={appWidth}
         height={height}

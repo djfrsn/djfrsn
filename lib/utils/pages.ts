@@ -6,19 +6,16 @@ export function getMarketPageOptions(routerQuery) {
   limitQuery = limitQuery > indexLimit ? indexLimit : limitQuery
   const marketName = routerQuery.name || MARKET_INDEX.sp500
   const timeSeriesLimitQuery = routerQuery.days
-  const limit = limitQuery ? limitQuery : null
-  const bypassTimeSeriesLimit =
-    limit <= Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_BYPASS_LIMIT)
+  const limit = null
   let timeSeriesLimit = timeSeriesLimitQuery
     ? Number(timeSeriesLimitQuery)
     : Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT_DEFAULT)
   timeSeriesLimit =
-    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT) &&
-    !bypassTimeSeriesLimit
+    timeSeriesLimit > Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT)
       ? Number(process.env.NEXT_PUBLIC_INDEX_TIME_SERIES_LIMIT)
       : timeSeriesLimit
 
-  return { marketName, limit, timeSeriesLimit, bypassTimeSeriesLimit }
+  return { marketName, limit, timeSeriesLimit }
 }
 
 export const screenToNum = val => Number(val.replace('px', ''))
@@ -40,13 +37,11 @@ export const getTickerColumnCount = (width, timeSeriesLength) => {
   switch (true) {
     case timeSeriesLength <= 7 && isLgScreen:
       return 8
-    case timeSeriesLength < 30 && isLgScreen:
+    case timeSeriesLength < 15 && isLgScreen:
       return 6
-    case timeSeriesLength <= 30 && isMdScreen:
+    case timeSeriesLength <= 15 && isMdScreen:
     case timeSeriesLength <= 7 && isMdScreen:
       return 5
-    case timeSeriesLength >= 180:
-      return 1
     case isLgScreen:
       return 5
     case isMdScreen:

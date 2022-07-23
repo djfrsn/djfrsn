@@ -6,7 +6,7 @@ import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { DateTimeResolver } from 'graphql-scalars';
 import cors from 'micro-cors';
 import { NextApiHandler } from 'next';
-import { asNexusMethod, booleanArg, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
+import { asNexusMethod, intArg, makeSchema, nonNull, objectType, stringArg } from 'nexus';
 import path from 'path';
 
 import { serverCache } from '../../lib/cache';
@@ -28,7 +28,7 @@ function parseTimeSeriesOptions(args) {
       process.env.NEXT_PUBLIC_FEED_TIME_SERIES_LIMIT_DEFAULT
     )
 
-  if (options.take > takeLimit && !args.bypassLimit) options.take = takeLimit
+  if (options.take > takeLimit) options.take = takeLimit
 
   return options
 }
@@ -74,6 +74,13 @@ const Job = objectType({
   },
 })
 
+const MarketIndexCount = objectType({
+  name: 'MarketIndexCount',
+  definition(t) {
+    t.int('count')
+  },
+})
+
 const MarketIndex = objectType({
   name: 'MarketIndex',
   definition(t) {
@@ -82,7 +89,18 @@ const MarketIndex = objectType({
     t.string('displayName')
     t.string('symbol')
     t.field('lastRefreshed', { type: 'DateTime' })
-    t.list.field('ticker', {
+    t.field('tickerCount', {
+      type: MarketIndexCount,
+      resolve: async (parent, __, ctx, info) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        return {
+          count: ctx.prisma.ticker.count({
+            where: { marketIndexId: Number(parent.id) },
+          }),
+        }
+      },
+    })
+    t.list.field('tickers', {
       type: 'Ticker',
       resolve: async (parent, __, ctx, info) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
@@ -95,14 +113,8 @@ const MarketIndex = objectType({
       type: 'TickerInfo',
       args: {
         limit: intArg(),
-        bypassLimit: booleanArg(),
       },
-      resolve: (
-        parent,
-        args: { limit: number; bypassLimit: boolean },
-        ctx,
-        info
-      ) => {
+      resolve: (parent, args: { limit: number }, ctx, info) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const opts = parseTimeSeriesOptions(args)
 
@@ -134,14 +146,8 @@ const Ticker = objectType({
       type: 'TickerInfo',
       args: {
         limit: intArg(),
-        bypassLimit: booleanArg(),
       },
-      resolve: (
-        parent,
-        args: { limit: number; bypassLimit: boolean },
-        ctx,
-        info
-      ) => {
+      resolve: (parent, args: { limit: number }, ctx, info) => {
         info.cacheControl.setCacheHint(largeDatasetCacheHint)
         const opts = parseTimeSeriesOptions(args)
 
@@ -205,6 +211,24 @@ const Query = objectType({
       },
     })
 
+    t.field('marketIndexTickerCount', {
+      args: {
+        name: stringArg(),
+      },
+      type: 'MarketIndex',
+      resolve: async (_, args: { name: string }, ctx) => {
+        console.log('name', name)
+        return ctx.prisma.marketIndex.findFirst({
+          where: { name: args.name },
+          include: {
+            _count: {
+              select: { tickers: true },
+            },
+          },
+        })
+      },
+    })
+
     t.field('marketIndex', {
       args: {
         name: stringArg(),
@@ -220,12 +244,19 @@ const Query = objectType({
     t.list.field('marketIndexTickers', {
       args: {
         marketIndexId: intArg(),
+        offset: intArg(),
         limit: intArg(),
+        cursor: intArg(),
       },
       type: 'Ticker',
       resolve: async (
         _,
-        args: { marketIndexId: number; limit: number },
+        args: {
+          marketIndexId: number
+          offset: number
+          limit: number
+          cursor: number
+        },
         ctx,
         info
       ) => {
@@ -233,11 +264,18 @@ const Query = objectType({
         const options: {
           take?: Prisma.UserFindManyArgs['take']
           where?: { marketIndexId: number }
-        } = {}
+          skip?: number
+          cursor?: { id: number }
+          orderBy: { symbol: string }
+        } = { orderBy: { symbol: 'asc' } }
         if (args.marketIndexId)
           options.where = { marketIndexId: args.marketIndexId }
         if (args.limit) options.take = args.limit
-
+        if (args.offset) options.skip = args.offset
+        if (args.cursor) {
+          options.skip = 1
+          options.cursor = { id: args.cursor }
+        }
         return ctx.prisma.ticker.findMany(options)
       },
     })

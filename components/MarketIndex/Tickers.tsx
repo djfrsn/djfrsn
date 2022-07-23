@@ -1,16 +1,18 @@
 import { MarketIndex, TickerInfo } from '@prisma/client';
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
+import Loading from 'components/Loading';
 import { ModalButton } from 'components/Modal';
 import { modalContent, modalContentIdVar } from 'lib/cache';
 import { Ticker as TickerType } from 'lib/interfaces';
+import { FetchMore } from 'lib/types';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import chunk from 'lib/utils/chunk';
 import { formatUSD } from 'lib/utils/numbers';
-import { getHeaderHeight, getTickerColumnCount } from 'lib/utils/pages';
+import { getHeaderHeight } from 'lib/utils/pages';
 import memoizeOne from 'memoize-one';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
 
@@ -41,27 +43,26 @@ const Ticker = props => {
   if (timeSeries.length === 0)
     return (
       <div
-        key={id}
         className={classnames(
           className,
           'flex flex-col items-center justify-content text-crayolaRed-500 text-center'
         )}
         style={style}
       >
-        <div className="tooltip tooltip-info" data-tip={symbolTip}>
+        <div className="tooltip tooltip-info !pr-0 mt-2" data-tip={symbolTip}>
           {symbol}
         </div>
-        <div className="mt-6">
+        <div className="mt-2 !pr-0">
           <FaExclamationTriangle />
         </div>
-        <div className="mt-2 text-xxs">Data Unavailable</div>
+        <div className="mt-2 text-xxs !pr-0">Data Unavailable</div>
       </div>
     )
 
   const close = formatUSD(timeSeries[0].close)
 
   return (
-    <div key={id} style={style} className={className}>
+    <div style={style} className={className}>
       <ModalButton
         className="flex flex-col"
         onClick={() => {
@@ -125,29 +126,67 @@ const MemoTicker: any = React.memo(Ticker, (prevProps, nextProps) => {
     avoid rendering ticker unless we change timeSeries or screen width
   */
   return (
-    prevProps.data.ticker.timeSeries[0].date ===
-      nextProps.data.ticker.timeSeries[0].date &&
+    prevProps.data.ticker?.timeSeries[0]?.date ===
+      nextProps.data.ticker?.timeSeries[0]?.date &&
     prevProps.data.containerWidth === nextProps.data.containerWidth
   )
 })
 
+const loadMoreItems = ({
+  startIndex,
+  stopIndex,
+  fetchMore,
+  data,
+}: {
+  startIndex: number
+  stopIndex: number
+  fetchMore: FetchMore
+  data: TickerType[]
+}) => {
+  console.log('startIndex', startIndex)
+  fetchMore({
+    variables: { offset: startIndex, limit: stopIndex - startIndex },
+  })
+}
+
+const CellLoading = ({ style }) => {
+  return (
+    <div
+      className={classnames(
+        'flex flex-col items-center justify-content text-crayolaRed-500 text-center'
+      )}
+      style={style}
+    >
+      <Loading />
+    </div>
+  )
+}
+
 const Cell = ({ index, style, rowIndex, columnIndex, data }) => {
-  const tickerData = data[rowIndex][columnIndex]
+  const row = data[rowIndex]
+  const tickerData = row && row[columnIndex]
 
   if (!tickerData) return null
 
   return <MemoTicker key={index} style={style} data={tickerData} />
 }
 
-const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
-  const timeSeriesLength = data[0].timeSeries.length
-  const columnCount = getTickerColumnCount(containerWidth, timeSeriesLength)
+const TickerList = ({
+  count = 100,
+  containerWidth,
+  height,
+  width,
+  data,
+  marketIndex,
+}) => {
+  const columnCount = 5
   const gridData = chunk(data, columnCount, {
     props: { containerWidth, marketIndex },
     chunkPropName: 'ticker',
   })
   const cellWidth = width / columnCount
   const cellHeight = (width / columnCount) * 0.75
+  const rowCount = Math.ceil(count / columnCount)
 
   return (
     <Grid
@@ -157,7 +196,7 @@ const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
       columnCount={columnCount}
       columnWidth={cellWidth}
       height={height}
-      rowCount={gridData.length}
+      rowCount={rowCount}
       rowHeight={cellHeight}
       width={width}
       itemData={gridData}
@@ -168,17 +207,21 @@ const TickerList = ({ containerWidth, height, width, data, marketIndex }) => {
 }
 
 const Tickers = ({
+  count,
   containerWidth,
   height,
   width,
   data,
   marketIndex,
+  fetchMore,
 }: {
+  count: number
   containerWidth: number
   width: number
   height: number
   data: TickerType[]
   marketIndex: MarketIndex
+  fetchMore: FetchMore
 }) => {
   height = height - getHeaderHeight(width)
   return (
@@ -189,6 +232,7 @@ const Tickers = ({
       <div>
         {data.length > 0 ? (
           <TickerList
+            count={count}
             containerWidth={containerWidth}
             height={height}
             width={width}

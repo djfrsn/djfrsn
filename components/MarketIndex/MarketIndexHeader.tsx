@@ -20,7 +20,7 @@ export const showMarketIndexInfo = (name, props = {}) => {
 }
 
 const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
-  const timeframes = [7, 14, 30, 90].concat(
+  const timeframes = [14, 30, 90].concat(
     mainWidth > screenToNum(SCREENS.md) ? [180] : []
   )
   const InfoButton = ({ className = '' }) => (
@@ -38,7 +38,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
     <div className="flex md:flex-row flex-wrap">
       <div className="flex flex-max flex-wrap flex-row md:basis-1/2 cursor-default">
         <h1
-          className="text-iced-300 tooltip tooltip-info"
+          className="z-10 text-iced-300 tooltip tooltip-right tooltip-info"
           data-tip={`Last refreshed: ${moment(data.lastRefreshed).fromNow()}`}
         >
           {data.displayName}
@@ -46,10 +46,13 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
         {oldestTimeSeriesItem && latestTimeSeriesItem && (
           <>
             <span
-              className={classnames('ml-1 tooltip tooltip-info text-wash-50', {
-                hidden: !days,
-                ['animate-fadeIn']: days > 0,
-              })}
+              className={classnames(
+                'z-0 ml-1 tooltip tooltip-info text-wash-50',
+                {
+                  hidden: !days,
+                  ['animate-fadeIn']: days > 0,
+                }
+              )}
               data-tip={`${moment(oldestTimeSeriesItem.date).format(
                 format.standard
               )} - ${moment(latestTimeSeriesItem.date).format(
