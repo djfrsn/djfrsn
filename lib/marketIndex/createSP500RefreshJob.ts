@@ -1,7 +1,8 @@
 import { Job, Ticker } from '@prisma/client';
-import { MARKET_INTERVAL, QUEUE } from 'lib/const';
+import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { defaultJobOptions, sp500RefreshFlow } from 'lib/db/queue';
+import { MarketInterval } from 'lib/enums';
 import { MarketIndexJobOptions } from 'lib/interfaces';
 import chunk from 'lib/utils/chunk';
 
@@ -20,7 +21,7 @@ async function createSP500RefreshJob(
   const name = QUEUE.refresh.sp500
   const queueName = QUEUE.refresh.marketIndex
   const marketInterval = await prisma.marketInterval.findFirst({
-    where: { name: MARKET_INTERVAL.oneday },
+    where: { name: MarketInterval.oneday },
   })
 
   console.log(

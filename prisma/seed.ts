@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { MARKET_INDEX, MARKET_INTERVAL } from 'lib/const';
+import { MARKET_INDEX } from 'lib/const';
+import { MarketInterval } from 'lib/enums';
 
 const prisma = new PrismaClient()
 
@@ -20,7 +21,7 @@ const marketIndexData = [
 
 const marketIntervalData = [
   {
-    name: MARKET_INTERVAL.oneday,
+    name: MarketInterval.oneday,
   },
 ]
 
