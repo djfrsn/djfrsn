@@ -25,37 +25,43 @@ const TickersTable = ({
             <th>Company</th>
             <th>Price</th>
             <th>Sector</th>
+            <th>Sub Sector</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {data.map(({ name, symbol, sector, timeSeries }, index) => (
-            <tr>
-              <td>{index + 1}</td>
-              <td>
-                <strong className="text-xl">{symbol}</strong> - {name}
-              </td>
-              <td>{formatUSD(timeSeries[0].close)}</td>
-              <td>{sector}</td>
-              <td>
-                <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
-                  <LineChart
-                    options={chartOptions.simple}
-                    data={{
-                      labels: timeSeries.map(series => series.date),
-                      datasets: [
-                        {
-                          label: symbol,
-                          data: reverseTimeSeries(timeSeries),
-                          borderColor: getLineColor(timeSeries),
-                        },
-                      ],
-                    }}
-                  />
-                </div>
-              </td>
-            </tr>
-          ))}
+          {data.map(
+            ({ name, symbol, sector, subSector, timeSeries }, index) => (
+              <tr>
+                <td>{index + 1}</td>
+                <td>
+                  <strong className="text-xl">{symbol}</strong> - {name}
+                </td>
+                <td className="font-bold text-lg bg-neutral">
+                  {formatUSD(timeSeries[0].close)}
+                </td>
+                <td>{sector}</td>
+                <td>{subSector}</td>
+                <td>
+                  <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
+                    <LineChart
+                      options={chartOptions.simple}
+                      data={{
+                        labels: timeSeries.map(series => series.date),
+                        datasets: [
+                          {
+                            label: symbol,
+                            data: reverseTimeSeries(timeSeries),
+                            borderColor: getLineColor(timeSeries),
+                          },
+                        ],
+                      }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
         <tfoot>
           <tr>
