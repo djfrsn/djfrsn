@@ -11,16 +11,12 @@ import { getLineColor } from 'lib/utils/charts';
 import chunk from 'lib/utils/chunk';
 import { formatUSD } from 'lib/utils/numbers';
 import { getHeaderHeight } from 'lib/utils/pages';
-import memoizeOne from 'memoize-one';
-import React, { useEffect, useRef } from 'react';
+import reverseTimeSeries from 'lib/utils/reverseTimeSeries';
+import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
 
 import styles from './tickers.module.css';
-
-const reverseTimeSeries = memoizeOne(timeSeries =>
-  timeSeries.map(set => Number(set.close)).reverse()
-)
 
 const Ticker = props => {
   const { className = '', style = {} } = props
