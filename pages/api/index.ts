@@ -178,18 +178,6 @@ const TickerInfo = objectType({
     t.string('low')
     t.string('volume')
     t.nullable.string('tickerId')
-    t.nullable.field('ticker', {
-      type: 'Ticker',
-      resolve: (parent, __, ctx, info) => {
-        info.cacheControl.setCacheHint(largeDatasetCacheHint)
-        return ctx.prisma.ticker
-          .findUnique({
-            where: { id: Number(parent.id) },
-          })
-          .timeSeries()
-          .then()
-      },
-    })
   },
 })
 

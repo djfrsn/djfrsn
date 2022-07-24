@@ -53,6 +53,9 @@ export function timeAgo(
   const { nextBusinessDay = false, unit = 'days' } = options || {}
   const timeAgo = momentBusiness().subtract(days, unit)
 
+  console.log('days', days)
+  console.log('timeAgo', timeAgo)
+
   return nextBusinessDay ? timeAgo.nextBusinessDay().utc() : timeAgo.utc()
 }
 

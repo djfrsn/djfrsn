@@ -6,7 +6,7 @@ import { PAGES, SCREENS } from 'lib/const';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import { screenToNum } from 'lib/utils/pages';
-import { format, moment } from 'lib/utils/time';
+import { format, moment, momentBusiness } from 'lib/utils/time';
 import Link from 'next/link';
 import { FaInfoCircle } from 'react-icons/fa';
 
@@ -31,8 +31,13 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
-  const oldestTimeSeriesItem = data.timeSeries[data.timeSeries.length - 1]
+  const currentDate = momentBusiness()
+  const timeAgo = currentDate.subtract(days, 'days')
   const latestTimeSeriesItem = data.timeSeries[0]
+  const oldestTimeSeriesDate = timeAgo.format(format.standard)
+  const latestTimeSeriesDate = momentBusiness(latestTimeSeriesItem.date).format(
+    format.standard
+  )
 
   return (
     <div className="flex md:flex-row flex-wrap">
@@ -43,7 +48,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
         >
           {data.displayName}
         </h1>
-        {oldestTimeSeriesItem && latestTimeSeriesItem && (
+        {latestTimeSeriesItem && (
           <>
             <span
               className={classnames(
@@ -53,11 +58,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
                   ['animate-fadeIn']: days > 0,
                 }
               )}
-              data-tip={`${moment(oldestTimeSeriesItem.date).format(
-                format.standard
-              )} - ${moment(latestTimeSeriesItem.date).format(
-                format.standard
-              )}`}
+              data-tip={`${oldestTimeSeriesDate} - ${latestTimeSeriesDate}`}
             >
               {days}D
             </span>
