@@ -5,6 +5,7 @@ import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import { formatUSD } from 'lib/utils/numbers';
 import reverseTimeSeries from 'lib/utils/reverseTimeSeries';
+import Link from 'next/link';
 
 import TickersUnavailable from './TickersUnavailable';
 
@@ -41,7 +42,11 @@ const TickersTable = ({
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  <strong className="text-xl">{symbol}</strong> - {name}
+                  <Link href={`/stocks/${symbol}`}>
+                    <a>
+                      <strong className="text-xl">{symbol}</strong> - {name}
+                    </a>
+                  </Link>
                 </td>
                 <td className="font-bold text-lg bg-neutral">
                   {timeSeries[0] ? formatUSD(timeSeries[0].close) : 'N/A'}
