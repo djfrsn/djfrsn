@@ -6,16 +6,22 @@ import { getLineColor } from 'lib/utils/charts';
 import { formatUSD } from 'lib/utils/numbers';
 import reverseTimeSeries from 'lib/utils/reverseTimeSeries';
 
+import TickersUnavailable from './TickersUnavailable';
+
 const TickersTable = ({
   data,
+  timeSeriesLength,
 }: {
   count: number
+  timeSeriesLength: number
   containerWidth: number
   width: number
   height: number
   data: TickerType[]
   fetchMore: FetchMore
 }) => {
+  if (!data?.length) return <TickersUnavailable className="my-2 lg:my-4" />
+
   return (
     <div className="my-2 lg:my-4 overflow-x-auto">
       <table className="table table-compact w-full">
@@ -26,7 +32,7 @@ const TickersTable = ({
             <th>Price</th>
             <th>Sector</th>
             <th>Sub Sector</th>
-            <th></th>
+            <th>Last {timeSeriesLength} days</th>
           </tr>
         </thead>
         <tbody>

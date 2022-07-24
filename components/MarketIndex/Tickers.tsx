@@ -17,6 +17,7 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 import { FixedSizeGrid as Grid } from 'react-window';
 
 import styles from './tickers.module.css';
+import TickersUnavailable from './TickersUnavailable';
 
 const Ticker = props => {
   const { className = '', style = {} } = props
@@ -236,7 +237,7 @@ const Tickers = ({
             marketIndex={marketIndex}
           />
         ) : (
-          <div className="text-crayolaRed-500">Tickers Unavailable</div>
+          <TickersUnavailable />
         )}
       </div>
     </div>

@@ -97,6 +97,7 @@ const MarketIndex = ({
       />
       <TickersTable
         data={marketIndexTickers}
+        timeSeriesLength={days}
         count={tickerCount?.count}
         containerWidth={appWidth}
         fetchMore={fetchMore}
