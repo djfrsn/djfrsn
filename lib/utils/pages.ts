@@ -1,10 +1,11 @@
-import { MARKET_INDEX, SCREENS } from 'lib/const';
+import { SCREENS } from 'lib/const';
+import { MarketIndex } from 'lib/enums';
 
 export function getMarketPageOptions(routerQuery) {
   const indexLimit = Number(process.env.NEXT_PUBLIC_INDEX_LIMIT)
   let limitQuery = routerQuery.limit ? Number(routerQuery.limit) : null
   limitQuery = limitQuery > indexLimit ? indexLimit : limitQuery
-  const marketName = routerQuery.name || MARKET_INDEX.sp500
+  const marketName = routerQuery.name || MarketIndex.sp500
   const timeSeriesLimitQuery = routerQuery.days
   const limit = null
   let timeSeriesLimit = timeSeriesLimitQuery

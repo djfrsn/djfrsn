@@ -1,8 +1,9 @@
 import * as Sentry from '@sentry/node';
 import { Job, JobNode } from 'bullmq';
-import { MARKET_INDEX, QUEUE } from 'lib/const';
+import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { getSp500RefreshFlow } from 'lib/db/queue';
+import { MarketIndex } from 'lib/enums';
 import { RefreshMarketTickerJob } from 'lib/interfaces';
 import createSP500TickerInfo from 'lib/marketIndex/createSP500TickerInfo';
 import { getDependenciesCount } from 'lib/utils/bullmq';
@@ -37,7 +38,7 @@ export default async function refreshMarketTickerProcessor(
       }
 
       const marketIndex = await prisma.marketIndex.findFirst({
-        where: { name: MARKET_INDEX.sp500 },
+        where: { name: MarketIndex.sp500 },
       })
       const mostRecentBusinessDay = getMostRecentBusinessDay()
       const lastRefreshed =
