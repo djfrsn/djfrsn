@@ -27,6 +27,16 @@ export default function Layout({
   data: { page: PageType; global: GlobalType; footer?: FooterType }
   children?: React.ReactNode
 }) {
+  const router = useRouter()
+
+  useEffect(() => {
+    theme(router)
+  }, [router.pathname])
+
+  if (router.isFallback) {
+    return <LoadingIndicator />
+  }
+
   const [scroll, scrollTo] = useWindowScroll()
   const { ref: appRef, height: appheight, width: appwidth } = useElementSize()
   const {
@@ -34,18 +44,8 @@ export default function Layout({
     height: mainheight,
     width: mainwidth,
   } = useElementSize()
-  const router = useRouter()
-  const withFooter = data.footer
-
-  if (router.isFallback) {
-    return <LoadingIndicator />
-  }
-
-  useEffect(() => {
-    theme(router)
-  }, [router.pathname])
-
   const showScrollToTop = scroll?.y > 500
+  const withFooter = data.footer
 
   return (
     <>
