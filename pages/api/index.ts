@@ -205,7 +205,6 @@ const Query = objectType({
       },
       type: 'MarketIndex',
       resolve: async (_, args: { name: string }, ctx) => {
-        console.log('name', name)
         return ctx.prisma.marketIndex.findFirst({
           where: { name: args.name },
           include: {

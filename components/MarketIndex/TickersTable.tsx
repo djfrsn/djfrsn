@@ -38,32 +38,36 @@ const TickersTable = ({
         <tbody>
           {data.map(
             ({ name, symbol, sector, subSector, timeSeries }, index) => (
-              <tr>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
                   <strong className="text-xl">{symbol}</strong> - {name}
                 </td>
                 <td className="font-bold text-lg bg-neutral">
-                  {formatUSD(timeSeries[0].close)}
+                  {timeSeries[0] ? formatUSD(timeSeries[0].close) : 'N/A'}
                 </td>
                 <td>{sector}</td>
                 <td>{subSector}</td>
                 <td>
-                  <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
-                    <LineChart
-                      options={chartOptions.simple}
-                      data={{
-                        labels: timeSeries.map(series => series.date),
-                        datasets: [
-                          {
-                            label: symbol,
-                            data: reverseTimeSeries(timeSeries),
-                            borderColor: getLineColor(timeSeries),
-                          },
-                        ],
-                      }}
-                    />
-                  </div>
+                  {timeSeries[0] ? (
+                    <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
+                      <LineChart
+                        options={chartOptions.simple}
+                        data={{
+                          labels: timeSeries.map(series => series.date),
+                          datasets: [
+                            {
+                              label: symbol,
+                              data: reverseTimeSeries(timeSeries),
+                              borderColor: getLineColor(timeSeries),
+                            },
+                          ],
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <span className="block text-center">N/A</span>
+                  )}
                 </td>
               </tr>
             )
