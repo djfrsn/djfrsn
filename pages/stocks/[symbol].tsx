@@ -1,20 +1,23 @@
 import Layout from 'components/Layout';
+import prisma from 'lib/db/prisma';
+import omit from 'lodash/omit';
 import { GetStaticPaths } from 'next/types';
 
 import { createClient } from '../../prismicio';
 
-export async function getStaticProps({ previewData }) {
+export async function getStaticProps({ previewData, params: { symbol } }) {
   const client = createClient({ previewData })
 
   const global = await client.getSingle('global')
-
+  const ticker = await prisma.ticker.findFirst({ where: { symbol } })
+  console.log('ticker', ticker)
   return {
-    props: { global },
+    props: { global, ticker: omit(ticker, 'updatedAt') },
   }
 }
 
 export default function StockPage(props) {
-  console.log('props', props)
+  console.log('ticker', props.ticker)
 
   return (
     <Layout
@@ -29,11 +32,17 @@ export default function StockPage(props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const tickers = await prisma.ticker.findMany({
+    take: 10,
+    orderBy: { symbol: 'asc' },
+  })
+
   return {
-    // Only `/posts/1` and `/posts/2` are generated at build time
-    paths: [{ params: { symbol: '1' } }, { params: { symbol: '2' } }],
-    // Enable statically generating additional pages
-    // For example: `/posts/3`
+    paths: tickers.map(ticker => ({
+      params: {
+        symbol: ticker.symbol,
+      },
+    })),
     fallback: true,
   }
 }
