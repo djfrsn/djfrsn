@@ -16,7 +16,7 @@ const TickersTable = ({
   fetchMore: FetchMore
 }) => {
   return (
-    <div className="my-2 lg:my-8 overflow-x-auto">
+    <div className="my-2 lg:my-4 overflow-x-auto">
       <table className="table table-compact w-full">
         <thead>
           <tr>
