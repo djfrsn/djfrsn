@@ -1,4 +1,4 @@
-import { MarketIndex, TickerInfo } from '@prisma/client';
+import { MarketIndex } from '@prisma/client';
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import Loading from 'components/Loading';
@@ -9,6 +9,7 @@ import { FetchMore } from 'lib/types';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import chunk from 'lib/utils/chunk';
+import getTimeSeriesHighLow from 'lib/utils/getTimeSeriesHighLow';
 import { formatUSD } from 'lib/utils/numbers';
 import { getHeaderHeight } from 'lib/utils/pages';
 import reverseTimeSeries from 'lib/utils/reverseTimeSeries';
@@ -63,15 +64,7 @@ const Ticker = props => {
       <ModalButton
         className="flex flex-col"
         onClick={() => {
-          let high: TickerInfo | null = null
-          let low: TickerInfo | null = null
-
-          timeSeries.forEach(item => {
-            const itemClose = Number(item.close)
-            if (!high || (high.close && itemClose > Number(high.close)))
-              high = item
-            if (!low || (low.close && itemClose < Number(low.close))) low = item
-          })
+          const { high, low } = getTimeSeriesHighLow(timeSeries)
 
           modalContent({
             id,

@@ -28,8 +28,8 @@ function getRatingClassName(val) {
   }
 }
 
-const TickerDetails = ({ data: { modalContentId, modalContent } }) => {
-  if (!modalContentId || !modalContent) return null
+const TickerDetails = ({ data: { modalContent } }) => {
+  if (!modalContent) return null
 
   if (!modalContent?.id) return null
   const { data: ratingData } = useSWR(
@@ -118,20 +118,22 @@ const TickerDetails = ({ data: { modalContentId, modalContent } }) => {
         {modalContent.sector}
         {modalContent.subSector && `, ${modalContent.subSector}`}
       </p>
-      <p className="mt-4">
-        <strong>${modalContent.symbol}</strong> last reached a high of{' '}
-        <span className="text-positiveValue-500">
-          {formatUSD(modalContent.high.close)}
-        </span>{' '}
-        on{' '}
-        <em>{moment(modalContent.high.date).format(format.standardShort)}</em>{' '}
-        and a low of{' '}
-        <span className="text-negativeValue-500">
-          {formatUSD(modalContent.low.close)}
-        </span>{' '}
-        on <em>{moment(modalContent.low.date).format(format.standardShort)}</em>
-        .
-      </p>
+      {modalContent.high && (
+        <p className="mt-4">
+          <strong>${modalContent.symbol}</strong> last reached a high of{' '}
+          <span className="text-positiveValue-500">
+            {formatUSD(modalContent.high.close)}
+          </span>{' '}
+          on{' '}
+          <em>{moment(modalContent.high.date).format(format.standardShort)}</em>{' '}
+          and a low of{' '}
+          <span className="text-negativeValue-500">
+            {formatUSD(modalContent.low.close)}
+          </span>{' '}
+          on{' '}
+          <em>{moment(modalContent.low.date).format(format.standardShort)}</em>.
+        </p>
+      )}
 
       {tickerProfile && (
         <div className="pt-4">
@@ -152,45 +154,49 @@ const TickerDetails = ({ data: { modalContentId, modalContent } }) => {
           </p>
         </div>
       )}
-      <div className="pt-4">
-        <div className="text-center mb-1">
-          <h3>
-            <strong className="mr-2 text-correlationBeta-500">
-              ${modalContent.symbol}
-            </strong>
-            vs
-            <span className="ml-2 text-correlationBase-500">
-              {getFriendlyMarketSymbol(modalContent.marketIndex.symbol)}
-            </span>
-          </h3>
+      {modalContent.marketIndex && (
+        <div className="pt-4">
+          <div className="text-center mb-1">
+            <h3>
+              <strong className="mr-2 text-correlationBeta-500">
+                ${modalContent.symbol}
+              </strong>
+              vs
+              <span className="ml-2 text-correlationBase-500">
+                {getFriendlyMarketSymbol(modalContent.marketIndex.symbol)}
+              </span>
+            </h3>
+          </div>
+          <LineChart
+            options={chartOptions.correlation}
+            data={{
+              labels: modalContent.marketIndex.timeSeries
+                .map(series => moment(series.date).format(format.standardShort))
+                .reverse(),
+              datasets: [
+                {
+                  label: modalContent.symbol,
+                  data: modalContent.timeSeries
+                    .map(set => Number(set.close))
+                    .reverse(),
+                  borderColor: COLORS.correlationBeta,
+                  yAxisID: 'y1',
+                },
+                {
+                  label: getFriendlyMarketSymbol(
+                    modalContent.marketIndex.symbol
+                  ),
+                  data: modalContent.marketIndex.timeSeries
+                    .map(set => Number(set.close))
+                    .reverse(),
+                  borderColor: COLORS.correlationBase,
+                  yAxisID: 'y',
+                },
+              ],
+            }}
+          />
         </div>
-        <LineChart
-          options={chartOptions.correlation}
-          data={{
-            labels: modalContent.marketIndex.timeSeries
-              .map(series => moment(series.date).format(format.standardShort))
-              .reverse(),
-            datasets: [
-              {
-                label: modalContent.symbol,
-                data: modalContent.timeSeries
-                  .map(set => Number(set.close))
-                  .reverse(),
-                borderColor: COLORS.correlationBeta,
-                yAxisID: 'y1',
-              },
-              {
-                label: getFriendlyMarketSymbol(modalContent.marketIndex.symbol),
-                data: modalContent.marketIndex.timeSeries
-                  .map(set => Number(set.close))
-                  .reverse(),
-                borderColor: COLORS.correlationBase,
-                yAxisID: 'y',
-              },
-            ],
-          }}
-        />
-      </div>
+      )}
       {Array.isArray(tickerNews) && (
         <div className="pt-4">
           <h3>News</h3>
@@ -217,7 +223,7 @@ const MarketInfo = ({ data: { modalContentId, modalContent, pageData } }) => {
 
   switch (true) {
     case modalContentId.includes('TickerInfo'):
-      return <TickerDetails data={{ modalContentId, modalContent }} />
+      return <TickerDetails data={{ modalContent }} />
     case modalContentId === 'markets':
       const marketInfo = pageData?.find(
         content => content.name === modalContent.marketName

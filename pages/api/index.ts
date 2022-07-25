@@ -228,6 +228,44 @@ const Query = objectType({
       },
     })
 
+    t.field('ticker', {
+      args: {
+        symbol: stringArg(),
+        offset: intArg(),
+        limit: intArg(),
+      },
+      type: 'Ticker',
+      resolve: async (
+        _,
+        args: {
+          symbol: string
+          offset: number
+          limit: number
+          cursor: number
+        },
+        ctx,
+        info
+      ) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        const options: {
+          take?: Prisma.UserFindManyArgs['take']
+          where?: { symbol: string }
+          skip?: number
+          cursor?: { id: number }
+          orderBy: { symbol: string }
+        } = { orderBy: { symbol: 'asc' } }
+        if (args.symbol) options.where = { symbol: args.symbol }
+        if (args.limit) options.take = args.limit
+        if (args.offset) options.skip = args.offset
+        if (args.cursor) {
+          options.skip = 1
+          options.cursor = { id: args.cursor }
+        }
+
+        return ctx.prisma.ticker.findFirst(options)
+      },
+    })
+
     t.list.field('marketIndexTickers', {
       args: {
         marketIndexId: intArg(),
