@@ -1,6 +1,8 @@
+import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { COLORS } from 'lib/const';
+import { MarketIndexQuery } from 'lib/graphql';
 import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
 import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
@@ -41,6 +43,18 @@ const TickerDetails = ({ data }) => {
     `${process.env.NEXT_PUBLIC_FMP_API_URL}/v3/stock_news?tickers=${data.symbol}&limit=5&apikey=${process.env.NEXT_PUBLIC_FMP_API_KEY}`,
     fetcher
   )
+  let marketIndex
+  const marketIndexId = data?.marketIndexId
+
+  if (marketIndexId) {
+    const { data: marketIndexData } = useQuery(MarketIndexQuery, {
+      fetchPolicy: 'cache-and-network',
+      variables: { id: marketIndexId, timeSeriesLimit: 30 },
+    })
+    marketIndex = marketIndexData.marketIndex
+  }
+
+  console.log('marketIndexRes', marketIndex)
 
   const tickerRating = Array.isArray(ratingData) && ratingData[0]
   const tickerProfile = Array.isArray(profileData) && profileData[0]
@@ -148,7 +162,7 @@ const TickerDetails = ({ data }) => {
           </p>
         </div>
       )}
-      {data.marketIndex && (
+      {marketIndex?.timeSeries && (
         <div className="pt-4">
           <div className="text-center mb-1">
             <h3>
@@ -157,14 +171,14 @@ const TickerDetails = ({ data }) => {
               </strong>
               vs
               <span className="ml-2 text-correlationBase-500">
-                {getFriendlyMarketSymbol(data.marketIndex.symbol)}
+                {getFriendlyMarketSymbol(marketIndex.symbol)}
               </span>
             </h3>
           </div>
           <LineChart
             options={chartOptions.correlation}
             data={{
-              labels: data.marketIndex.timeSeries
+              labels: marketIndex.timeSeries
                 .map(series => moment(series.date).format(format.standardShort))
                 .reverse(),
               datasets: [
@@ -175,8 +189,8 @@ const TickerDetails = ({ data }) => {
                   yAxisID: 'y1',
                 },
                 {
-                  label: getFriendlyMarketSymbol(data.marketIndex.symbol),
-                  data: data.marketIndex.timeSeries
+                  label: getFriendlyMarketSymbol(marketIndex.symbol),
+                  data: marketIndex.timeSeries
                     .map(set => Number(set.close))
                     .reverse(),
                   borderColor: COLORS.correlationBase,

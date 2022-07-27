@@ -2,34 +2,14 @@ import { useQuery } from '@apollo/client';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
 import TickerDetails from 'components/stocks/TickerDetails';
-import gql from 'graphql-tag';
 import prisma from 'lib/db/prisma';
+import { TickerQuery } from 'lib/graphql';
 import { Ticker } from 'lib/interfaces';
 import getTimeSeriesHighLow from 'lib/utils/getTimeSeriesHighLow';
 import { formatUSD } from 'lib/utils/numbers';
 import { GetStaticPaths } from 'next/types';
 
 import { createClient } from '../../prismicio';
-
-const TickerQuery = gql`
-  query Ticker($symbol: String, $timeSeriesLimit: Int) {
-    ticker(symbol: $symbol) {
-      id
-      symbol
-      name
-      sector
-      subSector
-      founded
-      headQuarter
-      timeSeries(limit: $timeSeriesLimit) {
-        id
-        date
-        tickerId
-        close
-      }
-    }
-  }
-`
 
 export async function getStaticProps({ previewData, params: { symbol } }) {
   const client = createClient({ previewData })
@@ -55,7 +35,9 @@ export default function StockPage(props) {
     variables: { symbol: props.symbol, timeSeriesLimit: 30 },
   })
 
-  const timeSeries = data?.ticker?.timeSeries
+  const ticker = data?.ticker
+
+  const timeSeries = ticker?.timeSeries
   const { high, low } = timeSeries
     ? getTimeSeriesHighLow(timeSeries)
     : { high: null, low: null }

@@ -142,6 +142,7 @@ const Ticker = objectType({
     t.string('subSector')
     t.string('headQuarter')
     t.string('founded')
+    t.int('marketIndexId')
     t.list.field('timeSeries', {
       type: 'TickerInfo',
       args: {
@@ -219,11 +220,20 @@ const Query = objectType({
     t.field('marketIndex', {
       args: {
         name: stringArg(),
+        id: intArg(),
       },
       type: 'MarketIndex',
-      resolve: async (_, args: { name: string }, ctx, info) => {
+      resolve: async (_, args: { name: string; id: number }, ctx, info) => {
+        let where = {}
+
+        if (args.name) {
+          where = { name: args.name }
+        } else if (args.id) {
+          where = { id: args.id }
+        }
+
         return ctx.prisma.marketIndex.findFirst({
-          where: { name: args.name },
+          where,
         })
       },
     })
