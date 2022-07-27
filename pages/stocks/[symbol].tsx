@@ -1,11 +1,12 @@
 import { useQuery } from '@apollo/client';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
-import { TickerDetails } from 'components/Modal/template/Markets';
+import TickerDetails from 'components/stocks/TickerDetails';
 import gql from 'graphql-tag';
 import prisma from 'lib/db/prisma';
 import { Ticker } from 'lib/interfaces';
 import getTimeSeriesHighLow from 'lib/utils/getTimeSeriesHighLow';
+import { formatUSD } from 'lib/utils/numbers';
 import { GetStaticPaths } from 'next/types';
 
 import { createClient } from '../../prismicio';
@@ -54,11 +55,11 @@ export default function StockPage(props) {
     variables: { symbol: props.symbol, timeSeriesLimit: 30 },
   })
 
-  const { high, low } = data?.ticker?.timeSeries
-    ? getTimeSeriesHighLow(data.ticker.timeSeries)
+  const timeSeries = data?.ticker?.timeSeries
+  const { high, low } = timeSeries
+    ? getTimeSeriesHighLow(timeSeries)
     : { high: null, low: null }
-
-  console.log('high', high)
+  const close = timeSeries ? formatUSD(timeSeries[0].close) : null
 
   return (
     <Container loading={loading} error={error}>
@@ -71,9 +72,7 @@ export default function StockPage(props) {
           global: props.global?.data,
         }}
       >
-        <TickerDetails
-          data={{ modalContent: { ...data?.ticker, high, low } }}
-        />
+        <TickerDetails data={{ ...data?.ticker, high, low, close }} />
       </Layout>
     </Container>
   )
