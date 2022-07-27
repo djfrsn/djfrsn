@@ -51,10 +51,8 @@ const TickerDetails = ({ data }) => {
       fetchPolicy: 'cache-and-network',
       variables: { id: marketIndexId, timeSeriesLimit: 30 },
     })
-    marketIndex = marketIndexData.marketIndex
+    if (marketIndexData) marketIndex = marketIndexData.marketIndex
   }
-
-  console.log('marketIndexRes', marketIndex)
 
   const tickerRating = Array.isArray(ratingData) && ratingData[0]
   const tickerProfile = Array.isArray(profileData) && profileData[0]
