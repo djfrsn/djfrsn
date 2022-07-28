@@ -3,7 +3,7 @@ import { MarketIndex as MarketIndexType } from '@prisma/client';
 import Container from 'components/Container';
 import Layout from 'components/Layout';
 import MarketIndex from 'components/MarketIndex';
-import { PAGES } from 'lib/const';
+import { Pages } from 'lib/enums';
 import { MarketIndexQuery } from 'lib/graphql';
 import { getMarketPageOptions } from 'lib/utils/pages';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ export async function getStaticProps({ previewData }) {
   const client = createClient({ previewData })
 
   const [page, global] = await Promise.all([
-    client.getSingle(PAGES.markets),
+    client.getSingle(Pages.markets),
     client.getSingle('global'),
   ])
 

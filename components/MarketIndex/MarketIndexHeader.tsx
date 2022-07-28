@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
 import { modalContent, modalContentId } from 'lib/cache';
-import { PAGES } from 'lib/const';
+import { Pages } from 'lib/enums';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
 import { format, moment, momentBusiness } from 'lib/utils/time';
@@ -14,7 +14,7 @@ export const showMarketIndexInfo = (name, props = {}) => {
     marketName: name,
     ...props,
   })
-  modalContentId(PAGES.markets)
+  modalContentId(Pages.markets)
 }
 
 const MarketIndexHeader = ({ days, data }) => {
