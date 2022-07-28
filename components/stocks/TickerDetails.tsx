@@ -9,6 +9,8 @@ import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
 import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
+import { useRouter } from 'next/router';
+import { FaArrowLeft } from 'react-icons/fa';
 import useSWR from 'swr';
 
 function getRatingClassName(val) {
@@ -26,6 +28,18 @@ function getRatingClassName(val) {
       return ''
   }
 }
+
+const BackButton = ({ className = '', text, onClick }) => (
+  <div
+    className={classnames(
+      className,
+      'cursor-pointer transition-colors duration-300 hover:text-accent flex items-center mb-4'
+    )}
+    onClick={onClick}
+  >
+    <FaArrowLeft className="mr-2" /> {text}
+  </div>
+)
 
 const TickerName = ({ className = '', tickerProfile, data }) => (
   <h2 className={classnames(className, 'text-secondary font-bold')}>
@@ -214,6 +228,7 @@ const TickerNews = ({ className = '', tickerNews }) =>
   )
 
 const TickerDetails = ({ data }) => {
+  const router = useRouter()
   if (!data) return null
 
   if (!data?.id) return null
@@ -247,6 +262,11 @@ const TickerDetails = ({ data }) => {
   return (
     <div>
       <div className="flex flex-col">
+        <BackButton
+          className={classnames({ invisible: !marketIndex })}
+          text={`Back to ${marketIndex?.displayName}`}
+          onClick={() => router.back()}
+        />
         <div className="flex items-center">
           <TickerLogo data={data} tickerProfile={tickerProfile} />
           <div className="flex flex-col ml-2">
