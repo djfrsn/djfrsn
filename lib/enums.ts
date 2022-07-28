@@ -5,3 +5,7 @@ export enum MarketInterval {
 export enum MarketIndex {
   sp500 = 'sp500',
 }
+
+export enum Pages {
+  markets = 'markets',
+}

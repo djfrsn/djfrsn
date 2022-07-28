@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { COLORS } from 'lib/const';
+import { Pages } from 'lib/enums';
 import { MarketIndexQuery } from 'lib/graphql';
 import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
@@ -9,6 +10,7 @@ import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
 import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaArrowLeft } from 'react-icons/fa';
 import useSWR from 'swr';
@@ -122,19 +124,38 @@ const TickerRating = ({ tickerRating }) =>
 
 const TickerHighLow = ({ data }) =>
   data.high && (
-    <p className="mt-4 text-xl">
-      <strong>${data.symbol}</strong> last reached a high of{' '}
-      <span className="text-positiveValue-500">
-        {formatUSD(data.high.close)}
-      </span>{' '}
-      on <em>{moment(data.high.date).format(format.standardShort)}</em> and a
-      low of{' '}
-      <span className="text-negativeValue-500">
-        {formatUSD(data.low.close)}
-      </span>{' '}
-      on <em>{moment(data.low.date).format(format.standardShort)}</em>.
-    </p>
+    <div className="flex grow">
+      <p className="mt-4 text-lg xl:text-xl">
+        <strong>${data.symbol}</strong> last reached a high of{' '}
+        <span className="text-positiveValue-500">
+          {formatUSD(data.high.close)}
+        </span>{' '}
+        on <em>{moment(data.high.date).format(format.standardShort)}</em> and a
+        low of{' '}
+        <span className="text-negativeValue-500">
+          {formatUSD(data.low.close)}
+        </span>{' '}
+        on <em>{moment(data.low.date).format(format.standardShort)}</em>.
+      </p>
+    </div>
   )
+
+const TimeSeriesFilter = ({ timeframes, timeSeriesLimit }) => (
+  <div className="flex ml-auto items-end justify-end my-2">
+    {timeframes.map((timeframe, index) => {
+      return (
+        <Link key={index} href={`/${Pages.markets}?days=${timeframe}`} shallow>
+          <button
+            className="btn btn-sm sm:mb-0 mr-1 last-of-type:mr-0"
+            data-active={timeSeriesLimit === timeframe}
+          >
+            <a>{timeframe}D</a>
+          </button>
+        </Link>
+      )
+    })}
+  </div>
+)
 
 const TickerChart = ({ marketIndex, data }) =>
   marketIndex?.timeSeries && (
@@ -179,7 +200,7 @@ const TickerChart = ({ marketIndex, data }) =>
 
 const TickerInfo = ({ className = '', tickerProfile, data }) =>
   tickerProfile && (
-    <div className={classnames(className, 'pt-4 text-lg')}>
+    <div className={classnames(className, 'pt-4 text-lg lg:grow')}>
       <p>
         <span className="text-sm text-wash-50">Headquarter</span>:{' '}
         {data.headQuarter}
@@ -210,7 +231,7 @@ const TickerInfo = ({ className = '', tickerProfile, data }) =>
 
 const TickerNews = ({ className = '', tickerNews }) =>
   Array.isArray(tickerNews) && (
-    <div className={classnames(className, 'pt-4')}>
+    <div className={classnames(className, 'pt-4 lg:max-w-[70%]')}>
       <h3 className="text-xl">News</h3>
       <div className="flex flex-col">
         {tickerNews.map((article, index) => (
@@ -258,6 +279,7 @@ const TickerDetails = ({ data }) => {
   const tickerRating = Array.isArray(ratingData) && ratingData[0]
   const tickerProfile = Array.isArray(profileData) && profileData[0]
   const positiveChange = tickerProfile?.changes > 0
+  const timeframes = [14, 30, 90, 180, 365]
 
   return (
     <div>
@@ -281,15 +303,14 @@ const TickerDetails = ({ data }) => {
         />
       </div>
       <TickerRating tickerRating={tickerRating} />
-      <TickerHighLow data={data} />
+      <div className="flex flex-col lg:flex-row">
+        <TickerHighLow data={data} />
+        <TimeSeriesFilter timeframes={timeframes} timeSeriesLimit={30} />
+      </div>
       <TickerChart data={data} marketIndex={marketIndex} />
-      <div className="flex flex-wrap">
-        <TickerInfo
-          className="flex-1"
-          data={data}
-          tickerProfile={tickerProfile}
-        />
-        <TickerNews className="flex-1" tickerNews={tickerNews} />
+      <div className="flex flex-col lg:flex-row">
+        <TickerInfo data={data} tickerProfile={tickerProfile} />
+        <TickerNews tickerNews={tickerNews} />
       </div>
     </div>
   )
