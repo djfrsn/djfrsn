@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { COLORS } from 'lib/const';
-import { Pages } from 'lib/enums';
 import { MarketIndexQuery } from 'lib/graphql';
 import chartOptions from 'lib/utils/chartOptions';
 import fetcher from 'lib/utils/fetcher';
@@ -10,7 +9,6 @@ import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
 import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaArrowLeft } from 'react-icons/fa';
 import useSWR from 'swr';
@@ -140,18 +138,28 @@ const TickerHighLow = ({ data }) =>
     </div>
   )
 
-const TimeSeriesFilter = ({ timeframes, timeSeriesLimit }) => (
+const TimeSeriesFilter = ({
+  timeframes,
+  timeSeriesLimit,
+  setTimeSeriesLimit,
+  router,
+}) => (
   <div className="flex ml-auto items-end justify-end my-2">
     {timeframes.map((timeframe, index) => {
       return (
-        <Link key={index} href={`/${Pages.markets}?days=${timeframe}`} shallow>
-          <button
-            className="btn btn-sm sm:mb-0 mr-1 last-of-type:mr-0"
-            data-active={timeSeriesLimit === timeframe}
-          >
-            <a>{timeframe}D</a>
-          </button>
-        </Link>
+        <button
+          key={index}
+          className="btn btn-sm sm:mb-0 mr-1 last-of-type:mr-0"
+          data-active={timeSeriesLimit === timeframe}
+          onClick={() => {
+            setTimeSeriesLimit(timeframe)
+            router.replace({
+              query: { ...router.query, days: timeframe },
+            })
+          }}
+        >
+          <a>{timeframe}D</a>
+        </button>
       )
     })}
   </div>
@@ -248,7 +256,7 @@ const TickerNews = ({ className = '', tickerNews }) =>
     </div>
   )
 
-const TickerDetails = ({ data }) => {
+const TickerDetails = ({ data, timeSeriesLimit, setTimeSeriesLimit }) => {
   const router = useRouter()
   if (!data) return null
 
@@ -271,7 +279,7 @@ const TickerDetails = ({ data }) => {
   if (marketIndexId) {
     const { data: marketIndexData } = useQuery(MarketIndexQuery, {
       fetchPolicy: 'cache-and-network',
-      variables: { id: marketIndexId, timeSeriesLimit: 30 },
+      variables: { id: marketIndexId, timeSeriesLimit },
     })
     if (marketIndexData) marketIndex = marketIndexData.marketIndex
   }
@@ -305,7 +313,12 @@ const TickerDetails = ({ data }) => {
       <TickerRating tickerRating={tickerRating} />
       <div className="flex flex-col lg:flex-row">
         <TickerHighLow data={data} />
-        <TimeSeriesFilter timeframes={timeframes} timeSeriesLimit={30} />
+        <TimeSeriesFilter
+          timeframes={timeframes}
+          timeSeriesLimit={timeSeriesLimit}
+          setTimeSeriesLimit={setTimeSeriesLimit}
+          router={router}
+        />
       </div>
       <TickerChart data={data} marketIndex={marketIndex} />
       <div className="flex flex-col lg:flex-row">
