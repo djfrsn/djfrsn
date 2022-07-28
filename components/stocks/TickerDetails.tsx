@@ -9,6 +9,7 @@ import getFriendlyMarketSymbol from 'lib/utils/getFriendlyMarketSymbol';
 import { formatUSD } from 'lib/utils/numbers';
 import { format } from 'lib/utils/time';
 import moment from 'moment';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaArrowLeft } from 'react-icons/fa';
 import useSWR from 'swr';
@@ -29,16 +30,17 @@ function getRatingClassName(val) {
   }
 }
 
-const BackButton = ({ className = '', text, onClick }) => (
-  <div
-    className={classnames(
-      className,
-      'cursor-pointer transition-colors duration-300 hover:text-accent flex items-center mb-4'
-    )}
-    onClick={onClick}
-  >
-    <FaArrowLeft className="mr-2" /> {text}
-  </div>
+const BackButton = ({ className = '', href, text }) => (
+  <Link href={href}>
+    <a
+      className={classnames(
+        className,
+        'cursor-pointer transition-colors duration-300 hover:text-accent flex items-center mb-4'
+      )}
+    >
+      <FaArrowLeft className="mr-2" /> {text}
+    </a>
+  </Link>
 )
 
 const TickerName = ({ className = '', tickerProfile, data }) => (
@@ -295,7 +297,7 @@ const TickerDetails = ({ data, timeSeriesLimit, setTimeSeriesLimit }) => {
         <BackButton
           className={classnames({ invisible: !marketIndex })}
           text={`Back to ${marketIndex?.displayName}`}
-          onClick={() => router.back()}
+          href="/markets"
         />
         <div className="flex items-center">
           <TickerLogo data={data} tickerProfile={tickerProfile} />
