@@ -27,23 +27,6 @@ function getRatingClassName(val) {
   }
 }
 
-const FoundedDate = ({ className = '', data }) =>
-  typeof data.founded === 'string' && (
-    <span className={classnames(className, 'text-sm italic text-wash-50')}>
-      Est. {data.founded}
-    </span>
-  )
-
-const TickerLogo = ({ className = '', tickerProfile, data }) =>
-  tickerProfile?.website &&
-  tickerProfile?.image && (
-    <div className={classnames(className, 'w-16')}>
-      <a href={tickerProfile.website} target="_blank">
-        <img alt={`${data.name} logo`} src={tickerProfile.image} />
-      </a>
-    </div>
-  )
-
 const TickerName = ({ className = '', tickerProfile, data }) => (
   <h2 className={classnames(className, 'text-secondary font-bold')}>
     <a
@@ -56,66 +39,13 @@ const TickerName = ({ className = '', tickerProfile, data }) => (
   </h2>
 )
 
-const TickerRating = ({ tickerRating }) =>
-  tickerRating?.rating && (
-    <p>
-      Rating:{' '}
-      <strong
-        className={classnames(
-          getRatingClassName(tickerRating.ratingScore),
-          'text-xl tooltip'
-        )}
-        data-tip={tickerRating.ratingRecommendation}
-      >
-        {tickerRating.rating}
-      </strong>
-    </p>
-  )
-
-const TickerHighLow = ({ data }) =>
-  data.high && (
-    <p className="mt-4 text-xl">
-      <strong>${data.symbol}</strong> last reached a high of{' '}
-      <span className="text-positiveValue-500">
-        {formatUSD(data.high.close)}
-      </span>{' '}
-      on <em>{moment(data.high.date).format(format.standardShort)}</em> and a
-      low of{' '}
-      <span className="text-negativeValue-500">
-        {formatUSD(data.low.close)}
-      </span>{' '}
-      on <em>{moment(data.low.date).format(format.standardShort)}</em>.
-    </p>
-  )
-
-const TickerInfo = ({ tickerProfile, data }) =>
-  tickerProfile && (
-    <div className="pt-4 text-lg">
-      <p>
-        <span className="text-sm text-wash-50">Headquarter</span>:{' '}
-        {data.headQuarter}
-      </p>
-      <p>
-        <span className="text-sm text-wash-50">Sector</span>: {data.sector}
-        {data.subSector && `, ${data.subSector}`}
-      </p>
-      <p>
-        <span className="text-sm text-wash-50">Marketcap</span>:{' '}
-        <strong>{formatUSD(tickerProfile.mktCap)}</strong>
-      </p>
-      <p>
-        <span
-          className="text-sm text-wash-50 tooltip tooltip-info tooltip-right"
-          data-tip="Measure of volatility compared to the S&P 500. Beta higher than 1 would be considered more volatile than the S&P500."
-        >
-          Beta
-        </span>
-        : <strong>{tickerProfile.beta.toFixed(2)}</strong>
-      </p>
-      <p>
-        <span className="text-sm text-wash-50">YTD Range</span>:{' '}
-        <strong>${tickerProfile.range}</strong>
-      </p>
+const TickerLogo = ({ className = '', tickerProfile, data }) =>
+  tickerProfile?.website &&
+  tickerProfile?.image && (
+    <div className={classnames(className, 'w-16')}>
+      <a href={tickerProfile.website} target="_blank">
+        <img alt={`${data.name} logo`} src={tickerProfile.image} />
+      </a>
     </div>
   )
 
@@ -152,6 +82,45 @@ const TickerPrice = ({
     </span>
   </div>
 )
+
+const FoundedDate = ({ className = '', data }) =>
+  typeof data.founded === 'string' && (
+    <span className={classnames(className, 'text-sm italic text-wash-50')}>
+      Est. {data.founded}
+    </span>
+  )
+
+const TickerRating = ({ tickerRating }) =>
+  tickerRating?.rating && (
+    <p>
+      Rating:{' '}
+      <strong
+        className={classnames(
+          getRatingClassName(tickerRating.ratingScore),
+          'text-xl tooltip'
+        )}
+        data-tip={tickerRating.ratingRecommendation}
+      >
+        {tickerRating.rating}
+      </strong>
+    </p>
+  )
+
+const TickerHighLow = ({ data }) =>
+  data.high && (
+    <p className="mt-4 text-xl">
+      <strong>${data.symbol}</strong> last reached a high of{' '}
+      <span className="text-positiveValue-500">
+        {formatUSD(data.high.close)}
+      </span>{' '}
+      on <em>{moment(data.high.date).format(format.standardShort)}</em> and a
+      low of{' '}
+      <span className="text-negativeValue-500">
+        {formatUSD(data.low.close)}
+      </span>{' '}
+      on <em>{moment(data.low.date).format(format.standardShort)}</em>.
+    </p>
+  )
 
 const TickerChart = ({ marketIndex, data }) =>
   marketIndex?.timeSeries && (
@@ -194,9 +163,40 @@ const TickerChart = ({ marketIndex, data }) =>
     </div>
   )
 
-const TickerNews = ({ tickerNews }) =>
+const TickerInfo = ({ className = '', tickerProfile, data }) =>
+  tickerProfile && (
+    <div className={classnames(className, 'pt-4 text-lg')}>
+      <p>
+        <span className="text-sm text-wash-50">Headquarter</span>:{' '}
+        {data.headQuarter}
+      </p>
+      <p>
+        <span className="text-sm text-wash-50">Sector</span>: {data.sector}
+        {data.subSector && `, ${data.subSector}`}
+      </p>
+      <p>
+        <span className="text-sm text-wash-50">Marketcap</span>:{' '}
+        <strong>{formatUSD(tickerProfile.mktCap)}</strong>
+      </p>
+      <p>
+        <span
+          className="text-sm text-wash-50 tooltip tooltip-info tooltip-right"
+          data-tip="Measure of volatility compared to the S&P 500. Beta higher than 1 would be considered more volatile than the S&P500."
+        >
+          Beta
+        </span>
+        : <strong>{tickerProfile.beta.toFixed(2)}</strong>
+      </p>
+      <p>
+        <span className="text-sm text-wash-50">YTD Range</span>:{' '}
+        <strong>${tickerProfile.range}</strong>
+      </p>
+    </div>
+  )
+
+const TickerNews = ({ className = '', tickerNews }) =>
   Array.isArray(tickerNews) && (
-    <div className="pt-4">
+    <div className={classnames(className, 'pt-4')}>
       <h3 className="text-xl">News</h3>
       <div className="flex flex-col">
         {tickerNews.map((article, index) => (
@@ -263,8 +263,14 @@ const TickerDetails = ({ data }) => {
       <TickerRating tickerRating={tickerRating} />
       <TickerHighLow data={data} />
       <TickerChart data={data} marketIndex={marketIndex} />
-      <TickerInfo data={data} tickerProfile={tickerProfile} />
-      <TickerNews tickerNews={tickerNews} />
+      <div className="flex flex-wrap">
+        <TickerInfo
+          className="flex-1"
+          data={data}
+          tickerProfile={tickerProfile}
+        />
+        <TickerNews className="flex-1" tickerNews={tickerNews} />
+      </div>
     </div>
   )
 }
