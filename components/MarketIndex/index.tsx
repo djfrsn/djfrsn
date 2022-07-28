@@ -89,12 +89,7 @@ const MarketIndex = ({
 
   return (
     <Container loading={loading} error={error}>
-      <MarketIndexHeader
-        data={marketIndex}
-        days={days}
-        timeSeriesLimit={timeSeriesLimit}
-        mainWidth={mainWidth}
-      />
+      <MarketIndexHeader data={marketIndex} days={days} />
       <TickersTable
         data={marketIndexTickers}
         timeSeriesLength={days}
