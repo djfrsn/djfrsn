@@ -35,7 +35,7 @@ const BackButton = ({ className = '', href, text }) => (
     <a
       className={classnames(
         className,
-        'cursor-pointer transition-colors duration-300 hover:text-accent flex items-center mb-4'
+        'cursor-pointer transition-colors duration-300 hover:text-accent flex items-center mb-4 w-fit'
       )}
     >
       <FaArrowLeft className="mr-2" /> {text}
