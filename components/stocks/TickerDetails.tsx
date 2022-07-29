@@ -126,16 +126,16 @@ const TickerHighLow = ({ data }) =>
   data.high && (
     <div className="flex grow">
       <p className="mt-4 text-lg xl:text-xl">
-        <strong>${data.symbol}</strong> last reached a high of{' '}
-        <span className="text-positiveValue-500">
-          {formatUSD(data.high.close)}
-        </span>{' '}
-        on <em>{moment(data.high.date).format(format.standardShort)}</em> and a
-        low of{' '}
+        <strong>${data.symbol}</strong> last reached a low of{' '}
         <span className="text-negativeValue-500">
           {formatUSD(data.low.close)}
         </span>{' '}
-        on <em>{moment(data.low.date).format(format.standardShort)}</em>.
+        on <em>{moment(data.low.date).format(format.standardShort)}</em> and a
+        high of{' '}
+        <span className="text-positiveValue-500">
+          {formatUSD(data.high.close)}
+        </span>{' '}
+        on <em>{moment(data.high.date).format(format.standardShort)}</em>.
       </p>
     </div>
   )
