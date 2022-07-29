@@ -16,14 +16,38 @@ if (process.env.NEXT_MANUAL_SIG_HANDLE) {
   })
 }
 
-export default function Document(props) {
-  return (
-    <Html data-theme={theme(props)} lang="en">
-      <Head>
+const FontLoader = ({ theme }) => {
+  switch (true) {
+    case theme === 'homeroom':
+      return (
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      )
+    case theme === 'explorer':
+      return (
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&display=swap"
+          rel="stylesheet"
+        />
+      )
+    default:
+      return (
         <link
           href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;600&family=Lora:wght@400;500&display=swap"
           rel="stylesheet"
         />
+      )
+  }
+}
+
+export default function Document(props) {
+  const themeName = theme(props)
+  return (
+    <Html data-theme={themeName} lang="en">
+      <Head>
+        <FontLoader theme={themeName} />
       </Head>
       <body>
         <Main />
