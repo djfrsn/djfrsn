@@ -2,12 +2,10 @@ import classnames from 'classnames';
 import LineChart from 'components/LineChart';
 import { ModalButton } from 'components/Modal';
 import { modalContent, modalContentId } from 'lib/cache';
-import { PAGES, SCREENS } from 'lib/const';
+import { Pages } from 'lib/enums';
 import chartOptions from 'lib/utils/chartOptions';
 import { getLineColor } from 'lib/utils/charts';
-import { screenToNum } from 'lib/utils/pages';
-import { format, moment } from 'lib/utils/time';
-import Link from 'next/link';
+import { format, moment, momentBusiness } from 'lib/utils/time';
 import { FaInfoCircle } from 'react-icons/fa';
 
 export const showMarketIndexInfo = (name, props = {}) => {
@@ -16,13 +14,10 @@ export const showMarketIndexInfo = (name, props = {}) => {
     marketName: name,
     ...props,
   })
-  modalContentId(PAGES.markets)
+  modalContentId(Pages.markets)
 }
 
-const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
-  const timeframes = [14, 30, 90].concat(
-    mainWidth > screenToNum(SCREENS.md) ? [180] : []
-  )
+const MarketIndexHeader = ({ days, data }) => {
   const InfoButton = ({ className = '' }) => (
     <ModalButton
       className={className}
@@ -31,8 +26,13 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
       <FaInfoCircle className="text-xl text-accent hover:text-accent-focus transition-all" />
     </ModalButton>
   )
-  const oldestTimeSeriesItem = data.timeSeries[data.timeSeries.length - 1]
+  const currentDate = momentBusiness()
+  const timeAgo = currentDate.subtract(days, 'days')
   const latestTimeSeriesItem = data.timeSeries[0]
+  const oldestTimeSeriesDate = timeAgo.format(format.standard)
+  const latestTimeSeriesDate = momentBusiness(latestTimeSeriesItem.date).format(
+    format.standard
+  )
 
   return (
     <div className="flex md:flex-row flex-wrap">
@@ -43,7 +43,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
         >
           {data.displayName}
         </h1>
-        {oldestTimeSeriesItem && latestTimeSeriesItem && (
+        {latestTimeSeriesItem && (
           <>
             <span
               className={classnames(
@@ -53,11 +53,7 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
                   ['animate-fadeIn']: days > 0,
                 }
               )}
-              data-tip={`${moment(oldestTimeSeriesItem.date).format(
-                format.standard
-              )} - ${moment(latestTimeSeriesItem.date).format(
-                format.standard
-              )}`}
+              data-tip={`${oldestTimeSeriesDate} - ${latestTimeSeriesDate}`}
             >
               {days}D
             </span>
@@ -83,26 +79,6 @@ const MarketIndexHeader = ({ days, data, timeSeriesLimit, mainWidth }) => {
           />
         </div>
         <InfoButton className="flex" />
-      </div>
-      <div className="flex md:flex-initial justify-end md:basis-1/2 items-center mt-4 md:mt-0">
-        <div className="">
-          {timeframes.map((timeframe, index) => {
-            return (
-              <Link
-                key={index}
-                href={`/${PAGES.markets}?days=${timeframe}`}
-                shallow
-              >
-                <button
-                  className="btn btn-sm mb-2 sm:mb-0 mr-1 last-of-type:mr-0"
-                  data-active={timeSeriesLimit === timeframe}
-                >
-                  <a>{timeframe}D</a>
-                </button>
-              </Link>
-            )
-          })}
-        </div>
       </div>
     </div>
   )

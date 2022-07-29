@@ -142,6 +142,7 @@ const Ticker = objectType({
     t.string('subSector')
     t.string('headQuarter')
     t.string('founded')
+    t.int('marketIndexId')
     t.list.field('timeSeries', {
       type: 'TickerInfo',
       args: {
@@ -178,18 +179,6 @@ const TickerInfo = objectType({
     t.string('low')
     t.string('volume')
     t.nullable.string('tickerId')
-    t.nullable.field('ticker', {
-      type: 'Ticker',
-      resolve: (parent, __, ctx, info) => {
-        info.cacheControl.setCacheHint(largeDatasetCacheHint)
-        return ctx.prisma.ticker
-          .findUnique({
-            where: { id: Number(parent.id) },
-          })
-          .timeSeries()
-          .then()
-      },
-    })
   },
 })
 
@@ -217,7 +206,6 @@ const Query = objectType({
       },
       type: 'MarketIndex',
       resolve: async (_, args: { name: string }, ctx) => {
-        console.log('name', name)
         return ctx.prisma.marketIndex.findFirst({
           where: { name: args.name },
           include: {
@@ -232,12 +220,59 @@ const Query = objectType({
     t.field('marketIndex', {
       args: {
         name: stringArg(),
+        id: intArg(),
       },
       type: 'MarketIndex',
-      resolve: async (_, args: { name: string }, ctx, info) => {
+      resolve: async (_, args: { name: string; id: number }, ctx, info) => {
+        let where = {}
+
+        if (args.name) {
+          where = { name: args.name }
+        } else if (args.id) {
+          where = { id: args.id }
+        }
+
         return ctx.prisma.marketIndex.findFirst({
-          where: { name: args.name },
+          where,
         })
+      },
+    })
+
+    t.field('ticker', {
+      args: {
+        symbol: stringArg(),
+        offset: intArg(),
+        limit: intArg(),
+      },
+      type: 'Ticker',
+      resolve: async (
+        _,
+        args: {
+          symbol: string
+          offset: number
+          limit: number
+          cursor: number
+        },
+        ctx,
+        info
+      ) => {
+        info.cacheControl.setCacheHint(largeDatasetCacheHint)
+        const options: {
+          take?: Prisma.UserFindManyArgs['take']
+          where?: { symbol: string }
+          skip?: number
+          cursor?: { id: number }
+          orderBy: { symbol: string }
+        } = { orderBy: { symbol: 'asc' } }
+        if (args.symbol) options.where = { symbol: args.symbol }
+        if (args.limit) options.take = args.limit
+        if (args.offset) options.skip = args.offset
+        if (args.cursor) {
+          options.skip = 1
+          options.cursor = { id: args.cursor }
+        }
+
+        return ctx.prisma.ticker.findFirst(options)
       },
     })
 

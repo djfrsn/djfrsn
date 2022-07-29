@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import Container from 'components/Container';
-import Tickers from 'components/MarketIndex/Tickers';
 import { openModal } from 'components/Modal';
 import gql from 'graphql-tag';
 import { Ticker } from 'lib/interfaces';
@@ -9,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import MarketIndexHeader, { showMarketIndexInfo } from './MarketIndexHeader';
+import TickersTable from './TickersTable';
 
 const MarketIndexTickersQuery = gql`
   query MarketIndexTickers(
@@ -89,20 +89,15 @@ const MarketIndex = ({
 
   return (
     <Container loading={loading} error={error}>
-      <MarketIndexHeader
-        data={marketIndex}
-        days={days}
-        timeSeriesLimit={timeSeriesLimit}
-        mainWidth={mainWidth}
-      />
-      <Tickers
-        fetchMore={fetchMore}
+      <MarketIndexHeader data={marketIndex} days={days} />
+      <TickersTable
+        data={marketIndexTickers}
+        timeSeriesLength={days}
         count={tickerCount?.count}
-        marketIndex={marketIndex}
         containerWidth={appWidth}
+        fetchMore={fetchMore}
         height={height}
         width={width}
-        data={marketIndexTickers || []}
       />
     </Container>
   )

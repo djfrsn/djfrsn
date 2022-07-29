@@ -4,7 +4,7 @@ import { isModalOpen, modalContent as modalContentVar, modalContentId } from 'li
 import { useEffect, useRef } from 'react';
 
 import Loading from '../Loading';
-import { MarketInfo, TickerDetails } from './template/Markets';
+import { MarketInfo } from './template/Markets';
 
 const setBodyOverflow = val => (document.body.style.overflow = val)
 const modalId = 'main-modal'
@@ -56,8 +56,6 @@ const ModalContent = ({ data }) => {
   if (!modalContentId || !modalContent) return null
 
   switch (true) {
-    case modalContentId.includes('TickerInfo'):
-      return <TickerDetails data={data} />
     case modalContentId === 'markets':
       return <MarketInfo data={data} />
     default:

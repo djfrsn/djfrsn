@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { MARKET_INDEX, MARKET_INTERVAL } from 'lib/const';
+import { MarketIndex, MarketInterval } from 'lib/enums';
 
 const prisma = new PrismaClient()
 
@@ -12,7 +12,7 @@ const userData: Prisma.UserCreateInput[] = [
 
 const marketIndexData = [
   {
-    name: MARKET_INDEX.sp500,
+    name: MarketIndex.sp500,
     displayName: 'S&P 500',
     symbol: '^GSPC',
   },
@@ -20,7 +20,7 @@ const marketIndexData = [
 
 const marketIntervalData = [
   {
-    name: MARKET_INTERVAL.oneday,
+    name: MarketInterval.oneday,
   },
 ]
 

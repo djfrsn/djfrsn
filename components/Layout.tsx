@@ -34,18 +34,18 @@ export default function Layout({
     height: mainheight,
     width: mainwidth,
   } = useElementSize()
-  const router = useRouter()
+  const showScrollToTop = scroll?.y > 500
   const withFooter = data.footer
 
-  if (router.isFallback) {
-    return <LoadingIndicator />
-  }
+  const router = useRouter()
 
   useEffect(() => {
     theme(router)
   }, [router.pathname])
 
-  const showScrollToTop = scroll?.y > 500
+  if (router.isFallback) {
+    return <LoadingIndicator />
+  }
 
   return (
     <>
