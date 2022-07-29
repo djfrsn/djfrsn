@@ -51,7 +51,10 @@ export default function StockPage(props) {
   const { high, low } = timeSeries
     ? getTimeSeriesHighLow(timeSeries)
     : { high: null, low: null }
-  const close = timeSeries ? formatUSD(timeSeries[0].close) : null
+  const close =
+    Array.isArray(timeSeries) && timeSeries.length
+      ? formatUSD(timeSeries[0].close)
+      : null
 
   return (
     <Container loading={loading} error={error}>

@@ -89,7 +89,7 @@ const TickerPrice = ({
         tickerProfile.changes > 0
           ? 'text-positiveValue-500'
           : 'text-negativeValue-500',
-        'text-sm tooltip tooltip-info tooltip-bottom'
+        'text-sm tooltip tooltip-info tooltip-top'
       )}
       data-tip="Daily Change"
     >
@@ -223,14 +223,12 @@ const TickerInfo = ({ className = '', tickerProfile, data }) =>
         <span className="text-sm text-wash-50">Marketcap</span>:{' '}
         <strong>{formatUSD(tickerProfile.mktCap)}</strong>
       </p>
-      <p>
-        <span
-          className="text-sm text-wash-50 tooltip tooltip-info tooltip-right"
-          data-tip="Measure of volatility compared to the S&P 500. Beta higher than 1 would be considered more volatile than the S&P500."
-        >
-          Beta
-        </span>
-        : <strong>{tickerProfile.beta.toFixed(2)}</strong>
+      <p
+        className="tooltip tooltip-info tooltip-right"
+        data-tip="Measure of volatility compared to the S&P 500. Beta higher than 1 would be considered more volatile than the S&P500."
+      >
+        <span className="text-sm text-wash-50">Beta</span>:{' '}
+        <strong>{tickerProfile.beta.toFixed(2)}</strong>
       </p>
       <p>
         <span className="text-sm text-wash-50">YTD Range</span>:{' '}
