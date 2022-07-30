@@ -1,8 +1,10 @@
-import fs from 'fs';
-import { NextApiRequest, NextApiResponse } from 'next';
-import sparkline from 'node-sparkline';
-import path from 'path';
-import { promisify } from 'util';
+import fs from 'fs'
+import prisma from 'lib/db/prisma'
+import { timeAgo } from 'lib/utils/time'
+import { NextApiRequest, NextApiResponse } from 'next'
+import sparkline from 'node-sparkline'
+import path from 'path'
+import { promisify } from 'util'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -27,23 +29,36 @@ export default async function handler(
         .send({ message: 'Query param with id as string required' })
 
     let svg = null
-
-    if (!svg) {
-      // TODO: fetch data
-      // TODO: convert to post route
-      // TODO: add inline to refresh flow
-      try {
+    // TODO: fetch data
+    // TODO: convert to post route
+    // TODO: add inline to refresh flow
+    try {
+      const idAsInt = Number(id)
+      const timeSeries = await prisma.tickerInfo.findMany({
+        orderBy: { date: 'desc' },
+        where: {
+          tickerId: idAsInt,
+          date: {
+            gte: timeAgo(Number(days)).toDate(),
+          },
+        },
+      })
+      console.log('days', days)
+      console.log('timeSeries', timeSeries)
+      if (timeSeries.length) {
         svg = sparkline({
-          values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+          values: timeSeries.map(tick => Number(tick.close)),
           width: 135,
           height: 50,
           stroke: '#57bd0f',
           strokeWidth: 1.25,
           strokeOpacity: 1,
         })
-      } catch (e) {
-        return response.status(405).send({ message: e.toString() })
       }
+    } catch (e) {
+      return response
+        .status(405)
+        .send({ message: e.toString ? e.toString() : e.message })
     }
 
     const dir = 'public/img/stocks/sparklines'

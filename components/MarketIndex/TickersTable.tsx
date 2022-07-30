@@ -1,9 +1,9 @@
-import { FetchMore } from 'lib/types';
-import { Ticker as TickerType } from 'lib/types/interfaces';
-import { formatUSD } from 'lib/utils/numbers';
-import Link from 'next/link';
+import { FetchMore } from 'lib/types'
+import { Ticker as TickerType } from 'lib/types/interfaces'
+import { formatUSD } from 'lib/utils/numbers'
+import Link from 'next/link'
 
-import TickersUnavailable from './TickersUnavailable';
+import TickersUnavailable from './TickersUnavailable'
 
 const TickersTable = ({
   data,
@@ -18,7 +18,7 @@ const TickersTable = ({
   fetchMore: FetchMore
 }) => {
   if (!data?.length) return <TickersUnavailable className="my-2 lg:my-4" />
-
+  console.log('data', data)
   return (
     <div className="my-2 lg:my-4 overflow-x-auto">
       <table className="table table-compact w-full">
@@ -51,7 +51,8 @@ const TickersTable = ({
                 <td>{subSector}</td>
                 <td>
                   <img
-                    src={`/api/sparkline?id=${id}&days=${timeSeries.length}`}
+                    src={`/api/sparkline?id=${id}&days=${timeSeriesLength}`}
+                    // src={`/img/stocks/sparklines/${id}-${timeSeries.length}.svg`}
                     alt={`${symbol} sparkline`}
                   />
                 </td>
