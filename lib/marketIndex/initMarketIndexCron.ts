@@ -3,7 +3,7 @@ import { Job as QueueJob, JobsOptions } from 'bullmq';
 import { QUEUE } from 'lib/const';
 import prisma from 'lib/db/prisma';
 import { defaultJobOptions, refreshMarketsQueue } from 'lib/db/queue';
-import { MarketInterval } from 'lib/enums';
+import { MarketInterval } from 'lib/types/enums';
 import validKey from 'lib/utils/validKey';
 
 interface MarketIndexesRefresh {

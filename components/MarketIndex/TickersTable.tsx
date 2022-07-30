@@ -1,10 +1,6 @@
-import LineChart from 'components/LineChart';
-import { Ticker as TickerType } from 'lib/interfaces';
 import { FetchMore } from 'lib/types';
-import chartOptions from 'lib/utils/chartOptions';
-import { getLineColor } from 'lib/utils/charts';
+import { Ticker as TickerType } from 'lib/types/interfaces';
 import { formatUSD } from 'lib/utils/numbers';
-import reverseTimeSeries from 'lib/utils/reverseTimeSeries';
 import Link from 'next/link';
 
 import TickersUnavailable from './TickersUnavailable';
@@ -38,7 +34,7 @@ const TickersTable = ({
         </thead>
         <tbody>
           {data.map(
-            ({ name, symbol, sector, subSector, timeSeries }, index) => (
+            ({ id, name, symbol, sector, subSector, timeSeries }, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
@@ -54,25 +50,10 @@ const TickersTable = ({
                 <td>{sector}</td>
                 <td>{subSector}</td>
                 <td>
-                  {timeSeries[0] ? (
-                    <div className="ml-4 w-16 xs:w-20 md:w-22 lg:w-24 mx-2">
-                      <LineChart
-                        options={chartOptions.simple}
-                        data={{
-                          labels: timeSeries.map(series => series.date),
-                          datasets: [
-                            {
-                              label: symbol,
-                              data: reverseTimeSeries(timeSeries),
-                              borderColor: getLineColor(timeSeries),
-                            },
-                          ],
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <span className="block text-center">N/A</span>
-                  )}
+                  <img
+                    src={`/api/sparkline?id=${id}&days=${timeSeries.length}`}
+                    alt={`${symbol} sparkline`}
+                  />
                 </td>
               </tr>
             )
