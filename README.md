@@ -14,9 +14,9 @@
 
 ### 👨🏽‍💻 About Me :
 
-I am a Software Developer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Playa Del Rey, CA.
+I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Playa Del Rey, CA.
 
-- :telescope: I’m working as a Software Developer and contributing to frontend and backend for building web applications.
+- :telescope: I’m working as a Software Engineer and contributing to frontend and backend for building web applications.
 
 - :seedling: Exploring interesting problems in financial markets and time series data with Next.js, GraphQL, Postgres, Redis and React 18.
 
