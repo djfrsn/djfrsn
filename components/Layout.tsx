@@ -1,20 +1,20 @@
-import { useElementSize, useWindowScroll } from '@mantine/hooks';
-import { SliceZone } from '@prismicio/react';
-import classnames from 'classnames';
-import { FooterType, GlobalType, PageType } from 'lib/types';
-import theme from 'lib/utils/theme';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { useEffect } from 'react';
-import { FaArrowUp } from 'react-icons/fa';
-import { components } from 'slices';
+import { useElementSize, useWindowScroll } from '@mantine/hooks'
+import { SliceZone } from '@prismicio/react'
+import classnames from 'classnames'
+import { FooterType, GlobalType, PageType } from 'lib/types'
+import theme from 'lib/utils/theme'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { useEffect } from 'react'
+import { FaArrowUp } from 'react-icons/fa'
+import { components } from 'slices'
 
-import Footer from './Footer';
-import styles from './layout.module.css';
-import LoadingIndicator from './Loading';
-import Modal from './Modal';
-import Navigation from './Navigation';
+import Footer from './Footer'
+import styles from './layout.module.css'
+import LoadingIndicator from './Loading'
+import Modal from './Modal'
+import Navigation from './Navigation'
 
 export default function Layout({
   className = '',
@@ -74,7 +74,10 @@ export default function Layout({
         <meta name="msapplication-TileColor" content="#2b5797" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <div className={classnames('relative w-full', className)} ref={appRef}>
+      <div
+        className={classnames('relative h-full w-full', className)}
+        ref={appRef}
+      >
         <Navigation
           navigation={data.global.navigation}
           global={data.global}

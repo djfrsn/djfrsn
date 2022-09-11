@@ -20,10 +20,10 @@ body {
 
 body,
 body > div {
-  @apply flex w-full m-0;
+  @apply w-full h-full m-0;
 }
 body > div {
-  @apply flex w-full h-auto m-0;
+  @apply w-full h-full m-0;
 }
 
 h1 {
