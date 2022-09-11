@@ -18,11 +18,7 @@ body {
   @apply h-full text-primary;
 }
 
-body,
-body > div {
-  @apply w-full h-full m-0;
-}
-body > div {
+#__next {
   @apply w-full h-full m-0;
 }
 
