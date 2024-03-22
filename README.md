@@ -14,7 +14,7 @@
 
 ### 👨🏽‍💻 About Me :
 
-I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Playa Del Rey, CA.
+I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Los Angeles, CA.
 
 - :telescope: I’m working as a Software Engineer and contributing to frontend and backend for building web applications.
 
