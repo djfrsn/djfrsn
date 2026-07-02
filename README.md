@@ -20,7 +20,7 @@ I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGB
 
 - :seedling: Exploring interesting problems in agent orchestration.
 
-- :zap: In my free time, I golf and explore the cutting edge of softare engineering.
+- :zap: In my free time, I golf and explore the cutting edge of software engineering.
 
 - :mailbox: How to reach me: [![Linkedin Badge](https://img.shields.io/badge/-DMJ-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/dennis-jefferson-61585a2b/)
 
