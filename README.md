@@ -16,11 +16,11 @@
 
 I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Los Angeles, CA.
 
-- :telescope: I’m working as a Software Engineer and contributing to frontend and backend for building web applications.
+- :telescope: I work on the Influent product at Amada America and contribute to the full stack of our web applications.
 
-- :seedling: Exploring interesting problems in financial markets and time series data with Next.js, GraphQL, Postgres, Redis and React 18.
+- :seedling: Exploring interesting problems in agent orchestration.
 
-- :zap: In my free time, I research financial markets and related technologies.
+- :zap: In my free time, I golf and explore the cutting edge of softare engineering.
 
 - :mailbox: How to reach me: [![Linkedin Badge](https://img.shields.io/badge/-DMJ-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/dennis-jefferson-61585a2b/)
 
