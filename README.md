@@ -52,6 +52,8 @@ I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGB
 
 [![Djfrsn's GitHub stats](https://github-stats-extended.vercel.app/api?username=djfrsn)](https://github.com/stats-organization/github-stats-extended)
 
+![Top Langs](https://github-stats-extended.vercel.app/api/top-langs/?username=djfrsn&langs_count=4)
+
 ---
 
 ### 🚧 Projects :
