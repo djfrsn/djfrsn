@@ -16,11 +16,11 @@
 
 I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> based in Los Angeles, CA.
 
-- :telescope: I work on the Influent product at Amada America and contribute to the full stack of our web applications.
+- :telescope: I work on the Influent at Amada America and contribute to the full stack of our web applications.
 
 - :seedling: Exploring interesting problems in agent orchestration.
 
-- :zap: In my free time, I golf and explore the cutting edge of software engineering.
+- :zap: In my free time, I golf and explore the cutting edge of technology.
 
 - :mailbox: How to reach me: [![Linkedin Badge](https://img.shields.io/badge/-DMJ-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/dennis-jefferson-61585a2b/)
 
