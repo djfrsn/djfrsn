@@ -50,8 +50,6 @@ I am a Software Engineer <img src="https://media.giphy.com/media/WUlplcMpOCEmTGB
 
 [![GitHub Streak](http://github-readme-streak-stats.herokuapp.com?user=djfrsn&theme=dark&background=000000)](https://git.io/streak-stats)
 
-[![Djfrsn's GitHub stats](https://github-stats-extended.vercel.app/api?username=djfrsn)](https://github.com/stats-organization/github-stats-extended)
-
 ![Top Langs](https://github-stats-extended.vercel.app/api/top-langs/?username=djfrsn&langs_count=4)
 
 ---
